@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shape.singleproject.mapping.base.UserInfoBaseMapper">
+
+
+    <insert id="insertUserInfo"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `user_info`
+        (
+        <trim suffixOverrides=",">
+                    <if test="id!=null">
+                        `id`,
+                    </if>
+                    <if test="optionId!=null">
+                        `option_id`,
+                    </if>
+                    <if test="name!=null">
+                        `name`,
+                    </if>
+                    <if test="yn!=null">
+                        `yn`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="id!=null">
+                    #{id},
+                </if>
+                <if test="optionId!=null">
+                    #{optionId},
+                </if>
+                <if test="name!=null">
+                    #{name},
+                </if>
+                <if test="yn!=null">
+                    #{yn},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateUserInfo">
+        UPDATE `user_info`
+        SET
+        <trim suffixOverrides=",">
+            <if test="optionId != null and optionId!=''">
+                `option_id` = #{optionId},
+            </if>
+            <if test="name != null and name!=''">
+                `name` = #{name},
+            </if>
+            <if test="yn != null">
+                `yn` = #{yn},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `id` = #{id} and
+        </trim>
+    </update>
+
+    <update id="update">
+        UPDATE `user_info`
+        SET
+        <trim suffixOverrides=",">
+        <if test="set.optionId != null and set.optionId!=''">
+            `option_id` = #{set.optionId},
+        </if>
+        <if test="set.name != null and set.name!=''">
+            `name` = #{set.name},
+        </if>
+        <if test="set.yn != null">
+            `yn` = #{set.yn},
+        </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and | or">
+                <if test="where.idList != null">
+                    `id` in
+                    <foreach collection="where.idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.idSt !=null">
+                `id` >= #{where.idSt} and
+            </if>
+            <if test="where.idEd!=null">
+                `id` &lt;= #{where.idEd} and
+            </if>
+                <if test="where.optionIdList != null">
+                    `option_id` in
+                    <foreach collection="where.optionIdList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyOptionId!=null and where.fuzzyOptionId.size()>0">
+                (
+                <foreach collection="where.fuzzyOptionId"  separator="or" item="item">
+                    `Option_id` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyOptionId!=null and where.rightFuzzyOptionId.size()>0">
+                (
+                <foreach collection="where.rightFuzzyOptionId"  separator="or" item="item">
+                    `Option_id` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.nameList != null">
+                    `name` in
+                    <foreach collection="where.nameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyName!=null and where.fuzzyName.size()>0">
+                (
+                <foreach collection="where.fuzzyName"  separator="or" item="item">
+                    `Name` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyName!=null and where.rightFuzzyName.size()>0">
+                (
+                <foreach collection="where.rightFuzzyName"  separator="or" item="item">
+                    `Name` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.ynList != null">
+                    `yn` in
+                    <foreach collection="where.ynList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.ynSt !=null">
+                `yn` >= #{where.ynSt} and
+            </if>
+            <if test="where.ynEd!=null">
+                `yn` &lt;= #{where.ynEd} and
+            </if>
+        </trim>
+    </update>
+
+
+    <resultMap type="com.shape.singleproject.dto.UserInfo" id="UserInfoMap">
+        <result property="id" column="id"/>
+        <result property="optionId" column="option_id"/>
+        <result property="name" column="name"/>
+        <result property="yn" column="yn"/>
+    </resultMap>
+
+
+    <select id="queryUserInfo" resultMap="UserInfoMap">
+        select
+        <include refid="baseResult"></include>
+        from  `user_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="optionId != null and optionId!=''">
+                `option_id` = #{optionId} and
+            </if>
+            <if test="name != null and name!=''">
+                `name` = #{name} and
+            </if>
+            <if test="yn != null">
+                `yn` = #{yn} and
+            </if>
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.UserInfo$QueryBuilder) == true">
+                <if test="idList != null">
+                    `id` in
+                    <foreach collection="idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                <if test="optionIdList != null">
+                    `option_id` in
+                    <foreach collection="optionIdList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyOptionId!=null and fuzzyOptionId.size()>0">
+                    (
+                    <foreach collection="fuzzyOptionId"  separator="or" item="item">
+                        `Option_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyOptionId!=null and rightFuzzyOptionId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyOptionId"  separator="or" item="item">
+                        `Option_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="nameList != null">
+                    `name` in
+                    <foreach collection="nameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyName!=null and fuzzyName.size()>0">
+                    (
+                    <foreach collection="fuzzyName"  separator="or" item="item">
+                        `Name` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyName!=null and rightFuzzyName.size()>0">
+                    (
+                    <foreach collection="rightFuzzyName"  separator="or" item="item">
+                        `Name` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="ynList != null">
+                    `yn` in
+                    <foreach collection="ynList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="ynSt !=null">
+                    `yn` >= #{ynSt} and
+                </if>
+                <if test="ynEd!=null">
+                    `yn` &lt;= #{ynEd} and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryUserInfoLimit1" resultMap="UserInfoMap">
+        select
+        <include refid="baseResult"></include>
+        from  `user_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="optionId != null and optionId!=''">
+                `option_id` = #{optionId} and
+            </if>
+            <if test="name != null and name!=''">
+                `name` = #{name} and
+            </if>
+            <if test="yn != null">
+                `yn` = #{yn} and
+            </if>
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.UserInfo$QueryBuilder) == true">
+                    <if test="idList != null">
+                        `id` in
+                        <foreach collection="idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                    <if test="optionIdList != null">
+                        `option_id` in
+                        <foreach collection="optionIdList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyOptionId!=null and fuzzyOptionId.size()>0">
+                    (
+                    <foreach collection="fuzzyOptionId"  separator="or" item="item">
+                        `Option_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyOptionId!=null and rightFuzzyOptionId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyOptionId"  separator="or" item="item">
+                        `Option_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="nameList != null">
+                        `name` in
+                        <foreach collection="nameList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyName!=null and fuzzyName.size()>0">
+                    (
+                    <foreach collection="fuzzyName"  separator="or" item="item">
+                        `Name` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyName!=null and rightFuzzyName.size()>0">
+                    (
+                    <foreach collection="rightFuzzyName"  separator="or" item="item">
+                        `Name` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="ynList != null">
+                        `yn` in
+                        <foreach collection="ynList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="ynSt !=null">
+                    `yn` >= #{ynSt} and
+                </if>
+                <if test="ynEd!=null">
+                    `yn` &lt;= #{ynEd} and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `id`,
+        `option_id`,
+        `name`,
+        `yn`+0 as `yn`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.UserInfo$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.id==true">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.optionId==true">
+                        `option_id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.name==true">
+                        `name`,
+                    </if>
+                    <if test="fetchFields.fetchFields.yn==true">
+                        `yn`+0 as `yn`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.id==null">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.optionId==null">
+                        `option_id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.name==null">
+                        `name`,
+                    </if>
+                    <if test="fetchFields.excludeFields.yn==null">
+                        `yn`+0 as `yn`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof com.shape.singleproject.dto.UserInfo$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>
