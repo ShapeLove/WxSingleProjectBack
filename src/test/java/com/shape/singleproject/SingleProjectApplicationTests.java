@@ -4,14 +4,18 @@ import com.alibaba.fastjson.JSON;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.service.UserInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SingleProjectApplication.class)
+@Slf4j
 public class SingleProjectApplicationTests {
 
     @Autowired
@@ -19,6 +23,9 @@ public class SingleProjectApplicationTests {
 
     @Autowired
     private UserInfoService userInfoService;
+
+//    @Autowired
+//    private JavaMailSender mailSender;
 
     @Test
     public void contextLoads() {
@@ -58,7 +65,7 @@ public class SingleProjectApplicationTests {
         UserInfo userInfo = UserInfo.QueryBuild()
                 .id(1L)
                 .build();
-        System.out.println(userInfoService.queryUserInfo(userInfo));
+        log.info("result:{}", JSON.toJSONString(userInfoService.queryUserInfo(userInfo)));
     }
 
     @Test
@@ -71,5 +78,15 @@ public class SingleProjectApplicationTests {
         userInfoService.delete(updateBuilder);
 
     }
+
+//    @Test
+//    public void sendMail() {
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setFrom("786627736@qq.com");
+//        message.setTo("1328445041@qq.com");
+//        message.setSubject("com.shape.jd.cje#jsf 可用率报警");
+//        message.setText("异常预警 nullpointer");
+//        mailSender.send(message);
+//    }
 
 }
