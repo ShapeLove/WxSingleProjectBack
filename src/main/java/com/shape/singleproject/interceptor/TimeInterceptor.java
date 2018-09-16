@@ -9,9 +9,10 @@ public class TimeInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         long start = System.currentTimeMillis();
+        log.info("time开始前");
         Object result = methodInvocation.proceed();
-        if (log.isDebugEnabled()) {
-            log.debug("TiemInterceptorinvoke:{}.{} ellps:{} mills", methodInvocation.getThis().getClass().getCanonicalName(),
+        if (log.isInfoEnabled()) {
+            log.info("TiemInterceptorinvoke:{}.{} ellps:{} mills", methodInvocation.getThis().getClass().getCanonicalName(),
                     methodInvocation.getMethod().getName(),
                     (System.currentTimeMillis() - start));
         }
