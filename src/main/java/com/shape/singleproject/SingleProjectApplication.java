@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 @SpringBootApplication
 @MapperScan("com.shape.singleproject.mapping")
-@EnableScheduling
 public class SingleProjectApplication {
 
 

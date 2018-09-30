@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration  scan="true" debug="true" >
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <jmxConfigurator/>
-
+<configuration scan="false" scanPeriod="3 seconds" debug="false" >
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -20,7 +17,39 @@
             <!-- each file should be at most 100MB, keep 30 days worth of history, but at most 20GB -->
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
-            <totalSizeCap>20GB</totalSizeCap>
+            <totalSizeCap>4GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %-5level [%thread] %logger{50} [%file:%line] %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="EXCEPT-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/export/log/except-server.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>/export/log/except-server-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 30 days worth of history, but at most 20GB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %-5level [%thread] %logger{50} [%file:%line] %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="EMAIL-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/export/log/email-server.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>/export/log/email-server-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 30 days worth of history, but at most 20GB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>%date %-5level [%thread] %logger{50} [%file:%line] %msg%n</pattern>
@@ -30,8 +59,16 @@
 
     <!--<appender name="instrumentedAppender" class="com.codahale.metrics.logback.InstrumentedAppender" />-->
 
+    <logger name="com.shape.singleproject.service.ExceptService" level="ERROR" additivity="false">
+        <appender-ref ref="EXCEPT-FILE"/>
+    </logger>
+
+    <logger name="com.shape.singleproject.service.EmailSendService" level="ERROR" additivity="false">
+        <appender-ref ref="EMAIL-FILE"/>
+    </logger>
+
     <!--<root level="${logger.root.level}">-->
-    <root level="INFO">
+    <root level="${logger.root.level}">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
         <!--<appender-ref ref="instrumentedAppender" />-->

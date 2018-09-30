@@ -3,6 +3,7 @@ package com.shape.singleproject;
 import com.alibaba.fastjson.JSON;
 import com.shape.singleproject.dto.ExceptInfo;
 import com.shape.singleproject.dto.UserInfo;
+import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.ExceptInfoMapper;
 import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.service.ExceptService;
@@ -17,6 +18,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.CountDownLatch;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SingleProjectApplication.class)
@@ -37,5 +39,27 @@ public class TestUserInfoService {
     @Test
     public void testInsert() {
         exceptService.processExcept("com.sha.ee.ss#sfa", "出错啦");
+    }
+
+    @Test
+    public void testEvent() throws InterruptedException {
+        userInfoService.testEvent();
+        new CountDownLatch(1).await();
+    }
+
+    @Test
+    public void testExceptError() throws InterruptedException {
+        exceptService.queryOverTimeExcept();
+        new CountDownLatch(1).await();
+    }
+
+    @Test
+    public void test2() throws InterruptedException {
+        try {
+            userInfoService.test();
+        } catch (Exception e) {
+            System.out.println("出错啦");
+        }
+        new CountDownLatch(1).await();
     }
 }

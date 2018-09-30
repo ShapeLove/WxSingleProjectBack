@@ -33,7 +33,7 @@ public class LogExceptInterceptor implements MethodInterceptor,ApplicationEventP
             result = methodInvocation.proceed();
         } catch (Throwable throwable) {
             String methodName =  methodInvocation.getThis().getClass().getCanonicalName() + "#" + methodInvocation.getMethod().getName();
-            log.error("LogExcept Info classAndmethod:{}, param:{}", methodName,
+            log.error("LogExcept Info except classAndmethod:{}, param:{}", methodName,
                     JSON.toJSONString(methodInvocation.getArguments()), throwable);
             applicationEventPublisher.publishEvent(new ExceptEvent(methodName, throwable.getMessage()));
             throw throwable;

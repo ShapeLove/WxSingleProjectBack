@@ -2,6 +2,7 @@ package com.shape.singleproject.service;
 
 import com.shape.singleproject.dto.ExceptInfo;
 import com.shape.singleproject.interceptor.LogExceptAop;
+import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.ExceptInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@TimeAop
 public class ExceptService {
 
     @Value("${except.overcount}")
@@ -32,6 +34,7 @@ public class ExceptService {
             if (null == exceptInfo) {
                 ExceptInfo insertInfo = ExceptInfo.Build()
                         .invocationName(methodName)
+                        .createTime(LocalDateTime.now())
                         .modifiedTime(LocalDateTime.now())
                         .lastExceptMessage(exceptMessage)
                         .build();
@@ -49,13 +52,18 @@ public class ExceptService {
             }
         }catch (Exception e) {
             log.error("ExceptService.processExcept error methodName:{}, exceptMessage:{}", methodName, exceptMessage, e);
-            emailSendService.sendEmailForExcept(methodName, exceptMessage);
+            emailSendService.sendEmailForExcept("ExceptService.processExcept", e.getMessage());
         }
     }
 
-    @LogExceptAop
     public List<ExceptInfo> queryOverTimeExcept() {
-        return exceptInfoMapper.queryExceptInfo(ExceptInfo.QueryBuild()
-            .exceptNumGreaterEqThan(exceptOverCount));
+        try {
+            return exceptInfoMapper.queryExceptInfo(ExceptInfo.QueryBuild()
+                    .exceptNumGreaterEqThan(exceptOverCount));
+        }catch (Exception e) {
+            log.error("ExceptService.queryOverTimeExcept error", e);
+            emailSendService.sendEmailForExcept("ExceptService.queryOverTimeExcept", e.getMessage());
+            return null;
+        }
     }
 }

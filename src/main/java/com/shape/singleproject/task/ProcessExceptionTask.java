@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Component
 @Slf4j
-@LogExceptAop
 public class ProcessExceptionTask {
 
     @Autowired
@@ -30,12 +28,17 @@ public class ProcessExceptionTask {
     @Autowired
     private EmailSendService emailSendService;
 
-    @Scheduled(cron = "0 0/10 * * * ?")
-    public void processExcept() {
-        List<ExceptInfo> result = exceptService.queryOverTimeExcept();
-        log.info("ProcessExceptionTask.processExcept result:{}, time:{}", JSON.toJSONString(result), LocalDateTime.now());
-        if (!CollectionUtils.isEmpty(result)) {
-            result.stream().forEach(exceptInfo -> emailSendService.sendEmail(exceptInfo));
-        }
+//    @Scheduled(cron = "0 0/10 * * * ?")
+//    public void processExcept() {
+//        List<ExceptInfo> result = exceptService.queryOverTimeExcept();
+//        log.info("ProcessExceptionTask.processExcept result:{}, time:{}", JSON.toJSONString(result), LocalDateTime.now());
+//        if (!CollectionUtils.isEmpty(result)) {
+//            result.stream().forEach(exceptInfo -> emailSendService.sendEmail(exceptInfo));
+//        }
+//    }
+
+    @Scheduled(fixedRate = 1000)
+    public void processTask() {
+        System.out.println("haha" + LocalDateTime.now());
     }
 }
