@@ -8,6 +8,7 @@ import com.shape.singleproject.mapping.ExceptInfoMapper;
 import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.service.ExceptService;
 import com.shape.singleproject.service.UserInfoService;
+import com.shape.singleproject.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
 
@@ -30,6 +33,9 @@ public class TestUserInfoService {
 
     @Autowired
     private ExceptService exceptService;
+
+    @Autowired
+    private HttpUtil httpUtil;
 
     @Test
     public void test() {
@@ -60,6 +66,12 @@ public class TestUserInfoService {
         } catch (Exception e) {
             System.out.println("出错啦");
         }
+        new CountDownLatch(1).await();
+    }
+
+    @Test
+    public void testUploadFile() throws InterruptedException, IOException {
+        System.out.println(httpUtil.uploadFile("http://192.168.56.101:4869/upload", "D:\\es.PNG"));
         new CountDownLatch(1).await();
     }
 }
