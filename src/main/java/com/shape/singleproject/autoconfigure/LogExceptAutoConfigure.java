@@ -11,8 +11,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
+/**
+ * 处理异常方法配置
+ * 只有配置配有spring.enable.logexcept属性才开启处理异常方法
+ */
 @Configuration
-@ConditionalOnProperty("spring.customlog")
+@ConditionalOnProperty("shape.enable.logexcept")
 public class LogExceptAutoConfigure {
 
     @Bean

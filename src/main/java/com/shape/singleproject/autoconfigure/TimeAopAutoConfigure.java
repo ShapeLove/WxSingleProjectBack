@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty("spring.timeaop")
+@ConditionalOnProperty("shape.enable.timelog")
 public class TimeAopAutoConfigure {
 
     @Bean

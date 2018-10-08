@@ -10,10 +10,12 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
 @LogExceptAop
+@TimeAop
 public class UserInfoService implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher applicationEventPublisher;
@@ -21,25 +23,14 @@ public class UserInfoService implements ApplicationEventPublisherAware {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-    public List<UserInfo> queryUserInfo(UserInfo userInfo) {
-        return userInfoMapper.queryUserInfo(userInfo);
-    }
 
-    public int delete(UserInfo.UpdateBuilder updateBuilder) {
-        return userInfoMapper.update(updateBuilder);
-    }
-
-    public int testExcept(String hello) {
-        System.out.println("开始 hellotestExcept");
-        if (true) {
-            throw new RuntimeException("报错啦");
-        }
-        return 1;
-    }
-
-
-    public void testEvent() {
-        applicationEventPublisher.publishEvent(new ExceptEvent("hha", "sdfs"));
+    /**
+     * 插入用户信息
+     * @param userInfo
+     */
+    public void insertUser(UserInfo userInfo) {
+        userInfo.setModified(LocalDateTime.now());
+        userInfoMapper.insertUserInfo(userInfo);
     }
 
     @Override
@@ -47,7 +38,4 @@ public class UserInfoService implements ApplicationEventPublisherAware {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    public void test() {
-        throw new RuntimeException("出错啦");
-    }
 }

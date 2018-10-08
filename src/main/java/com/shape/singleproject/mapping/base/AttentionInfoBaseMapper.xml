@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shape.singleproject.mapping.base.AttentionInfoBaseMapper">
+
+
+    <insert id="insertAttentionInfo"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `attention_info`
+        (
+        <trim suffixOverrides=",">
+                    <if test="id!=null">
+                        `id`,
+                    </if>
+                    <if test="attentionOpenid!=null">
+                        `attention_openid`,
+                    </if>
+                    <if test="attentionStatus!=null">
+                        `attention_status`,
+                    </if>
+                    <if test="toAttentionOpenid!=null">
+                        `to_attention_openid`,
+                    </if>
+                    <if test="toAttentionStatus!=null">
+                        `to_attention_status`,
+                    </if>
+                    <if test="ext!=null">
+                        `ext`,
+                    </if>
+                    <if test="create!=null">
+                        `create`,
+                    </if>
+                    <if test="modified!=null">
+                        `modified`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="id!=null">
+                    #{id},
+                </if>
+                <if test="attentionOpenid!=null">
+                    #{attentionOpenid},
+                </if>
+                <if test="attentionStatus!=null">
+                    #{attentionStatus},
+                </if>
+                <if test="toAttentionOpenid!=null">
+                    #{toAttentionOpenid},
+                </if>
+                <if test="toAttentionStatus!=null">
+                    #{toAttentionStatus},
+                </if>
+                <if test="ext!=null">
+                    #{ext},
+                </if>
+                <if test="create!=null">
+                    #{create},
+                </if>
+                <if test="modified!=null">
+                    #{modified},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateAttentionInfo">
+        UPDATE `attention_info`
+        SET
+        <trim suffixOverrides=",">
+            <if test="attentionOpenid != null and attentionOpenid!=''">
+                `attention_openid` = #{attentionOpenid},
+            </if>
+            <if test="attentionStatus != null">
+                `attention_status` = #{attentionStatus},
+            </if>
+            <if test="toAttentionOpenid != null and toAttentionOpenid!=''">
+                `to_attention_openid` = #{toAttentionOpenid},
+            </if>
+            <if test="toAttentionStatus != null">
+                `to_attention_status` = #{toAttentionStatus},
+            </if>
+            <if test="ext != null and ext!=''">
+                `ext` = #{ext},
+            </if>
+            <if test="create != null">
+                `create` = #{create},
+            </if>
+            <if test="modified != null">
+                `modified` = #{modified},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `id` = #{id} and
+        </trim>
+    </update>
+
+    <update id="update">
+        UPDATE `attention_info`
+        SET
+        <trim suffixOverrides=",">
+        <if test="set.attentionOpenid != null and set.attentionOpenid!=''">
+            `attention_openid` = #{set.attentionOpenid},
+        </if>
+        <if test="set.attentionStatus != null">
+            `attention_status` = #{set.attentionStatus},
+        </if>
+        <if test="set.toAttentionOpenid != null and set.toAttentionOpenid!=''">
+            `to_attention_openid` = #{set.toAttentionOpenid},
+        </if>
+        <if test="set.toAttentionStatus != null">
+            `to_attention_status` = #{set.toAttentionStatus},
+        </if>
+        <if test="set.ext != null and set.ext!=''">
+            `ext` = #{set.ext},
+        </if>
+        <if test="set.create != null">
+            `create` = #{set.create},
+        </if>
+        <if test="set.modified != null">
+            `modified` = #{set.modified},
+        </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and | or">
+                <if test="where.idList != null">
+                    `id` in
+                    <foreach collection="where.idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.idSt !=null">
+                `id` >= #{where.idSt} and
+            </if>
+            <if test="where.idEd!=null">
+                `id` &lt;= #{where.idEd} and
+            </if>
+                <if test="where.attentionOpenidList != null">
+                    `attention_openid` in
+                    <foreach collection="where.attentionOpenidList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyAttentionOpenid!=null and where.fuzzyAttentionOpenid.size()>0">
+                (
+                <foreach collection="where.fuzzyAttentionOpenid"  separator="or" item="item">
+                    `Attention_openid` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyAttentionOpenid!=null and where.rightFuzzyAttentionOpenid.size()>0">
+                (
+                <foreach collection="where.rightFuzzyAttentionOpenid"  separator="or" item="item">
+                    `Attention_openid` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.attentionStatusList != null">
+                    `attention_status` in
+                    <foreach collection="where.attentionStatusList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.attentionStatusSt !=null">
+                `attention_status` >= #{where.attentionStatusSt} and
+            </if>
+            <if test="where.attentionStatusEd!=null">
+                `attention_status` &lt;= #{where.attentionStatusEd} and
+            </if>
+                <if test="where.toAttentionOpenidList != null">
+                    `to_attention_openid` in
+                    <foreach collection="where.toAttentionOpenidList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyToAttentionOpenid!=null and where.fuzzyToAttentionOpenid.size()>0">
+                (
+                <foreach collection="where.fuzzyToAttentionOpenid"  separator="or" item="item">
+                    `To_attention_openid` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyToAttentionOpenid!=null and where.rightFuzzyToAttentionOpenid.size()>0">
+                (
+                <foreach collection="where.rightFuzzyToAttentionOpenid"  separator="or" item="item">
+                    `To_attention_openid` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.toAttentionStatusList != null">
+                    `to_attention_status` in
+                    <foreach collection="where.toAttentionStatusList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.toAttentionStatusSt !=null">
+                `to_attention_status` >= #{where.toAttentionStatusSt} and
+            </if>
+            <if test="where.toAttentionStatusEd!=null">
+                `to_attention_status` &lt;= #{where.toAttentionStatusEd} and
+            </if>
+                <if test="where.extList != null">
+                    `ext` in
+                    <foreach collection="where.extList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyExt!=null and where.fuzzyExt.size()>0">
+                (
+                <foreach collection="where.fuzzyExt"  separator="or" item="item">
+                    `Ext` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyExt!=null and where.rightFuzzyExt.size()>0">
+                (
+                <foreach collection="where.rightFuzzyExt"  separator="or" item="item">
+                    `Ext` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.createList != null">
+                    `create` in
+                    <foreach collection="where.createList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.createSt !=null">
+                `create` >= #{where.createSt} and
+            </if>
+            <if test="where.createEd!=null">
+                `create` &lt;= #{where.createEd} and
+            </if>
+                <if test="where.modifiedList != null">
+                    `modified` in
+                    <foreach collection="where.modifiedList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.modifiedSt !=null">
+                `modified` >= #{where.modifiedSt} and
+            </if>
+            <if test="where.modifiedEd!=null">
+                `modified` &lt;= #{where.modifiedEd} and
+            </if>
+        </trim>
+    </update>
+
+
+    <resultMap type="com.shape.singleproject.dto.AttentionInfo" id="AttentionInfoMap">
+        <result property="id" column="id"/>
+        <result property="attentionOpenid" column="attention_openid"/>
+        <result property="attentionStatus" column="attention_status"/>
+        <result property="toAttentionOpenid" column="to_attention_openid"/>
+        <result property="toAttentionStatus" column="to_attention_status"/>
+        <result property="ext" column="ext"/>
+        <result property="create" column="create"/>
+        <result property="modified" column="modified"/>
+    </resultMap>
+
+
+    <select id="queryAttentionInfo" resultMap="AttentionInfoMap">
+        select
+        <include refid="baseResult"></include>
+        from  `attention_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="attentionOpenid != null and attentionOpenid!=''">
+                `attention_openid` = #{attentionOpenid} and
+            </if>
+            <if test="attentionStatus != null">
+                `attention_status` = #{attentionStatus} and
+            </if>
+            <if test="toAttentionOpenid != null and toAttentionOpenid!=''">
+                `to_attention_openid` = #{toAttentionOpenid} and
+            </if>
+            <if test="toAttentionStatus != null">
+                `to_attention_status` = #{toAttentionStatus} and
+            </if>
+            <if test="ext != null and ext!=''">
+                `ext` = #{ext} and
+            </if>
+            <if test="create != null">
+                `create` = #{create} and
+            </if>
+            <if test="modified != null">
+                `modified` = #{modified} and
+            </if>
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.AttentionInfo$QueryBuilder) == true">
+                <if test="idList != null">
+                    `id` in
+                    <foreach collection="idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                <if test="attentionOpenidList != null">
+                    `attention_openid` in
+                    <foreach collection="attentionOpenidList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyAttentionOpenid!=null and fuzzyAttentionOpenid.size()>0">
+                    (
+                    <foreach collection="fuzzyAttentionOpenid"  separator="or" item="item">
+                        `Attention_openid` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyAttentionOpenid!=null and rightFuzzyAttentionOpenid.size()>0">
+                    (
+                    <foreach collection="rightFuzzyAttentionOpenid"  separator="or" item="item">
+                        `Attention_openid` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="attentionStatusList != null">
+                    `attention_status` in
+                    <foreach collection="attentionStatusList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="attentionStatusSt !=null">
+                    `attention_status` >= #{attentionStatusSt} and
+                </if>
+                <if test="attentionStatusEd!=null">
+                    `attention_status` &lt;= #{attentionStatusEd} and
+                </if>
+                <if test="toAttentionOpenidList != null">
+                    `to_attention_openid` in
+                    <foreach collection="toAttentionOpenidList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyToAttentionOpenid!=null and fuzzyToAttentionOpenid.size()>0">
+                    (
+                    <foreach collection="fuzzyToAttentionOpenid"  separator="or" item="item">
+                        `To_attention_openid` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyToAttentionOpenid!=null and rightFuzzyToAttentionOpenid.size()>0">
+                    (
+                    <foreach collection="rightFuzzyToAttentionOpenid"  separator="or" item="item">
+                        `To_attention_openid` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="toAttentionStatusList != null">
+                    `to_attention_status` in
+                    <foreach collection="toAttentionStatusList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="toAttentionStatusSt !=null">
+                    `to_attention_status` >= #{toAttentionStatusSt} and
+                </if>
+                <if test="toAttentionStatusEd!=null">
+                    `to_attention_status` &lt;= #{toAttentionStatusEd} and
+                </if>
+                <if test="extList != null">
+                    `ext` in
+                    <foreach collection="extList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyExt!=null and fuzzyExt.size()>0">
+                    (
+                    <foreach collection="fuzzyExt"  separator="or" item="item">
+                        `Ext` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyExt!=null and rightFuzzyExt.size()>0">
+                    (
+                    <foreach collection="rightFuzzyExt"  separator="or" item="item">
+                        `Ext` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="createList != null">
+                    `create` in
+                    <foreach collection="createList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="createSt !=null">
+                    `create` >= #{createSt} and
+                </if>
+                <if test="createEd!=null">
+                    `create` &lt;= #{createEd} and
+                </if>
+                <if test="modifiedList != null">
+                    `modified` in
+                    <foreach collection="modifiedList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="modifiedSt !=null">
+                    `modified` >= #{modifiedSt} and
+                </if>
+                <if test="modifiedEd!=null">
+                    `modified` &lt;= #{modifiedEd} and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryAttentionInfoLimit1" resultMap="AttentionInfoMap">
+        select
+        <include refid="baseResult"></include>
+        from  `attention_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="attentionOpenid != null and attentionOpenid!=''">
+                `attention_openid` = #{attentionOpenid} and
+            </if>
+            <if test="attentionStatus != null">
+                `attention_status` = #{attentionStatus} and
+            </if>
+            <if test="toAttentionOpenid != null and toAttentionOpenid!=''">
+                `to_attention_openid` = #{toAttentionOpenid} and
+            </if>
+            <if test="toAttentionStatus != null">
+                `to_attention_status` = #{toAttentionStatus} and
+            </if>
+            <if test="ext != null and ext!=''">
+                `ext` = #{ext} and
+            </if>
+            <if test="create != null">
+                `create` = #{create} and
+            </if>
+            <if test="modified != null">
+                `modified` = #{modified} and
+            </if>
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.AttentionInfo$QueryBuilder) == true">
+                    <if test="idList != null">
+                        `id` in
+                        <foreach collection="idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                    <if test="attentionOpenidList != null">
+                        `attention_openid` in
+                        <foreach collection="attentionOpenidList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyAttentionOpenid!=null and fuzzyAttentionOpenid.size()>0">
+                    (
+                    <foreach collection="fuzzyAttentionOpenid"  separator="or" item="item">
+                        `Attention_openid` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyAttentionOpenid!=null and rightFuzzyAttentionOpenid.size()>0">
+                    (
+                    <foreach collection="rightFuzzyAttentionOpenid"  separator="or" item="item">
+                        `Attention_openid` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="attentionStatusList != null">
+                        `attention_status` in
+                        <foreach collection="attentionStatusList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="attentionStatusSt !=null">
+                    `attention_status` >= #{attentionStatusSt} and
+                </if>
+                <if test="attentionStatusEd!=null">
+                    `attention_status` &lt;= #{attentionStatusEd} and
+                </if>
+                    <if test="toAttentionOpenidList != null">
+                        `to_attention_openid` in
+                        <foreach collection="toAttentionOpenidList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyToAttentionOpenid!=null and fuzzyToAttentionOpenid.size()>0">
+                    (
+                    <foreach collection="fuzzyToAttentionOpenid"  separator="or" item="item">
+                        `To_attention_openid` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyToAttentionOpenid!=null and rightFuzzyToAttentionOpenid.size()>0">
+                    (
+                    <foreach collection="rightFuzzyToAttentionOpenid"  separator="or" item="item">
+                        `To_attention_openid` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="toAttentionStatusList != null">
+                        `to_attention_status` in
+                        <foreach collection="toAttentionStatusList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="toAttentionStatusSt !=null">
+                    `to_attention_status` >= #{toAttentionStatusSt} and
+                </if>
+                <if test="toAttentionStatusEd!=null">
+                    `to_attention_status` &lt;= #{toAttentionStatusEd} and
+                </if>
+                    <if test="extList != null">
+                        `ext` in
+                        <foreach collection="extList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyExt!=null and fuzzyExt.size()>0">
+                    (
+                    <foreach collection="fuzzyExt"  separator="or" item="item">
+                        `Ext` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyExt!=null and rightFuzzyExt.size()>0">
+                    (
+                    <foreach collection="rightFuzzyExt"  separator="or" item="item">
+                        `Ext` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="createList != null">
+                        `create` in
+                        <foreach collection="createList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="createSt !=null">
+                    `create` >= #{createSt} and
+                </if>
+                <if test="createEd!=null">
+                    `create` &lt;= #{createEd} and
+                </if>
+                    <if test="modifiedList != null">
+                        `modified` in
+                        <foreach collection="modifiedList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="modifiedSt !=null">
+                    `modified` >= #{modifiedSt} and
+                </if>
+                <if test="modifiedEd!=null">
+                    `modified` &lt;= #{modifiedEd} and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `id`,
+        `attention_openid`,
+        `attention_status`+0 as `attention_status`,
+        `to_attention_openid`,
+        `to_attention_status`+0 as `to_attention_status`,
+        `ext`,
+        `create`,
+        `modified`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.AttentionInfo$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.id==true">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.attentionOpenid==true">
+                        `attention_openid`,
+                    </if>
+                    <if test="fetchFields.fetchFields.attentionStatus==true">
+                        `attention_status`+0 as `attention_status`,
+                    </if>
+                    <if test="fetchFields.fetchFields.toAttentionOpenid==true">
+                        `to_attention_openid`,
+                    </if>
+                    <if test="fetchFields.fetchFields.toAttentionStatus==true">
+                        `to_attention_status`+0 as `to_attention_status`,
+                    </if>
+                    <if test="fetchFields.fetchFields.ext==true">
+                        `ext`,
+                    </if>
+                    <if test="fetchFields.fetchFields.create==true">
+                        `create`,
+                    </if>
+                    <if test="fetchFields.fetchFields.modified==true">
+                        `modified`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.id==null">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.attentionOpenid==null">
+                        `attention_openid`,
+                    </if>
+                    <if test="fetchFields.excludeFields.attentionStatus==null">
+                        `attention_status`+0 as `attention_status`,
+                    </if>
+                    <if test="fetchFields.excludeFields.toAttentionOpenid==null">
+                        `to_attention_openid`,
+                    </if>
+                    <if test="fetchFields.excludeFields.toAttentionStatus==null">
+                        `to_attention_status`+0 as `to_attention_status`,
+                    </if>
+                    <if test="fetchFields.excludeFields.ext==null">
+                        `ext`,
+                    </if>
+                    <if test="fetchFields.excludeFields.create==null">
+                        `create`,
+                    </if>
+                    <if test="fetchFields.excludeFields.modified==null">
+                        `modified`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof com.shape.singleproject.dto.AttentionInfo$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>
