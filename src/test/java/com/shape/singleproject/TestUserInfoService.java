@@ -65,7 +65,17 @@ public class TestUserInfoService {
         }catch (Exception e) {
             e.printStackTrace();
         }
-
         new CountDownLatch(1).await();
+    }
+
+    @Test
+    public void testQueryUser() {
+        List<UserInfo> userInfoList = userInfoService.queryUserInfo(null);
+        System.out.println(JSON.toJSONString(userInfoList));
+    }
+
+    @Test
+    public void testQueryUserByOpenid() {
+        System.out.println(JSON.toJSONString(userInfoService.queryUserInfoByOpenid("kjdigujk2341414")));
     }
 }

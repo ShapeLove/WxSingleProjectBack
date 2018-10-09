@@ -3,5 +3,86 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shape.singleproject.mapping.UserInfoMapper">
 
-
+    <update id="updateUserInfoBasicByOpenId">
+        UPDATE `user_info`
+        SET
+        <trim suffixOverrides=",">
+            <if test="name != null and name!=''">
+                `name` = #{name},
+            </if>
+            <if test="constellation != null">
+                `constellation` = #{constellation},
+            </if>
+            <if test="birthday != null">
+                `birthday` = #{birthday},
+            </if>
+            <if test="education != null">
+                `education` = #{education},
+            </if>
+            <if test="sex != null">
+                `sex` = #{sex},
+            </if>
+            <if test="province != null and province!=''">
+                `province` = #{province},
+            </if>
+            <if test="city != null and city!=''">
+                `city` = #{city},
+            </if>
+            <if test="hobby != null and hobby!=''">
+                `hobby` = #{hobby},
+            </if>
+            <if test="height != null">
+                `height` = #{height},
+            </if>
+            <if test="weight != null">
+                `weight` = #{weight},
+            </if>
+            <if test="selfEvaluation != null and selfEvaluation!=''">
+                `self_evaluation` = #{selfEvaluation},
+            </if>
+            <if test="workArea != null and workArea!=''">
+                `work_area` = #{workArea},
+            </if>
+            <if test="wantSay != null and wantSay!=''">
+                `want_say` = #{wantSay},
+            </if>
+            <if test="family != null and family!=''">
+                `family` = #{family},
+            </if>
+            <if test="standFriend != null and standFriend!=''">
+                `stand_friend` = #{standFriend},
+            </if>
+            <if test="photos != null and photos!=''">
+                `photos` = #{photos},
+            </if>
+            <if test="department != null and department!=''">
+                `department` = #{department},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="rejectReason != null and rejectReason!=''">
+                `reject_reason` = #{rejectReason},
+            </if>
+            <if test="dongdong != null and dongdong!=''">
+                `dongdong` = #{dongdong},
+            </if>
+            <if test="wxNumber != null and wxNumber!=''">
+                `wx_number` = #{wxNumber},
+            </if>
+            <if test="create != null">
+                `create` = #{create},
+            </if>
+            <if test="modified != null">
+                `modified` = #{modified},
+            </if>
+            <if test="ext != null and ext!=''">
+                `ext` = #{ext},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+            `id` = #{id} and
+        </trim>
+    </update>
 </mapper>

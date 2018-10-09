@@ -1,15 +1,22 @@
 package com.shape.singleproject.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.shape.singleproject.interceptor.LogExceptAop;
 import com.shape.singleproject.interceptor.TimeAop;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.FileEntity;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,8 +26,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Entity;
 
-import javax.swing.text.html.parser.Entity;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -35,15 +42,62 @@ import static org.apache.commons.codec.Charsets.UTF_8;
 @TimeAop
 public class HttpUtil {
 
-    public String uploadFile(String urlf, String filePath) throws IOException {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://192.168.56.101:4869/upload");
+    @Value("${wx.appid:wx193b7550e9f8c425}")
+    private String appid;
+
+    @Value("${wx.appsecret:1040a9d44fb6fbb196086dc09119c4de}")
+    private String appsecret;
+
+    @Value("${shape.imageserver.upload.url:http://192.168.56.101:4869/upload}")
+    private String imageServerUploadUrl;
+
+    @Value("${shape.imageserver.delete.url:http://192.168.56.101:4869/admin?md5=%s&t=1}")
+    private String imageServerDeleteUrl;
+
+    public JSONObject uploadFile(String filePath) throws IOException {
+        HttpPost httpPost = new HttpPost(imageServerUploadUrl);
         httpPost.addHeader("Content-Type","jpeg");
         //解决中文乱码问题
-        FileEntity fileEntity = new FileEntity(new File("D:\\es.PNG"));
-
+        FileEntity fileEntity = new FileEntity(new File(filePath));
         httpPost.setEntity(fileEntity);
-        HttpEntity reentity = httpclient.execute(httpPost).getEntity();
-        return EntityUtils.toString(reentity);
+        return commonJSONRequest(httpPost);
+    }
+
+    public JSONObject uploadFile(MultipartFile file) throws IOException {
+        HttpPost httpPost = new HttpPost(imageServerUploadUrl);
+        httpPost.addHeader("Content-Type","jpeg");
+        //解决中文乱码问题
+        InputStreamEntity inputStreamEntity = new InputStreamEntity(file.getInputStream());
+
+        httpPost.setEntity(inputStreamEntity);
+        return commonJSONRequest(httpPost);
+    }
+
+    public boolean deleteImage(String md5) throws IOException {
+        HttpGet httpGet = new HttpGet(String.format(imageServerDeleteUrl, md5));
+        String result = commonHtmlRequest(httpGet);
+        if (result.contains("Successful")) {
+            return true;
+        }else {
+            throw new RuntimeException(String.format("HttpUtil.deleteImage error param: %s, error: %s", md5, result));
+        }
+    }
+
+    public JSONObject getWxOpenid(String code) throws IOException {
+        HttpGet httpGet = new HttpGet(String.format("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code", appid, appsecret, code));
+        httpGet.setHeader("Content-Type", "json");
+        return commonJSONRequest(httpGet);
+    }
+
+    private JSONObject commonJSONRequest(HttpUriRequest request) throws IOException {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpEntity result = httpclient.execute(request).getEntity();
+        return JSON.parseObject(EntityUtils.toString(result));
+    }
+
+    private String commonHtmlRequest(HttpUriRequest request) throws IOException {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpEntity result = httpclient.execute(request).getEntity();
+        return EntityUtils.toString(result);
     }
 }
