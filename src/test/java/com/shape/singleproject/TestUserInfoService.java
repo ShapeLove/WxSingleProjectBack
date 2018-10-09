@@ -78,4 +78,12 @@ public class TestUserInfoService {
     public void testQueryUserByOpenid() {
         System.out.println(JSON.toJSONString(userInfoService.queryUserInfoByOpenid("kjdigujk2341414")));
     }
+
+    @Test
+    public void testUpdateBasic() {
+        UserInfo userInfo = UserInfo.Build()
+                .openId("kjdigujk2341414")
+                .hobby("吹牛逼").build();
+        System.out.println(JSON.toJSONString(userInfoService.updateUserInfoBasic(userInfo)));
+    }
 }

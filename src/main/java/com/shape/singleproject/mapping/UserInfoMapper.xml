@@ -61,17 +61,11 @@
             <if test="status != null">
                 `status` = #{status},
             </if>
-            <if test="rejectReason != null and rejectReason!=''">
-                `reject_reason` = #{rejectReason},
-            </if>
             <if test="dongdong != null and dongdong!=''">
                 `dongdong` = #{dongdong},
             </if>
             <if test="wxNumber != null and wxNumber!=''">
                 `wx_number` = #{wxNumber},
-            </if>
-            <if test="create != null">
-                `create` = #{create},
             </if>
             <if test="modified != null">
                 `modified` = #{modified},
@@ -82,7 +76,7 @@
         </trim>
         WHERE
         <trim suffixOverrides="and">
-            `id` = #{id} and
+            `open_id` = #{openId} and
         </trim>
     </update>
 </mapper>

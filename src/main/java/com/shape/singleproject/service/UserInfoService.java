@@ -76,8 +76,9 @@ public class UserInfoService implements ApplicationEventPublisherAware {
         }
 
         userInfo.setStatus(UserStatusEnum.WAIT.getStatus());
-        userInfo.setOpenId(null);
-        userInfoMapper.u
+        userInfoMapper.updateUserInfoBasicByOpenId(userInfo);
+
+        result.setSuccess(true);
         return result;
     }
 

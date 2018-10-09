@@ -15,5 +15,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface UserInfoMapper extends UserInfoBaseMapper{
 
+    int updateUserInfoBasicByOpenId(UserInfo userInfo);
 
 }
