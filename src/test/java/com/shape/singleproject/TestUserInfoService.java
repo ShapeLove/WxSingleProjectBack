@@ -12,6 +12,7 @@ import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.service.ExceptService;
 import com.shape.singleproject.service.UserInfoService;
 import com.shape.singleproject.util.HttpUtil;
+import com.shape.singleproject.vo.UserInfoQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.junit.Test;
@@ -47,18 +48,18 @@ public class TestUserInfoService {
     public void testInsertUser() throws InterruptedException {
         List<String> strings = Lists.newArrayList("124123512sdafafs","vcxzxvadsf4352345", "74375658b3d23ce24223bccbb6837a2a");
         UserInfo userInfo = UserInfo.Build()
-                .name("灬举个果子")
-                .openId("kjdigujk2341414")
-                .birthday(LocalDate.of(1996, 1, 20))
-                .education(EducationEnum.DAZHUAN.getCode())
-                .sex(SexEnum.BOY.getCode())
-                .province("山东省")
-                .city("烟台市")
+                .name("灬举个栗子")
+                .openId("geryerywer123124")
+                .birthday(LocalDate.of(1997, 1, 20))
+                .education(EducationEnum.BENKE.getCode())
+                .sex(SexEnum.GIRL.getCode())
+                .province("黑龙江省")
+                .city("大庆市")
                 .workArea("北京市")
                 .department("商家研发部-商家运营部")
                 .photos(JSON.toJSONString(strings))
-                .wxNumber("shpcode")
-                .dongdong("sunhaipeng2")
+                .wxNumber("houxinchao")
+                .dongdong("houxinchao")
                 .build();
         try {
             userInfoService.insertUser(userInfo);
@@ -85,5 +86,17 @@ public class TestUserInfoService {
                 .openId("kjdigujk2341414")
                 .hobby("吹牛逼").build();
         System.out.println(JSON.toJSONString(userInfoService.updateUserInfoBasic(userInfo)));
+    }
+
+    @Test
+    public void testQueryByPage() {
+        List<UserInfo> userInfoList = userInfoService.queryUserInfoByPage(new UserInfoQuery());
+        System.out.println(JSON.toJSONString(userInfoList));
+
+    }
+
+    @Test
+    public void testQuerySecret() {
+        System.out.println(JSON.toJSONString(userInfoService.queryUserInfoSecretByOpen("kjdigujk2341414")));
     }
 }

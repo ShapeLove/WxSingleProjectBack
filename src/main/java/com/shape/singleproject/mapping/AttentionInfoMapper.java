@@ -15,5 +15,5 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface AttentionInfoMapper extends AttentionInfoBaseMapper{
 
-
+    int delete(AttentionInfo attentionInfo);
 }
