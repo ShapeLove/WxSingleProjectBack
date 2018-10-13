@@ -1,13 +1,18 @@
 package com.shape.singleproject.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.shape.singleproject.constant.UserStatusEnum;
+import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.event.ExceptEvent;
 import com.shape.singleproject.interceptor.LogExceptAop;
 import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.UserInfoMapper;
+import com.shape.singleproject.util.CacheUtil;
+import com.shape.singleproject.util.HttpUtil;
+import com.shape.singleproject.util.Md5Util;
 import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
 import org.apache.catalina.User;
@@ -18,8 +23,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @LogExceptAop
@@ -29,7 +36,24 @@ public class UserInfoService implements ApplicationEventPublisherAware {
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
+    private HttpUtil httpUtil;
+
+    @Autowired
     private UserInfoMapper userInfoMapper;
+
+    public String login(String code) throws IOException {
+        // 1.先请求微信服务器
+       JSONObject jsonObject = httpUtil.getWxOpenid(code);
+       if (!Optional.ofNullable(jsonObject.getString("openid")).isPresent()) {
+           throw new RuntimeException("UserInfoService.login error message: " + jsonObject.toJSONString());
+       }else {
+           OpenidValue openidValue = new OpenidValue(jsonObject.getString("openid"),
+                   jsonObject.getString("session_key"));
+           String sessionKey = Md5Util.encry(openidValue);
+           CacheUtil.setOpenIdValue(sessionKey, openidValue);
+           return sessionKey;
+       }
+    }
 
 
     /**
@@ -75,7 +99,8 @@ public class UserInfoService implements ApplicationEventPublisherAware {
         List<UserInfo> userInfoList = userInfoMapper.queryUserInfo(UserInfo.QueryBuild()
                                         .excludeDongdong()
                                         .excludeWxNumber()
-                                        .yn(0).build());
+                                        .yn(0)
+                                        .status(UserStatusEnum.SUCCESS.getStatus()).build());
         PageInfo pageInfo = new PageInfo(userInfoList);
         return pageInfo.getList();
     }
@@ -101,6 +126,11 @@ public class UserInfoService implements ApplicationEventPublisherAware {
             .fetchWxNumber()
             .openId(openid)
             .yn(0));
+    }
+
+    public UserInfo queryUserInfoByOpenIdNonSecurity(String openid) {
+        return userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild()
+                .openId(openid));
     }
 
     /**

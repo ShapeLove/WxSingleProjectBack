@@ -1,7 +1,6 @@
 package com.shape.singleproject.service;
 
 import com.shape.singleproject.dto.ExceptInfo;
-import com.shape.singleproject.interceptor.LogExceptAop;
 import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.ExceptInfoMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.rmi.MarshalException;
 import java.time.LocalDateTime;
 import java.util.List;
 

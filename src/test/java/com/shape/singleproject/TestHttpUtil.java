@@ -23,7 +23,7 @@ public class TestHttpUtil {
 
     @Test
     public void testCode() throws IOException {
-        JSONObject result = httpUtil.getWxOpenid("033TanWi2PBqxH0HwkVi2TUaWi2TanWw");
+        JSONObject result = httpUtil.getWxOpenid("023N4ife2bikCC07urfe2zWjfe2N4ifz");
         System.out.println(result.toJSONString());
     }
 

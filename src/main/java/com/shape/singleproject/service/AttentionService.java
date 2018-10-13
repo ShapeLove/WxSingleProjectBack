@@ -8,11 +8,9 @@ import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.AttentionInfoMapper;
 import com.shape.singleproject.vo.AttentionQuery;
 import com.shape.singleproject.vo.Result;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import sun.swing.SwingUtilities2;
 
 import java.time.LocalDateTime;
 import java.util.List;

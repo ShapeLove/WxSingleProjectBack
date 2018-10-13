@@ -3,18 +3,17 @@ package com.shape.singleproject.util;
 import com.google.common.hash.Hashing;
 import com.shape.singleproject.domain.OpenidValue;
 import org.apache.commons.codec.Charsets;
-import sun.security.provider.MD5;
 
 public class Md5Util {
 
-    private final static String salt = "shapestudio";
+    private final static String SALT = "shapestudio";
 
 
     public static String encry(OpenidValue value) {
         final StringBuilder stringBuilder = new StringBuilder(value.getOpenid())
                 .append("_")
                 .append(value.getSessionKey())
-                .append(salt);
+                .append(SALT);
         return Hashing.md5()
                 .newHasher()
                 .putString(stringBuilder.toString(), Charsets.UTF_8)

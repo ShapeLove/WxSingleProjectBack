@@ -90,14 +90,16 @@ public class HttpUtil {
     }
 
     private JSONObject commonJSONRequest(HttpUriRequest request) throws IOException {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpEntity result = httpclient.execute(request).getEntity();
-        return JSON.parseObject(EntityUtils.toString(result));
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            HttpEntity result = httpclient.execute(request).getEntity();
+            return JSON.parseObject(EntityUtils.toString(result));
+        }
     }
 
     private String commonHtmlRequest(HttpUriRequest request) throws IOException {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpEntity result = httpclient.execute(request).getEntity();
-        return EntityUtils.toString(result);
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            HttpEntity result = httpclient.execute(request).getEntity();
+            return EntityUtils.toString(result);
+        }
     }
 }
