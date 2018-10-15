@@ -48,8 +48,8 @@ public class TestUserInfoService {
     public void testInsertUser() throws InterruptedException {
         List<String> strings = Lists.newArrayList("124123512sdafafs","vcxzxvadsf4352345", "74375658b3d23ce24223bccbb6837a2a");
         UserInfo userInfo = UserInfo.Build()
-                .name("灬举个栗子")
-                .openId("geryerywer123124")
+                .name("灬举个栗子13")
+                .openId("geryerywer12312346")
                 .birthday(LocalDate.of(1997, 1, 20))
                 .education(EducationEnum.BENKE.getCode())
                 .sex(SexEnum.GIRL.getCode())
@@ -90,8 +90,6 @@ public class TestUserInfoService {
 
     @Test
     public void testQueryByPage() {
-        List<UserInfo> userInfoList = userInfoService.queryUserInfoByPage(new UserInfoQuery());
-        System.out.println(JSON.toJSONString(userInfoList));
 
     }
 

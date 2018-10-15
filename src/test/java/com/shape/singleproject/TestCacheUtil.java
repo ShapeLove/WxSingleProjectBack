@@ -18,6 +18,7 @@ public class TestCacheUtil {
 
     @Test
     public void testGet() {
+        CacheUtil.setOpenIdValue("222", new OpenidValue("2342","123123"));
         OpenidValue value = CacheUtil.getOpenIdValue("222");
         System.out.println(JSON.toJSONString(value));
     }

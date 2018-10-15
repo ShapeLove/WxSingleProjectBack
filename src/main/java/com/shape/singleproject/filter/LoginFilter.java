@@ -17,6 +17,7 @@ public class LoginFilter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         String sessionId = request.getHeader("sessionId");
+        System.out.println(sessionId);
         boolean flag = true;
         if (StringUtils.isEmpty(sessionId)) {
             flag = false;

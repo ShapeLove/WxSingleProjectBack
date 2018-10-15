@@ -13,6 +13,7 @@ import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.util.CacheUtil;
 import com.shape.singleproject.util.HttpUtil;
 import com.shape.singleproject.util.Md5Util;
+import com.shape.singleproject.vo.PageResult;
 import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
 import org.apache.catalina.User;
@@ -41,7 +42,8 @@ public class UserInfoService implements ApplicationEventPublisherAware {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-    public String login(String code) throws IOException {
+    public JSONObject login(String code) throws IOException {
+        JSONObject jsonResult = new JSONObject();
         // 1.先请求微信服务器
        JSONObject jsonObject = httpUtil.getWxOpenid(code);
        if (!Optional.ofNullable(jsonObject.getString("openid")).isPresent()) {
@@ -49,9 +51,12 @@ public class UserInfoService implements ApplicationEventPublisherAware {
        }else {
            OpenidValue openidValue = new OpenidValue(jsonObject.getString("openid"),
                    jsonObject.getString("session_key"));
+           UserInfo userInfo = queryUserInfoByOpenIdNonSecurity(openidValue.getOpenid());
+           jsonResult.put("level", null == userInfo ? "guest" : "user");
            String sessionKey = Md5Util.encry(openidValue);
            CacheUtil.setOpenIdValue(sessionKey, openidValue);
-           return sessionKey;
+           jsonResult.put("sessionId", sessionKey);
+           return jsonResult;
        }
     }
 
@@ -94,7 +99,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
      * 分页查询所有用户信息(不带有微信号和咚咚号）
      * 返回当前页数据
      */
-    public List<UserInfo> queryUserInfoByPage(UserInfoQuery userInfoQuery) {
+    public PageResult<UserInfo> queryUserInfoByPage(UserInfoQuery userInfoQuery) {
         PageHelper.startPage(userInfoQuery.getPageIndex(), userInfoQuery.getPageSize());
         List<UserInfo> userInfoList = userInfoMapper.queryUserInfo(UserInfo.QueryBuild()
                                         .excludeDongdong()
@@ -102,7 +107,11 @@ public class UserInfoService implements ApplicationEventPublisherAware {
                                         .yn(0)
                                         .status(UserStatusEnum.SUCCESS.getStatus()).build());
         PageInfo pageInfo = new PageInfo(userInfoList);
-        return pageInfo.getList();
+        return PageResult.build()
+                .setDataList(pageInfo.getList())
+                .setTotalPage(pageInfo.getPages())
+                .setTotalCount(pageInfo.getTotal())
+                .setSuccess(true);
     }
 
     /**

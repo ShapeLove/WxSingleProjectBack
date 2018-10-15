@@ -3,6 +3,7 @@ package com.shape.singleproject.controller;
 import com.alibaba.fastjson.JSON;
 import com.shape.singleproject.autoconfigure.GlobalConfigure;
 import com.shape.singleproject.service.UserInfoService;
+import com.shape.singleproject.util.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.logging.LoggingSystem;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class IndexController {
@@ -27,5 +29,10 @@ public class IndexController {
     public String index(HttpServletRequest request) {
 
         return "hello";
+    }
+
+    @RequestMapping("/getAllCache")
+    public Set<String> getAllCache() {
+        return CacheUtil.getAllCache();
     }
 }
