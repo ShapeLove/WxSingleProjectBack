@@ -49,9 +49,11 @@ public class UserInfoService implements ApplicationEventPublisherAware {
        if (!Optional.ofNullable(jsonObject.getString("openid")).isPresent()) {
            throw new RuntimeException("UserInfoService.login error message: " + jsonObject.toJSONString());
        }else {
+
+           UserInfo userInfo = queryUserInfoByOpenIdNonSecurity(jsonObject.getString("openid"));
            OpenidValue openidValue = new OpenidValue(jsonObject.getString("openid"),
-                   jsonObject.getString("session_key"));
-           UserInfo userInfo = queryUserInfoByOpenIdNonSecurity(openidValue.getOpenid());
+                   jsonObject.getString("session_key"),
+                   Optional.ofNullable(userInfo).map(UserInfo::getStatus).isPresent() ? userInfo.getStatus() : UserStatusEnum.GUEST.getStatus());
            jsonResult.put("level", null == userInfo ? "guest" : "user");
            String sessionKey = Md5Util.encry(openidValue);
            CacheUtil.setOpenIdValue(sessionKey, openidValue);
@@ -97,13 +99,22 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 
     /**
      * 分页查询所有用户信息(不带有微信号和咚咚号）
+     * 列表页展示基本信息
      * 返回当前页数据
      */
     public PageResult<UserInfo> queryUserInfoByPage(UserInfoQuery userInfoQuery) {
         PageHelper.startPage(userInfoQuery.getPageIndex(), userInfoQuery.getPageSize());
         List<UserInfo> userInfoList = userInfoMapper.queryUserInfo(UserInfo.QueryBuild()
-                                        .excludeDongdong()
-                                        .excludeWxNumber()
+                                        .fetchOpenId()
+                                        .fetchBirthday()
+                                        .fetchConstellation()
+                                        .fetchDepartment()
+                                        .fetchName()
+                                        .fetchEducation()
+                                        .fetchPhotos()
+                                        .fetchProvince()
+                                        .fetchCity()
+                                        .fetchSex()
                                         .yn(0)
                                         .status(UserStatusEnum.SUCCESS.getStatus()).build());
         PageInfo pageInfo = new PageInfo(userInfoList);

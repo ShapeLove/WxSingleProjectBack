@@ -4,10 +4,10 @@ package com.shape.singleproject.constant;
  * 用户审核状态枚举
  */
 public enum UserStatusEnum {
-    GUESS(0, "游客"),
-    WAIT(1, "待审核"),
-    SUCCESS(2, "审核通过"),
-    FAIL(3, "驳回");
+    GUEST(-1, "游客"),
+    WAIT(0, "待审核"),
+    SUCCESS(1, "审核通过"),
+    FAIL(2, "驳回");
 
     private int status;
     private String description;
