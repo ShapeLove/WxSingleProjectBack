@@ -21,8 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -41,6 +43,14 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    public JSONObject uploadImg(MultipartFile file) throws IOException {
+        return httpUtil.uploadFile(file);
+    }
+
+    public boolean deleteImg(String md5) throws IOException {
+        return httpUtil.deleteImage(md5);
+    }
 
     public JSONObject login(String code) throws IOException {
         JSONObject jsonResult = new JSONObject();
@@ -67,9 +77,12 @@ public class UserInfoService implements ApplicationEventPublisherAware {
      * 插入用户信息
      * @param userInfo
      */
-    public Result insertUser(UserInfo userInfo) {
+    @Transactional
+    public Result insertUser(UserInfo userInfo, OpenidValue openidValue) {
 
         Result result = new Result();
+
+        userInfo.setOpenId(openidValue.getOpenid());
 
         if (StringUtils.isEmpty(userInfo.getOpenId())) {
             result.setMessage("openid不能为空");
@@ -84,6 +97,10 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 
         userInfo.setModified(LocalDateTime.now());
         userInfoMapper.insertUserInfo(userInfo);
+
+        OpenidValue updateValue = new OpenidValue(openidValue.getOpenid(), openidValue.getSessionKey(), UserStatusEnum.WAIT.getStatus());
+        CacheUtil.setOpenIdValue(updateValue.getSessionKey(), updateValue);
+
         result.setSuccess(true);
         return result;
     }
@@ -148,8 +165,21 @@ public class UserInfoService implements ApplicationEventPublisherAware {
             .yn(0));
     }
 
+    public UserInfo queryUserInfoExist(String openId) {
+        return userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild()
+            .fetchOpenId()
+            .openId(openId)
+            .yn(0));
+    }
+
+    /**
+     * 用于用户查询自己的信息
+     * @param openid
+     * @return
+     */
     public UserInfo queryUserInfoByOpenIdNonSecurity(String openid) {
         return userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild()
+                .excludeOpenId()
                 .openId(openid));
     }
 

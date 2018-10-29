@@ -9,10 +9,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.FileEntity;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.*;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -48,14 +45,11 @@ public class HttpUtil {
     @Value("${wx.appsecret:1040a9d44fb6fbb196086dc09119c4de}")
     private String appsecret;
 
-    @Value("${shape.imageserver.upload.url:http://192.168.56.101:4869/upload}")
-    private String imageServerUploadUrl;
-
-    @Value("${shape.imageserver.delete.url:http://192.168.56.101:4869/admin?md5=%s&t=1}")
-    private String imageServerDeleteUrl;
+    @Value("${shape.imageserver.url:http://192.168.56.102:4869}")
+    private String imageServer;
 
     public JSONObject uploadFile(String filePath) throws IOException {
-        HttpPost httpPost = new HttpPost(imageServerUploadUrl);
+        HttpPost httpPost = new HttpPost(imageServer + "/upload");
         httpPost.addHeader("Content-Type","jpeg");
         //解决中文乱码问题
         FileEntity fileEntity = new FileEntity(new File(filePath));
@@ -64,17 +58,16 @@ public class HttpUtil {
     }
 
     public JSONObject uploadFile(MultipartFile file) throws IOException {
-        HttpPost httpPost = new HttpPost(imageServerUploadUrl);
+        HttpPost httpPost = new HttpPost(imageServer + "/upload");
         httpPost.addHeader("Content-Type","jpeg");
         //解决中文乱码问题
-        InputStreamEntity inputStreamEntity = new InputStreamEntity(file.getInputStream());
-
-        httpPost.setEntity(inputStreamEntity);
+        ByteArrayEntity byteArrayEntity = new ByteArrayEntity(file.getBytes(), ContentType.IMAGE_JPEG);
+        httpPost.setEntity(byteArrayEntity);
         return commonJSONRequest(httpPost);
     }
 
     public boolean deleteImage(String md5) throws IOException {
-        HttpGet httpGet = new HttpGet(String.format(imageServerDeleteUrl, md5));
+        HttpGet httpGet = new HttpGet(String.format(imageServer + "/admin?md5=%s&t=1", md5));
         String result = commonHtmlRequest(httpGet);
         if (result.contains("Successful")) {
             return true;

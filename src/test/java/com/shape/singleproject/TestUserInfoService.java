@@ -44,6 +44,7 @@ public class TestUserInfoService {
     @Autowired
     private HttpUtil httpUtil;
 
+
     @Test
     public void testInsertUser() throws InterruptedException {
         List<String> strings = Lists.newArrayList("124123512sdafafs","vcxzxvadsf4352345", "74375658b3d23ce24223bccbb6837a2a");
@@ -62,7 +63,7 @@ public class TestUserInfoService {
                 .dongdong("houxinchao")
                 .build();
         try {
-            userInfoService.insertUser(userInfo);
+//            userInfoService.insertUser(userInfo);
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,6 +79,11 @@ public class TestUserInfoService {
     @Test
     public void testQueryUserByOpenid() {
         System.out.println(JSON.toJSONString(userInfoService.queryUserInfoByOpenid("kjdigujk2341414")));
+    }
+
+    @Test
+    public void testQueryUserByOpenIdBasic() {
+        System.out.println(JSON.toJSONString(userInfoService.queryUserInfoExist("kjdigujk2341414")));
     }
 
     @Test
