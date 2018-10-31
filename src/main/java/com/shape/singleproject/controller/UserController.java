@@ -116,6 +116,7 @@ public class UserController {
                 result.setMessage("沒有登录信息，请重新进入小程序进行登录！");
                 return result;
             }
+            userInfo.setOpenId(openId);
 
             result = userInfoService.updateUserInfoBasic(userInfo);
         } catch (Exception e) {

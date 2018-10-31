@@ -65,6 +65,11 @@ public class UserInfoService implements ApplicationEventPublisherAware {
                    jsonObject.getString("session_key"),
                    Optional.ofNullable(userInfo).map(UserInfo::getStatus).isPresent() ? userInfo.getStatus() : UserStatusEnum.GUEST.getStatus());
            jsonResult.put("level", null == userInfo ? "guest" : "user");
+
+           if(null != userInfo) {
+               jsonResult.put("userInfo", userInfo);
+           }
+
            String sessionKey = Md5Util.encry(openidValue);
            CacheUtil.setOpenIdValue(sessionKey, openidValue);
            jsonResult.put("sessionId", sessionKey);
