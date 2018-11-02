@@ -41,4 +41,14 @@ public enum ConstellationEnum {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public static ConstellationEnum getValueByCode(Integer code) {
+        for (ConstellationEnum constellationEnum : ConstellationEnum.values()) {
+            if (code.equals(constellationEnum.code)) {
+                return constellationEnum;
+            }
+        }
+        return null;
+    }
+
 }

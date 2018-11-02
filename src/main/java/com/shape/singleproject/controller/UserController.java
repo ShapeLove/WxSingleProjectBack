@@ -9,13 +9,12 @@ import com.shape.singleproject.util.WebUtil;
 import com.shape.singleproject.vo.PageResult;
 import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
-import com.sun.deploy.net.HttpUtils;
+import com.shape.singleproject.vo.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.WebUtils;
 
 @RestController
 @RequestMapping("/user")
@@ -111,20 +110,45 @@ public class UserController {
     public Result updateUserInfo(@RequestBody UserInfo userInfo) {
         Result  result = new Result();
         try {
-            String openId = WebUtil.getCurrentUserOpenId();
-            if (StringUtils.isEmpty(openId)) {
+            OpenidValue openidValue = WebUtil.getCurrentUserOpenidValue();
+            if (StringUtils.isEmpty(openidValue.getOpenid())) {
                 result.setMessage("沒有登录信息，请重新进入小程序进行登录！");
                 return result;
             }
-            userInfo.setOpenId(openId);
+            userInfo.setOpenId(openidValue.getOpenid());
 
-            result = userInfoService.updateUserInfoBasic(userInfo);
+            result = userInfoService.updateUserInfoBasic(userInfo, openidValue);
         } catch (Exception e) {
             log.error("UserController.updateUserInfo error userInfo:{}", JSON.toJSONString(userInfo), e);
             result.setMessage("服务器繁忙，请稍后重试！");
         }
 
         return result;
+    }
+
+    @RequestMapping(value = "getOtherUserInfo", method = RequestMethod.POST)
+    public Result<UserInfoVo> getOtherUserInfo(@RequestBody String openId) {
+        Result<UserInfoVo> result = new Result<>();
+
+        try {
+            if (StringUtils.isEmpty(openId)) {
+                result.setMessage("openId不能为空");
+                return result;
+            }
+
+            OpenidValue openidValue = WebUtil.getCurrentUserOpenidValue();
+            if (StringUtils.isEmpty(openidValue.getOpenid())) {
+                result.setMessage("沒有登录信息，请重新进入小程序进行登录！");
+                return result;
+            }
+
+            return userInfoService.getOtherUserInfo(openId, openidValue.getOpenid());
+        } catch (Exception e) {
+            log.error("UserController.getOtherUserInfo error userInfo:{}", openId, e);
+            result.setMessage("服务器繁忙，请稍后重试！");
+        }
+        return result;
+
     }
 
 }

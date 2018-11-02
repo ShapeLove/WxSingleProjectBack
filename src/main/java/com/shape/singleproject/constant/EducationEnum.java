@@ -32,4 +32,13 @@ public enum EducationEnum {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public static EducationEnum getValueByCode(Integer code) {
+        for (EducationEnum educationEnum : EducationEnum.values()) {
+            if (code.equals(educationEnum.code)) {
+                return educationEnum;
+            }
+        }
+        return null;
+    }
 }

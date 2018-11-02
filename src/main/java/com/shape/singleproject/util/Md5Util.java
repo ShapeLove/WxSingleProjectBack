@@ -20,4 +20,15 @@ public class Md5Util {
                 .hash()
                 .toString();
     }
+    public static String encry(String openId, String sessionKey) {
+        final StringBuilder stringBuilder = new StringBuilder(openId)
+                .append("_")
+                .append(sessionKey)
+                .append(SALT);
+        return Hashing.md5()
+                .newHasher()
+                .putString(stringBuilder.toString(), Charsets.UTF_8)
+                .hash()
+                .toString();
+    }
 }

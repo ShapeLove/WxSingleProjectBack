@@ -11,4 +11,5 @@ public class OpenidValue {
     private String openid;
     private String sessionKey;
     private Integer userStatus;
+    private String sessionId;
 }

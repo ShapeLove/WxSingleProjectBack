@@ -1,14 +1,20 @@
 package com.shape.singleproject.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.shape.singleproject.constant.AppConst;
+import com.shape.singleproject.constant.ConstellationEnum;
+import com.shape.singleproject.constant.EducationEnum;
 import com.shape.singleproject.constant.UserStatusEnum;
 import com.shape.singleproject.domain.OpenidValue;
+import com.shape.singleproject.dto.AttentionInfo;
 import com.shape.singleproject.dto.UserInfo;
-import com.shape.singleproject.event.ExceptEvent;
 import com.shape.singleproject.interceptor.LogExceptAop;
 import com.shape.singleproject.interceptor.TimeAop;
+import com.shape.singleproject.mapper.CustomUserInfoMapper;
+import com.shape.singleproject.mapping.AttentionInfoMapper;
 import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.util.CacheUtil;
 import com.shape.singleproject.util.HttpUtil;
@@ -16,13 +22,12 @@ import com.shape.singleproject.util.Md5Util;
 import com.shape.singleproject.vo.PageResult;
 import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
-import org.apache.catalina.User;
+import com.shape.singleproject.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +49,9 @@ public class UserInfoService implements ApplicationEventPublisherAware {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Autowired
+    private AttentionInfoMapper attentionInfoMapper;
+
     public JSONObject uploadImg(MultipartFile file) throws IOException {
         return httpUtil.uploadFile(file);
     }
@@ -61,18 +69,21 @@ public class UserInfoService implements ApplicationEventPublisherAware {
        }else {
 
            UserInfo userInfo = queryUserInfoByOpenIdNonSecurity(jsonObject.getString("openid"));
-           OpenidValue openidValue = new OpenidValue(jsonObject.getString("openid"),
-                   jsonObject.getString("session_key"),
-                   Optional.ofNullable(userInfo).map(UserInfo::getStatus).isPresent() ? userInfo.getStatus() : UserStatusEnum.GUEST.getStatus());
+           String openId = jsonObject.getString("openid");
+           String sessionKey = jsonObject.getString("session_key");
+           String sessionId = Md5Util.encry(openId, sessionKey);
+
+           OpenidValue openidValue = new OpenidValue(openId,
+                   sessionKey,
+                   Optional.ofNullable(userInfo).map(UserInfo::getStatus).isPresent() ? userInfo.getStatus() : UserStatusEnum.GUEST.getStatus(),
+                   sessionId);
            jsonResult.put("level", null == userInfo ? "guest" : "user");
 
            if(null != userInfo) {
                jsonResult.put("userInfo", userInfo);
            }
-
-           String sessionKey = Md5Util.encry(openidValue);
-           CacheUtil.setOpenIdValue(sessionKey, openidValue);
-           jsonResult.put("sessionId", sessionKey);
+           CacheUtil.setOpenIdValue(sessionId, openidValue);
+           jsonResult.put("sessionId", sessionId);
            return jsonResult;
        }
     }
@@ -103,8 +114,8 @@ public class UserInfoService implements ApplicationEventPublisherAware {
         userInfo.setModified(LocalDateTime.now());
         userInfoMapper.insertUserInfo(userInfo);
 
-        OpenidValue updateValue = new OpenidValue(openidValue.getOpenid(), openidValue.getSessionKey(), UserStatusEnum.WAIT.getStatus());
-        CacheUtil.setOpenIdValue(updateValue.getSessionKey(), updateValue);
+        OpenidValue updateValue = new OpenidValue(openidValue.getOpenid(), openidValue.getSessionKey(), UserStatusEnum.WAIT.getStatus(), openidValue.getSessionId());
+        CacheUtil.setOpenIdValue(updateValue.getSessionId(), updateValue);
 
         result.setSuccess(true);
         return result;
@@ -192,7 +203,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
      * 根据openid修改用户信息
      * @param userInfo
      */
-    public Result updateUserInfoBasic(UserInfo userInfo) {
+    public Result updateUserInfoBasic(UserInfo userInfo ,OpenidValue openidValue) {
 
         Result result = new Result();
 
@@ -207,8 +218,12 @@ public class UserInfoService implements ApplicationEventPublisherAware {
             return result;
         }
 
-        userInfo.setStatus(UserStatusEnum.WAIT.getStatus());
+        userInfo.setModified(LocalDateTime.now());
+//        userInfo.setStatus(UserStatusEnum.WAIT.getStatus());
         userInfoMapper.updateUserInfoBasicByOpenId(userInfo);
+
+        OpenidValue updateValue = new OpenidValue(openidValue.getOpenid(), openidValue.getSessionKey(), UserStatusEnum.WAIT.getStatus(), openidValue.getSessionId());
+        CacheUtil.setOpenIdValue(updateValue.getSessionId(), updateValue);
 
         result.setSuccess(true);
         return result;
@@ -244,6 +259,48 @@ public class UserInfoService implements ApplicationEventPublisherAware {
                 .build()
         );
         result.setSuccess(true);
+        return result;
+    }
+
+    /**
+     * 查看其他人的信息
+     * @param openId
+     * @param currentOpenId
+     * @return
+     */
+    public Result<UserInfoVo> getOtherUserInfo(String openId, String currentOpenId) {
+        Result result = new Result();
+
+        UserInfo userInfo = queryUserInfoByOpenid(openId);
+        if (null == userInfo) {
+            result.setMessage("没有该用户的信息");
+            return result;
+        }
+
+        AttentionInfo attentionInfo = attentionInfoMapper.queryAttentionInfoLimit1(
+                AttentionInfo.QueryBuild()
+                .toAttentionOpenid(openId)
+                .attentionOpenid(currentOpenId)
+                .build()
+        );
+
+        UserInfoVo userInfoVo = CustomUserInfoMapper.INSTANCE.info2Vo(userInfo);
+
+        if (null != attentionInfo) {
+            userInfoVo.setAttention(true);
+
+            if (attentionInfo.getAttentionStatus().equals(AppConst.ATENTION)
+                && attentionInfo.getToAttentionStatus().equals(AppConst.ATENTION)) {
+                userInfoVo.setAllAttention(true);
+            }
+        }
+
+        userInfoVo.setPhotoList(JSONArray.parseArray(userInfo.getPhotos(), String.class));
+        userInfoVo.setConstellationStr(ConstellationEnum.getValueByCode(userInfo.getConstellation()).getDescription());
+        userInfoVo.setEducationStr(EducationEnum.getValueByCode(userInfo.getEducation()).getDescription());
+
+        result.setSuccess(true);
+        result.setData(userInfoVo);
         return result;
     }
 
