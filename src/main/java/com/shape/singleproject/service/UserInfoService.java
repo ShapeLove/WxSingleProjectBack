@@ -1,5 +1,6 @@
 package com.shape.singleproject.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -111,6 +112,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
             return result;
         }
 
+        userInfo.setStatus(UserStatusEnum.WAIT.getStatus());
         userInfo.setModified(LocalDateTime.now());
         userInfoMapper.insertUserInfo(userInfo);
 
@@ -174,11 +176,30 @@ public class UserInfoService implements ApplicationEventPublisherAware {
     /**
      * 根据openid查询用户隐私信息
      */
-    public UserInfo queryUserInfoSecretByOpen(String openid) {
-        return userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild()
-            .fetchWxNumber()
-            .openId(openid)
-            .yn(0));
+    public UserInfo queryUserInfoSecretByOpen(String openid, String originOpenId) {
+
+        // 检查是否满足条件查看
+        AttentionInfo attentionInfo = attentionInfoMapper.queryAttentionInfoLimit1(
+                AttentionInfo.QueryBuild()
+                        .toAttentionOpenid(openid)
+                        .attentionOpenid(originOpenId)
+                        .build()
+        );
+        AttentionInfo selfAttentionInfo = attentionInfoMapper.queryAttentionInfoLimit1(
+                AttentionInfo.QueryBuild()
+                        .toAttentionOpenid(originOpenId)
+                        .attentionOpenid(openid)
+                        .build()
+        );
+
+        if (null != attentionInfo && null != selfAttentionInfo) {
+            return userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild()
+                    .fetchWxNumber()
+                    .openId(openid)
+                    .yn(0));
+        }else {
+            return null;
+        }
     }
 
     public UserInfo queryUserInfoExist(String openId) {
@@ -222,7 +243,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 //        userInfo.setStatus(UserStatusEnum.WAIT.getStatus());
         userInfoMapper.updateUserInfoBasicByOpenId(userInfo);
 
-        OpenidValue updateValue = new OpenidValue(openidValue.getOpenid(), openidValue.getSessionKey(), UserStatusEnum.WAIT.getStatus(), openidValue.getSessionId());
+        OpenidValue updateValue = new OpenidValue(openidValue.getOpenid(), openidValue.getSessionKey(), UserStatusEnum.SUCCESS.getStatus(), openidValue.getSessionId());
         CacheUtil.setOpenIdValue(updateValue.getSessionId(), updateValue);
 
         result.setSuccess(true);
@@ -288,9 +309,12 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 
         if (null != attentionInfo) {
             userInfoVo.setAttention(true);
-
-            if (attentionInfo.getAttentionStatus().equals(AppConst.ATENTION)
-                && attentionInfo.getToAttentionStatus().equals(AppConst.ATENTION)) {
+            AttentionInfo selfAttentionInfo = attentionInfoMapper.queryAttentionInfoLimit1(
+                    AttentionInfo.QueryBuild()
+                            .toAttentionOpenid(currentOpenId)
+                            .attentionOpenid(openId)
+                            .build());
+            if (null != selfAttentionInfo) {
                 userInfoVo.setAllAttention(true);
             }
         }
@@ -302,6 +326,50 @@ public class UserInfoService implements ApplicationEventPublisherAware {
         result.setSuccess(true);
         result.setData(userInfoVo);
         return result;
+    }
+
+    /**
+     * 关注
+     * @param targetOpenId 关注目标OpenId
+     * @param originOpenId 发起关注OpenId
+     * @return
+     */
+    @Transactional
+    public JSONObject attentionAction(String targetOpenId, String originOpenId) {
+        JSONObject jsonObject = new JSONObject();
+
+        // 1.关注了肯定是没有的 所以先插入数据
+        attentionInfoMapper.insertAttentionInfo(AttentionInfo.Build()
+                .attentionOpenid(originOpenId)
+                .toAttentionOpenid(targetOpenId)
+                .build());
+        jsonObject.put("success", true);
+        // 2.然后查询一下被关注信息 看是不是已经互相关注
+        AttentionInfo selfAttentionInfo = attentionInfoMapper.queryAttentionInfoLimit1(
+                AttentionInfo.QueryBuild()
+                        .toAttentionOpenid(originOpenId)
+                        .attentionOpenid(targetOpenId)
+                        .build());
+        if (null != selfAttentionInfo) {
+            jsonObject.put("allAttention", true);
+        }
+
+        return jsonObject;
+    }
+
+    /**
+     * 取消关注
+     * @param targetOpenId
+     * @param originOpenId
+     * @return
+     */
+    public boolean cancelAttentionAction(String targetOpenId, String originOpenId) {
+        //取消关注就直接删除记录
+        attentionInfoMapper.delete(AttentionInfo.Build()
+        .attentionOpenid(originOpenId)
+        .toAttentionOpenid(targetOpenId)
+        .build());
+        return true;
     }
 
 

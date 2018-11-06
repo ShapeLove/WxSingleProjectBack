@@ -10,7 +10,7 @@ import java.util.List;
 */
 public class AttentionInfo implements Serializable {
 
-    private static final long serialVersionUID = 1538989518449L;
+    private static final long serialVersionUID = 1541413193288L;
 
 
     /**
@@ -46,7 +46,7 @@ public class AttentionInfo implements Serializable {
 
     /**
     * 冗余字段
-    * isNullAble:0
+    * isNullAble:1
     */
     private String ext;
 
@@ -55,12 +55,6 @@ public class AttentionInfo implements Serializable {
     * isNullAble:0,defaultVal:CURRENT_TIMESTAMP
     */
     private java.time.LocalDateTime create;
-
-    /**
-    * 修改时间
-    * isNullAble:0,defaultVal:0000-00-00 00:00:00
-    */
-    private java.time.LocalDateTime modified;
 
 
     public void setId(Long id){this.id = id;}
@@ -90,10 +84,6 @@ public class AttentionInfo implements Serializable {
     public void setCreate(java.time.LocalDateTime create){this.create = create;}
 
     public java.time.LocalDateTime getCreate(){return this.create;}
-
-    public void setModified(java.time.LocalDateTime modified){this.modified = modified;}
-
-    public java.time.LocalDateTime getModified(){return this.modified;}
     @Override
     public String toString() {
         return "AttentionInfo{" +
@@ -104,7 +94,6 @@ public class AttentionInfo implements Serializable {
                 "toAttentionStatus='" + toAttentionStatus + '\'' +
                 "ext='" + ext + '\'' +
                 "create='" + create + '\'' +
-                "modified='" + modified + '\'' +
             '}';
     }
 
@@ -236,18 +225,6 @@ public class AttentionInfo implements Serializable {
         public java.time.LocalDateTime getCreateSt(){return this.createSt;}
 
         public java.time.LocalDateTime getCreateEd(){return this.createEd;}
-
-        private List<java.time.LocalDateTime> modifiedList;
-
-        public List<java.time.LocalDateTime> getModifiedList(){return this.modifiedList;}
-
-        private java.time.LocalDateTime modifiedSt;
-
-        private java.time.LocalDateTime modifiedEd;
-
-        public java.time.LocalDateTime getModifiedSt(){return this.modifiedSt;}
-
-        public java.time.LocalDateTime getModifiedEd(){return this.modifiedEd;}
 
         private QueryBuilder (){
             this.fetchFields = new HashMap<>();
@@ -551,47 +528,6 @@ public class AttentionInfo implements Serializable {
             setFetchFields("excludeFields","create");
             return this;
         }
-
-        public QueryBuilder modifiedBetWeen(java.time.LocalDateTime modifiedSt,java.time.LocalDateTime modifiedEd){
-            this.modifiedSt = modifiedSt;
-            this.modifiedEd = modifiedEd;
-            return this;
-        }
-
-        public QueryBuilder modifiedGreaterEqThan(java.time.LocalDateTime modifiedSt){
-            this.modifiedSt = modifiedSt;
-            return this;
-        }
-        public QueryBuilder modifiedLessEqThan(java.time.LocalDateTime modifiedEd){
-            this.modifiedEd = modifiedEd;
-            return this;
-        }
-
-
-        public QueryBuilder modified(java.time.LocalDateTime modified){
-            setModified(modified);
-            return this;
-        }
-
-        public QueryBuilder modifiedList(java.time.LocalDateTime ... modified){
-            this.modifiedList = solveNullList(modified);
-            return this;
-        }
-
-        public QueryBuilder modifiedList(List<java.time.LocalDateTime> modified){
-            this.modifiedList = modified;
-            return this;
-        }
-
-        public QueryBuilder fetchModified(){
-            setFetchFields("fetchFields","modified");
-            return this;
-        }
-
-        public QueryBuilder excludeModified(){
-            setFetchFields("excludeFields","modified");
-            return this;
-        }
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -718,18 +654,6 @@ public class AttentionInfo implements Serializable {
         public java.time.LocalDateTime getCreateSt(){return this.createSt;}
 
         public java.time.LocalDateTime getCreateEd(){return this.createEd;}
-
-        private List<java.time.LocalDateTime> modifiedList;
-
-        public List<java.time.LocalDateTime> getModifiedList(){return this.modifiedList;}
-
-        private java.time.LocalDateTime modifiedSt;
-
-        private java.time.LocalDateTime modifiedEd;
-
-        public java.time.LocalDateTime getModifiedSt(){return this.modifiedSt;}
-
-        public java.time.LocalDateTime getModifiedEd(){return this.modifiedEd;}
 
 
         public ConditionBuilder idBetWeen(Long idSt,Long idEd){
@@ -926,32 +850,6 @@ public class AttentionInfo implements Serializable {
             return this;
         }
 
-        public ConditionBuilder modifiedBetWeen(java.time.LocalDateTime modifiedSt,java.time.LocalDateTime modifiedEd){
-            this.modifiedSt = modifiedSt;
-            this.modifiedEd = modifiedEd;
-            return this;
-        }
-
-        public ConditionBuilder modifiedGreaterEqThan(java.time.LocalDateTime modifiedSt){
-            this.modifiedSt = modifiedSt;
-            return this;
-        }
-        public ConditionBuilder modifiedLessEqThan(java.time.LocalDateTime modifiedEd){
-            this.modifiedEd = modifiedEd;
-            return this;
-        }
-
-
-        public ConditionBuilder modifiedList(java.time.LocalDateTime ... modified){
-            this.modifiedList = solveNullList(modified);
-            return this;
-        }
-
-        public ConditionBuilder modifiedList(List<java.time.LocalDateTime> modified){
-            this.modifiedList = modified;
-            return this;
-        }
-
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -1002,10 +900,6 @@ public class AttentionInfo implements Serializable {
         }
         public Builder create(java.time.LocalDateTime create){
             this.obj.setCreate(create);
-            return this;
-        }
-        public Builder modified(java.time.LocalDateTime modified){
-            this.obj.setModified(modified);
             return this;
         }
         public AttentionInfo build(){return obj;}

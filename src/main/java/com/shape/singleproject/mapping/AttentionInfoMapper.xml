@@ -4,7 +4,7 @@
 <mapper namespace="com.shape.singleproject.mapping.AttentionInfoMapper">
     <delete id="delete" >
     delete from attention_info
-    where attention_openid = #{attentionOpenId} and to_attention_openid = #{toAttentionOpenId}
+    where attention_openid = #{attentionOpenid} and to_attention_openid = #{toAttentionOpenid}
   </delete>
 
 </mapper>

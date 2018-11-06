@@ -16,6 +16,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/user")
 @Slf4j
@@ -148,7 +150,56 @@ public class UserController {
             result.setMessage("服务器繁忙，请稍后重试！");
         }
         return result;
-
     }
 
+    /**
+     * 用户关注
+     * @param openId 要关注的用户的OpenId
+     * @return
+     */
+    @PostMapping("attentionAction")
+    public JSONObject attentionAction(@RequestBody String openId) {
+        JSONObject result;
+        try {
+            String currentOpenId = WebUtil.getCurrentUserOpenId();
+            result = userInfoService.attentionAction(openId, currentOpenId);
+            return result;
+        } catch (Exception e) {
+            log.error("UserController.attentionAction error openId:{}", openId, e);
+            return null;
+        }
+    }
+
+    /**
+     * 用户取消关注
+     * @param openId 用户要取消的关注用户的OpenId
+     */
+    @PostMapping("cancelAttention")
+    public boolean cancelAttention(@RequestBody String openId) {
+        try {
+            String currentOpenId = WebUtil.getCurrentUserOpenId();
+            return userInfoService.cancelAttentionAction(openId, currentOpenId);
+        } catch (Exception e) {
+            log.error("UserController.cancelAttention error openId:{}", openId, e);
+            return false;
+        }
+    }
+
+    /**
+     * 获取用户微信号
+     * @param openId
+     * @return
+     */
+    @PostMapping("getUserSecurity")
+    public String getUserSecurity(@RequestBody String openId) {
+        try {
+            String currentOpenId = WebUtil.getCurrentUserOpenId();
+            return Optional.ofNullable(userInfoService.queryUserInfoSecretByOpen(openId, currentOpenId))
+                    .map(UserInfo::getWxNumber)
+                    .orElse(null);
+        } catch (Exception e) {
+            log.error("UserController.getUserSecurity error openId:{}", openId, e);
+            return null;
+        }
+    }
 }

@@ -29,9 +29,6 @@
                     <if test="create!=null">
                         `create`,
                     </if>
-                    <if test="modified!=null">
-                        `modified`,
-                    </if>
         </trim>
         )
         VALUES
@@ -57,9 +54,6 @@
                 </if>
                 <if test="create!=null">
                     #{create},
-                </if>
-                <if test="modified!=null">
-                    #{modified},
                 </if>
         </trim>
         )
@@ -90,9 +84,6 @@
             <if test="create != null">
                 `create` = #{create},
             </if>
-            <if test="modified != null">
-                `modified` = #{modified},
-            </if>
         </trim>
         WHERE
         <trim suffixOverrides="and">
@@ -121,9 +112,6 @@
         </if>
         <if test="set.create != null">
             `create` = #{set.create},
-        </if>
-        <if test="set.modified != null">
-            `modified` = #{set.modified},
         </if>
         </trim>
         <trim prefix="where" suffixOverrides="and | or">
@@ -235,18 +223,6 @@
             <if test="where.createEd!=null">
                 `create` &lt;= #{where.createEd} and
             </if>
-                <if test="where.modifiedList != null">
-                    `modified` in
-                    <foreach collection="where.modifiedList" close=")" open="(" separator="," item="item">
-                        #{item}
-                    </foreach> and
-                </if>
-            <if test="where.modifiedSt !=null">
-                `modified` >= #{where.modifiedSt} and
-            </if>
-            <if test="where.modifiedEd!=null">
-                `modified` &lt;= #{where.modifiedEd} and
-            </if>
         </trim>
     </update>
 
@@ -259,7 +235,6 @@
         <result property="toAttentionStatus" column="to_attention_status"/>
         <result property="ext" column="ext"/>
         <result property="create" column="create"/>
-        <result property="modified" column="modified"/>
     </resultMap>
 
 
@@ -288,9 +263,6 @@
             </if>
             <if test="create != null">
                 `create` = #{create} and
-            </if>
-            <if test="modified != null">
-                `modified` = #{modified} and
             </if>
             <if test = "(_parameter instanceof com.shape.singleproject.dto.AttentionInfo$QueryBuilder) == true">
                 <if test="idList != null">
@@ -401,18 +373,6 @@
                 <if test="createEd!=null">
                     `create` &lt;= #{createEd} and
                 </if>
-                <if test="modifiedList != null">
-                    `modified` in
-                    <foreach collection="modifiedList" close=")" open="(" separator="," item="item">
-                        #{item}
-                    </foreach> and
-                </if>
-                <if test="modifiedSt !=null">
-                    `modified` >= #{modifiedSt} and
-                </if>
-                <if test="modifiedEd!=null">
-                    `modified` &lt;= #{modifiedEd} and
-                </if>
             </if>
         </trim>
     </select>
@@ -442,9 +402,6 @@
             </if>
             <if test="create != null">
                 `create` = #{create} and
-            </if>
-            <if test="modified != null">
-                `modified` = #{modified} and
             </if>
             <if test = "(_parameter instanceof com.shape.singleproject.dto.AttentionInfo$QueryBuilder) == true">
                     <if test="idList != null">
@@ -555,18 +512,6 @@
                 <if test="createEd!=null">
                     `create` &lt;= #{createEd} and
                 </if>
-                    <if test="modifiedList != null">
-                        `modified` in
-                        <foreach collection="modifiedList" close=")" open="(" separator="," item="item">
-                            #{item}
-                        </foreach> and
-                    </if>
-                <if test="modifiedSt !=null">
-                    `modified` >= #{modifiedSt} and
-                </if>
-                <if test="modifiedEd!=null">
-                    `modified` &lt;= #{modifiedEd} and
-                </if>
             </if>
         </trim>
         limit 1
@@ -581,7 +526,6 @@
         `to_attention_status`+0 as `to_attention_status`,
         `ext`,
         `create`,
-        `modified`,
         </trim>
     </sql>
 
@@ -623,9 +567,6 @@
                     <if test="fetchFields.fetchFields.create==true">
                         `create`,
                     </if>
-                    <if test="fetchFields.fetchFields.modified==true">
-                        `modified`,
-                    </if>
                     </if>
                     <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
                     <if test="fetchFields.excludeFields.id==null">
@@ -648,9 +589,6 @@
                     </if>
                     <if test="fetchFields.excludeFields.create==null">
                         `create`,
-                    </if>
-                    <if test="fetchFields.excludeFields.modified==null">
-                        `modified`,
                     </if>
                     </if>
                     <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">

@@ -23,6 +23,5 @@ public class TestAttentionService {
                 .attentionOpenid("kjdigujk2341414")
                 .toAttentionOpenid("geryerywer123124")
                 .build();
-        attentionService.doAttention(attentionInfo);
     }
 }

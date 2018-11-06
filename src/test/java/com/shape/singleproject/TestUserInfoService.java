@@ -100,6 +100,6 @@ public class TestUserInfoService {
 
     @Test
     public void testQuerySecret() {
-        System.out.println(JSON.toJSONString(userInfoService.queryUserInfoSecretByOpen("kjdigujk2341414")));
+//        System.out.println(JSON.toJSONString(userInfoService.queryUserInfoSecretByOpen("kjdigujk2341414")));
     }
 }
