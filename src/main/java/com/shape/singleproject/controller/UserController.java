@@ -27,7 +27,7 @@ public class UserController {
     private UserInfoService userInfoService;
 
 
-    @RequestMapping("/queryByPage")
+    @PostMapping("/queryByPage")
     public PageResult<UserInfo> queryByPage(@RequestBody UserInfoQuery userInfoQuery) {
         PageResult<UserInfo> result = new PageResult();
         try {
@@ -39,7 +39,7 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping("uploadImg")
+    @PostMapping("uploadImg")
     public JSONObject uploadImg(MultipartFile file) {
         try {
             return userInfoService.uploadImg(file);

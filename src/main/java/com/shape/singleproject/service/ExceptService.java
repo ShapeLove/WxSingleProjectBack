@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ExceptService {
                         .invocationName(methodName)
                         .createTime(LocalDateTime.now())
                         .modifiedTime(LocalDateTime.now())
-                        .lastExceptMessage(exceptMessage)
+                        .lastExceptMessage(StringUtils.isEmpty(exceptMessage) ? "未知错误" : exceptMessage)
                         .build();
                 exceptInfoMapper.insertExceptInfo(insertInfo);
             }else {
