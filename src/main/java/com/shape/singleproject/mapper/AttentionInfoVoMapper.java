@@ -21,7 +21,7 @@ public interface AttentionInfoVoMapper {
     @Mapping(source = "info.toAttentionOpenid", target = "openId")
     @Mapping(source = "userInfo.name", target = "name")
     @Mapping(source = "userInfo.sex", target = "sex")
-    @Mapping(source = "userInfo.photos", target = "photo")
+    @Mapping(source = "userInfo.photos ", target = "photo")
     AttentionInfoVo info2AttentionVo(AttentionInfo info, UserInfo userInfo);
 
     /**

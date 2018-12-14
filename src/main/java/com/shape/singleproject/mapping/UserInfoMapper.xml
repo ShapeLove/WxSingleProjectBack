@@ -61,12 +61,6 @@
             <if test="status != null">
                 `status` = #{status},
             </if>
-            <if test="dongdong != null and dongdong!=''">
-                `dongdong` = #{dongdong},
-            </if>
-            <if test="wxNumber != null and wxNumber!=''">
-                `wx_number` = #{wxNumber},
-            </if>
             <if test="modified != null">
                 `modified` = #{modified},
             </if>

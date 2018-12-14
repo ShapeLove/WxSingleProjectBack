@@ -37,6 +37,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+
 @Component
 @LogExceptAop
 @TimeAop
@@ -101,8 +102,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 
         userInfo.setOpenId(openidValue.getOpenid());
 
-        if (StringUtils.isEmpty(userInfo.getOpenId())) {
-            result.setMessage("openid不能为空");
+        if (!checkAddOrUpdateUserInfo(result, userInfo)) {
             return result;
         }
 
@@ -228,8 +228,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 
         Result result = new Result();
 
-        if (StringUtils.isEmpty(userInfo.getOpenId())) {
-            result.setMessage("openid不能为空");
+        if (!checkAddOrUpdateUserInfo(result, userInfo)) {
             return result;
         }
 
@@ -376,6 +375,62 @@ public class UserInfoService implements ApplicationEventPublisherAware {
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
+    }
+
+
+    /**
+     * 校验新建和更新的用户信息
+     * @param result 校验结果集
+     * @param userInfo 要校验的对象
+     * @return 返回信息
+     */
+    private boolean checkAddOrUpdateUserInfo(Result result, UserInfo userInfo) {
+        if (StringUtils.isEmpty(userInfo.getOpenId())) {
+            result.setMessage("openId不能为空");
+            return false;
+        }
+
+        if (StringUtils.isEmpty(userInfo.getName())) {
+            result.setMessage("昵称不能为空");
+            return false;
+        }
+
+        if (StringUtils.isEmpty(userInfo.getPhotos())) {
+            result.setMessage("上传照片不能为空");
+            return false;
+        }
+
+        if (null == userInfo.getBirthday()) {
+            result.setMessage("生日不能为空");
+            return false;
+        }
+
+        if (null == userInfo.getSex()) {
+            result.setMessage("性别不能为空");
+            return false;
+        }
+
+        if (null == userInfo.getConstellation()) {
+            result.setMessage("星座不能为空");
+            return false;
+        }
+
+        if (StringUtils.isEmpty(userInfo.getCity()) || StringUtils.isEmpty(userInfo.getProvince())) {
+            result.setMessage("籍贯不能为空");
+            return false;
+        }
+
+        if (StringUtils.isEmpty(userInfo.getWxNumber())) {
+            result.setMessage("微信号不能为空");
+            return false;
+        }
+
+        if (StringUtils.isEmpty(userInfo.getDongdong())) {
+            result.setMessage("咚咚号不能为空");
+            return false;
+        }
+
+        return true;
     }
 
 }
