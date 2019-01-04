@@ -1,5 +1,6 @@
 package com.shape.singleproject.filter;
 
+import com.alibaba.fastjson.JSON;
 import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.util.CacheUtil;
 import org.springframework.util.StringUtils;
@@ -17,7 +18,6 @@ public class LoginFilter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         String sessionId = request.getHeader("sessionId");
-        System.out.println(sessionId);
         boolean flag = true;
         if (StringUtils.isEmpty(sessionId)) {
             flag = false;
@@ -26,6 +26,7 @@ public class LoginFilter implements HandlerInterceptor {
             if (null == openidValue) {
                 flag = false;
             }
+            System.out.println(JSON.toJSONString(openidValue));
         }
 
         if (!flag) {

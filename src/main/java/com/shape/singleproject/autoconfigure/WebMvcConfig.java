@@ -2,6 +2,7 @@ package com.shape.singleproject.autoconfigure;
 
 import com.shape.singleproject.filter.CorsFilter;
 import com.shape.singleproject.filter.LoginFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +18,15 @@ import javax.servlet.MultipartConfigElement;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    @Value("${shape.enable.loginfilter:true}")
+    private boolean enableLoginFilter;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new CorsFilter()).addPathPatterns("/**");
-        registry.addInterceptor(new LoginFilter()).addPathPatterns("/**").excludePathPatterns("/login/**","/getAllCache", "/error");
+        if (enableLoginFilter) {
+            registry.addInterceptor(new LoginFilter()).addPathPatterns("/**").excludePathPatterns("/login/**","/getAllCache", "/error");
+        }
     }
 
     @Bean
