@@ -337,6 +337,15 @@ public class UserInfoService implements ApplicationEventPublisherAware {
     public JSONObject attentionAction(String targetOpenId, String originOpenId) {
         JSONObject jsonObject = new JSONObject();
 
+        UserInfo userInfo = userInfoMapper.queryUserInfoLimit1(UserInfo.Build()
+                .openId(originOpenId).build());
+
+        if (null == userInfo) {
+            jsonObject.put("success", false);
+            jsonObject.put("message", "不是真正的用户");
+            return jsonObject;
+        }
+
         // 1.关注了肯定是没有的 所以先插入数据
         attentionInfoMapper.insertAttentionInfo(AttentionInfo.Build()
                 .attentionOpenid(originOpenId)
