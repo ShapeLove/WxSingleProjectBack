@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shape.singleproject.mapping.base.LoginKeyBaseMapper">
+
+
+    <insert id="insertLoginKey"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `login_key`
+        (
+        <trim suffixOverrides=",">
+                    <if test="id!=null">
+                        `id`,
+                    </if>
+                    <if test="customKey!=null">
+                        `custom_key`,
+                    </if>
+                    <if test="openId!=null">
+                        `open_id`,
+                    </if>
+                    <if test="sessionKey!=null">
+                        `session_key`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="id!=null">
+                    #{id},
+                </if>
+                <if test="customKey!=null">
+                    #{customKey},
+                </if>
+                <if test="openId!=null">
+                    #{openId},
+                </if>
+                <if test="sessionKey!=null">
+                    #{sessionKey},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateLoginKey">
+        UPDATE `login_key`
+        SET
+        <trim suffixOverrides=",">
+            <if test="customKey != null and customKey!=''">
+                `custom_key` = #{customKey},
+            </if>
+            <if test="openId != null and openId!=''">
+                `open_id` = #{openId},
+            </if>
+            <if test="sessionKey != null and sessionKey!=''">
+                `session_key` = #{sessionKey},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `id` = #{id} and
+        </trim>
+    </update>
+
+    <update id="update">
+        UPDATE `login_key`
+        SET
+        <trim suffixOverrides=",">
+        <if test="set.customKey != null and set.customKey!=''">
+            `custom_key` = #{set.customKey},
+        </if>
+        <if test="set.openId != null and set.openId!=''">
+            `open_id` = #{set.openId},
+        </if>
+        <if test="set.sessionKey != null and set.sessionKey!=''">
+            `session_key` = #{set.sessionKey},
+        </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and | or">
+                <if test="where.idList != null">
+                    `id` in
+                    <foreach collection="where.idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.idSt !=null">
+                `id` >= #{where.idSt} and
+            </if>
+            <if test="where.idEd!=null">
+                `id` &lt;= #{where.idEd} and
+            </if>
+                <if test="where.customKeyList != null">
+                    `custom_key` in
+                    <foreach collection="where.customKeyList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyCustomKey!=null and where.fuzzyCustomKey.size()>0">
+                (
+                <foreach collection="where.fuzzyCustomKey"  separator="or" item="item">
+                    `Custom_key` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyCustomKey!=null and where.rightFuzzyCustomKey.size()>0">
+                (
+                <foreach collection="where.rightFuzzyCustomKey"  separator="or" item="item">
+                    `Custom_key` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.openIdList != null">
+                    `open_id` in
+                    <foreach collection="where.openIdList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyOpenId!=null and where.fuzzyOpenId.size()>0">
+                (
+                <foreach collection="where.fuzzyOpenId"  separator="or" item="item">
+                    `Open_id` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyOpenId!=null and where.rightFuzzyOpenId.size()>0">
+                (
+                <foreach collection="where.rightFuzzyOpenId"  separator="or" item="item">
+                    `Open_id` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.sessionKeyList != null">
+                    `session_key` in
+                    <foreach collection="where.sessionKeyList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzySessionKey!=null and where.fuzzySessionKey.size()>0">
+                (
+                <foreach collection="where.fuzzySessionKey"  separator="or" item="item">
+                    `Session_key` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzySessionKey!=null and where.rightFuzzySessionKey.size()>0">
+                (
+                <foreach collection="where.rightFuzzySessionKey"  separator="or" item="item">
+                    `Session_key` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+        </trim>
+    </update>
+
+
+    <resultMap type="com.shape.singleproject.dto.LoginKey" id="LoginKeyMap">
+        <result property="id" column="id"/>
+        <result property="customKey" column="custom_key"/>
+        <result property="openId" column="open_id"/>
+        <result property="sessionKey" column="session_key"/>
+    </resultMap>
+
+
+    <select id="queryLoginKey" resultMap="LoginKeyMap">
+        select
+        <include refid="baseResult"></include>
+        from  `login_key`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="customKey != null and customKey!=''">
+                `custom_key` = #{customKey} and
+            </if>
+            <if test="openId != null and openId!=''">
+                `open_id` = #{openId} and
+            </if>
+            <if test="sessionKey != null and sessionKey!=''">
+                `session_key` = #{sessionKey} and
+            </if>
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.LoginKey$QueryBuilder) == true">
+                <if test="idList != null">
+                    `id` in
+                    <foreach collection="idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                <if test="customKeyList != null">
+                    `custom_key` in
+                    <foreach collection="customKeyList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyCustomKey!=null and fuzzyCustomKey.size()>0">
+                    (
+                    <foreach collection="fuzzyCustomKey"  separator="or" item="item">
+                        `Custom_key` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyCustomKey!=null and rightFuzzyCustomKey.size()>0">
+                    (
+                    <foreach collection="rightFuzzyCustomKey"  separator="or" item="item">
+                        `Custom_key` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="openIdList != null">
+                    `open_id` in
+                    <foreach collection="openIdList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyOpenId!=null and fuzzyOpenId.size()>0">
+                    (
+                    <foreach collection="fuzzyOpenId"  separator="or" item="item">
+                        `Open_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyOpenId!=null and rightFuzzyOpenId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyOpenId"  separator="or" item="item">
+                        `Open_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="sessionKeyList != null">
+                    `session_key` in
+                    <foreach collection="sessionKeyList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzySessionKey!=null and fuzzySessionKey.size()>0">
+                    (
+                    <foreach collection="fuzzySessionKey"  separator="or" item="item">
+                        `Session_key` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzySessionKey!=null and rightFuzzySessionKey.size()>0">
+                    (
+                    <foreach collection="rightFuzzySessionKey"  separator="or" item="item">
+                        `Session_key` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryLoginKeyLimit1" resultMap="LoginKeyMap">
+        select
+        <include refid="baseResult"></include>
+        from  `login_key`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="customKey != null and customKey!=''">
+                `custom_key` = #{customKey} and
+            </if>
+            <if test="openId != null and openId!=''">
+                `open_id` = #{openId} and
+            </if>
+            <if test="sessionKey != null and sessionKey!=''">
+                `session_key` = #{sessionKey} and
+            </if>
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.LoginKey$QueryBuilder) == true">
+                    <if test="idList != null">
+                        `id` in
+                        <foreach collection="idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                    <if test="customKeyList != null">
+                        `custom_key` in
+                        <foreach collection="customKeyList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyCustomKey!=null and fuzzyCustomKey.size()>0">
+                    (
+                    <foreach collection="fuzzyCustomKey"  separator="or" item="item">
+                        `Custom_key` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyCustomKey!=null and rightFuzzyCustomKey.size()>0">
+                    (
+                    <foreach collection="rightFuzzyCustomKey"  separator="or" item="item">
+                        `Custom_key` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="openIdList != null">
+                        `open_id` in
+                        <foreach collection="openIdList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyOpenId!=null and fuzzyOpenId.size()>0">
+                    (
+                    <foreach collection="fuzzyOpenId"  separator="or" item="item">
+                        `Open_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyOpenId!=null and rightFuzzyOpenId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyOpenId"  separator="or" item="item">
+                        `Open_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="sessionKeyList != null">
+                        `session_key` in
+                        <foreach collection="sessionKeyList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzySessionKey!=null and fuzzySessionKey.size()>0">
+                    (
+                    <foreach collection="fuzzySessionKey"  separator="or" item="item">
+                        `Session_key` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzySessionKey!=null and rightFuzzySessionKey.size()>0">
+                    (
+                    <foreach collection="rightFuzzySessionKey"  separator="or" item="item">
+                        `Session_key` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `id`,
+        `custom_key`,
+        `open_id`,
+        `session_key`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.LoginKey$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.id==true">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.customKey==true">
+                        `custom_key`,
+                    </if>
+                    <if test="fetchFields.fetchFields.openId==true">
+                        `open_id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.sessionKey==true">
+                        `session_key`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.id==null">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.customKey==null">
+                        `custom_key`,
+                    </if>
+                    <if test="fetchFields.excludeFields.openId==null">
+                        `open_id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.sessionKey==null">
+                        `session_key`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof com.shape.singleproject.dto.LoginKey$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>

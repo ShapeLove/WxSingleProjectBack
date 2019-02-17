@@ -11,11 +11,13 @@ import com.shape.singleproject.constant.EducationEnum;
 import com.shape.singleproject.constant.UserStatusEnum;
 import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.dto.AttentionInfo;
+import com.shape.singleproject.dto.LoginKey;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.interceptor.LogExceptAop;
 import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapper.CustomUserInfoMapper;
 import com.shape.singleproject.mapping.AttentionInfoMapper;
+import com.shape.singleproject.mapping.LoginKeyMapper;
 import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.util.CacheUtil;
 import com.shape.singleproject.util.HttpUtil;
@@ -31,11 +33,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -54,6 +58,9 @@ public class UserInfoService implements ApplicationEventPublisherAware {
     @Autowired
     private AttentionInfoMapper attentionInfoMapper;
 
+    @Autowired
+    private LoginKeyMapper loginKeyMapper;
+
     public JSONObject uploadImg(MultipartFile file) throws IOException {
         return httpUtil.uploadFile(file);
     }
@@ -69,22 +76,22 @@ public class UserInfoService implements ApplicationEventPublisherAware {
        if (!Optional.ofNullable(jsonObject.getString("openid")).isPresent()) {
            throw new RuntimeException("UserInfoService.login error message: " + jsonObject.toJSONString());
        }else {
-
-           UserInfo userInfo = queryUserInfoByOpenIdNonSecurity(jsonObject.getString("openid"));
            String openId = jsonObject.getString("openid");
            String sessionKey = jsonObject.getString("session_key");
            String sessionId = Md5Util.encry(openId, sessionKey);
 
-           OpenidValue openidValue = new OpenidValue(openId,
-                   sessionKey,
-                   Optional.ofNullable(userInfo).map(UserInfo::getStatus).isPresent() ? userInfo.getStatus() : UserStatusEnum.GUEST.getStatus(),
-                   sessionId);
-           jsonResult.put("level", null == userInfo ? "guest" : "user");
-
-           if(null != userInfo) {
-               jsonResult.put("userInfo", userInfo);
+           // 查询是否有sessionId
+           LoginKey existLoginKey = loginKeyMapper.queryLoginKeyLimit1(LoginKey.QueryBuild().openId(openId));
+           if (existLoginKey == null) {
+               // 没有的话就插入一条
+               LoginKey newKey = new LoginKey(null,sessionId, openId, sessionKey);
+               loginKeyMapper.insertLoginKey(newKey);
+           }else {
+               existLoginKey.setCustomKey(sessionId);
+               existLoginKey.setOpenId(openId);
+               existLoginKey.setSessionKey(sessionKey);
+               loginKeyMapper.updateLoginKey(existLoginKey);
            }
-           CacheUtil.setOpenIdValue(sessionId, openidValue);
            jsonResult.put("sessionId", sessionId);
            return jsonResult;
        }
@@ -100,7 +107,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 
         Result result = new Result();
 
-        userInfo.setOpenId(openidValue.getOpenid());
+        userInfo.setOpenId(openidValue.getOpenId());
 
         if (!checkAddOrUpdateUserInfo(result, userInfo)) {
             return result;
@@ -116,9 +123,9 @@ public class UserInfoService implements ApplicationEventPublisherAware {
         userInfo.setModified(LocalDateTime.now());
         userInfoMapper.insertUserInfo(userInfo);
 
-        OpenidValue updateValue = new OpenidValue(openidValue.getOpenid(), openidValue.getSessionKey(), UserStatusEnum.WAIT.getStatus(), openidValue.getSessionId());
-        CacheUtil.setOpenIdValue(updateValue.getSessionId(), updateValue);
-
+        if (CacheUtil.get(CacheUtil.USER_NOT_EXIT_PREFIX + openidValue.getOpenId()) != null) {
+            CacheUtil.put(CacheUtil.USER_NOT_EXIT_PREFIX + openidValue.getOpenId(), CacheUtil.CACHE_FALSE_FLAG);
+        }
         result.setSuccess(true);
         return result;
     }
@@ -137,7 +144,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
      * 列表页展示基本信息
      * 返回当前页数据
      */
-    public PageResult<UserInfo> queryUserInfoByPage(UserInfoQuery userInfoQuery) {
+    public PageResult<UserInfo> queryUserInfoByPage(UserInfoQuery userInfoQuery, String openId) {
         PageHelper.startPage(userInfoQuery.getPageIndex(), userInfoQuery.getPageSize());
         List<UserInfo> userInfoList = userInfoMapper.queryUserInfo(UserInfo.QueryBuild()
                                         .fetchOpenId()
@@ -152,6 +159,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
                                         .fetchSex()
                                         .yn(0)
                                         .status(UserStatusEnum.SUCCESS.getStatus()).build());
+        userInfoList = userInfoList.stream().filter(userInfo -> !userInfo.getOpenId().equals(openId)).collect(Collectors.toList());
         PageInfo pageInfo = new PageInfo(userInfoList);
         return PageResult.build()
                 .setDataList(pageInfo.getList())
@@ -215,9 +223,19 @@ public class UserInfoService implements ApplicationEventPublisherAware {
      * @return
      */
     public UserInfo queryUserInfoByOpenIdNonSecurity(String openid) {
-        return userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild()
+        if (CacheUtil.get(CacheUtil.USER_NOT_EXIT_PREFIX + openid) != null &&
+                CacheUtil.get(CacheUtil.USER_NOT_EXIT_PREFIX + openid).equals(CacheUtil.CACHE_TRUE_FLAG)) {
+            System.out.println("缓存命中:" + openid);
+            return null;
+        }
+        UserInfo userInfo = userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild()
                 .excludeOpenId()
                 .openId(openid));
+        if (userInfo == null) {
+            CacheUtil.put(CacheUtil.USER_NOT_EXIT_PREFIX + openid, CacheUtil.CACHE_TRUE_FLAG);
+            return null;
+        }
+        return userInfo;
     }
 
     /**
@@ -241,9 +259,6 @@ public class UserInfoService implements ApplicationEventPublisherAware {
         userInfo.setModified(LocalDateTime.now());
 //        userInfo.setStatus(UserStatusEnum.WAIT.getStatus());
         userInfoMapper.updateUserInfoBasicByOpenId(userInfo);
-
-        OpenidValue updateValue = new OpenidValue(openidValue.getOpenid(), openidValue.getSessionKey(), UserStatusEnum.SUCCESS.getStatus(), openidValue.getSessionId());
-        CacheUtil.setOpenIdValue(updateValue.getSessionId(), updateValue);
 
         result.setSuccess(true);
         return result;
@@ -337,12 +352,17 @@ public class UserInfoService implements ApplicationEventPublisherAware {
     public JSONObject attentionAction(String targetOpenId, String originOpenId) {
         JSONObject jsonObject = new JSONObject();
 
-        UserInfo userInfo = userInfoMapper.queryUserInfoLimit1(UserInfo.Build()
-                .openId(originOpenId).build());
+        UserInfo userInfo = queryUserInfoByOpenIdNonSecurity(originOpenId);
 
         if (null == userInfo) {
             jsonObject.put("success", false);
             jsonObject.put("message", "不是真正的用户");
+            return jsonObject;
+        }
+
+        if (userInfo.getStatus().equals(0)) {
+            jsonObject.put("success", false);
+            jsonObject.put("message", "请等待审核！");
             return jsonObject;
         }
 
@@ -372,6 +392,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
      * @return
      */
     public boolean cancelAttentionAction(String targetOpenId, String originOpenId) {
+        UserInfo userInfo = queryUserInfoByOpenIdNonSecurity(originOpenId);
         //取消关注就直接删除记录
         attentionInfoMapper.delete(AttentionInfo.Build()
         .attentionOpenid(originOpenId)
@@ -436,6 +457,26 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 
         if (StringUtils.isEmpty(userInfo.getDongdong())) {
             result.setMessage("咚咚号不能为空");
+            return false;
+        }
+
+        if (StringUtils.isEmpty(userInfo.getWorkArea())) {
+            result.setMessage("工作地址不能为空");
+            return false;
+        }
+
+        if (StringUtils.isEmpty(userInfo.getHeight())) {
+            result.setMessage("身高不能为空");
+            return false;
+        }
+
+        if (StringUtils.isEmpty(userInfo.getWeight())) {
+            result.setMessage("体重不能为空");
+            return false;
+        }
+
+        if (StringUtils.isEmpty(userInfo.getDepartment())) {
+            result.setMessage("所在部门不能为空");
             return false;
         }
 

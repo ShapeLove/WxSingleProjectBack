@@ -3,6 +3,7 @@ package com.shape.singleproject.filter;
 import com.alibaba.fastjson.JSON;
 import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.util.CacheUtil;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 

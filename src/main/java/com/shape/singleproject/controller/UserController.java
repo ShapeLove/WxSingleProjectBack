@@ -31,7 +31,7 @@ public class UserController {
     public PageResult<UserInfo> queryByPage(@RequestBody UserInfoQuery userInfoQuery) {
         PageResult<UserInfo> result = new PageResult();
         try {
-            result = userInfoService.queryUserInfoByPage(userInfoQuery);
+            result = userInfoService.queryUserInfoByPage(userInfoQuery, WebUtil.getCurrentUserOpenId());
         }catch (Exception e) {
             log.error("UserController.queryByPage error userInfoQuery:{}", JSON.toJSONString(userInfoQuery), e);
             result.setMessage("服务器繁忙，请稍后重试！");
@@ -113,11 +113,11 @@ public class UserController {
         Result  result = new Result();
         try {
             OpenidValue openidValue = WebUtil.getCurrentUserOpenidValue();
-            if (StringUtils.isEmpty(openidValue.getOpenid())) {
+            if (StringUtils.isEmpty(openidValue.getOpenId())) {
                 result.setMessage("沒有登录信息，请重新进入小程序进行登录！");
                 return result;
             }
-            userInfo.setOpenId(openidValue.getOpenid());
+            userInfo.setOpenId(openidValue.getOpenId());
 
             result = userInfoService.updateUserInfoBasic(userInfo, openidValue);
         } catch (Exception e) {
@@ -139,12 +139,12 @@ public class UserController {
             }
 
             OpenidValue openidValue = WebUtil.getCurrentUserOpenidValue();
-            if (StringUtils.isEmpty(openidValue.getOpenid())) {
+            if (StringUtils.isEmpty(openidValue.getOpenId())) {
                 result.setMessage("沒有登录信息，请重新进入小程序进行登录！");
                 return result;
             }
 
-            return userInfoService.getOtherUserInfo(openId, openidValue.getOpenid());
+            return userInfoService.getOtherUserInfo(openId, openidValue.getOpenId());
         } catch (Exception e) {
             log.error("UserController.getOtherUserInfo error userInfo:{}", openId, e);
             result.setMessage("服务器繁忙，请稍后重试！");

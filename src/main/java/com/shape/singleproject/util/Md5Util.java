@@ -10,7 +10,7 @@ public class Md5Util {
 
 
     public static String encry(OpenidValue value) {
-        final StringBuilder stringBuilder = new StringBuilder(value.getOpenid())
+        final StringBuilder stringBuilder = new StringBuilder(value.getOpenId())
                 .append("_")
                 .append(value.getSessionKey())
                 .append(SALT);

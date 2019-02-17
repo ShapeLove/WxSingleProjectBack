@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OpenidValue {
-    private String openid;
+    private String customKey;
+    private String openId;
     private String sessionKey;
-    private Integer userStatus;
-    private String sessionId;
 }

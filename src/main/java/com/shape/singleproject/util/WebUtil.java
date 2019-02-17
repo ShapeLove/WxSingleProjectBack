@@ -24,7 +24,7 @@ public class WebUtil {
 
     public static String getCurrentUserOpenId() {
         return Optional.ofNullable(getCurrentUserOpenidValue())
-                .map(OpenidValue::getOpenid)
+                .map(OpenidValue::getOpenId)
                 .orElse(null);
     }
 }

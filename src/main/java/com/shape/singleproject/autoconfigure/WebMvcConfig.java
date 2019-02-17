@@ -2,6 +2,7 @@ package com.shape.singleproject.autoconfigure;
 
 import com.shape.singleproject.filter.CorsFilter;
 import com.shape.singleproject.filter.LoginFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
