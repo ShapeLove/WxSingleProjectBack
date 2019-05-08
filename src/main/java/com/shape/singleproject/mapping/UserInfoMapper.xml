@@ -73,4 +73,28 @@
             `open_id` = #{openId} and
         </trim>
     </update>
+
+    <update id="updateUserInfoStatusByOpenId">
+        UPDATE `user_info`
+        SET
+        <trim suffixOverrides=",">
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="ext != null and ext!=''">
+                `ext` = #{ext},
+            </if>
+            <if test="reject_reason != null and reject_reason!=''">
+                `reject_reason` = #{rejectReason},
+            </if>
+            <if test="yn != null">
+                `yn` = #{yn},
+            </if>
+            `modified` = now()
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+            `open_id` = #{openId} and
+        </trim>
+    </update>
 </mapper>
