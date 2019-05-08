@@ -39,9 +39,12 @@ import static org.apache.commons.codec.Charsets.UTF_8;
 @TimeAop
 public class HttpUtil {
 
+    // 微信开发者必须有的 申请微信小程序开发的时候微信平台给的
     @Value("${wx.appid:wx193b7550e9f8c425}")
     private String appid;
 
+    // 微信开发者必须有的 申请微信小程序开发的时候微信平台给的
+    // 从properties文件里读属性值 没有就是冒号后面的
     @Value("${wx.appsecret:1040a9d44fb6fbb196086dc09119c4de}")
     private String appsecret;
 

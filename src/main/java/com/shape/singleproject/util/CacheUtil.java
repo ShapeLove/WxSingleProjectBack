@@ -18,6 +18,10 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 内存缓存
+ * 加快读取速度
+ */
 @Component
 public class CacheUtil {
 
@@ -31,6 +35,7 @@ public class CacheUtil {
         openIdCustomSessionCache = CacheBuilder.newBuilder()
                 .maximumSize(1000)
                 .build(CacheLoader.from((key) -> {
+                    // 找不到时 就查库
                     LoginService loginService = SingleProjectApplication.context.getBean(LoginService.class);
                     LoginKey loginKey = loginService.queryLoginKeyByCustomkey(key);
                     return OpenidValueMapper.INSTANCE.loginKey2OpenidValue(loginKey);

@@ -57,7 +57,7 @@ public class GlobalConfigure  {
         public AsyncTaskExecutor taskExecutor() {
             ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
             executor.setThreadNamePrefix("Anno-Executor");
-            executor.setMaxPoolSize(10);
+            executor.setMaxPoolSize(10); //zuiduo同时处理十条任务
             // 异步处理为最低优先级
             executor.setThreadPriority(Thread.MIN_PRIORITY);
 

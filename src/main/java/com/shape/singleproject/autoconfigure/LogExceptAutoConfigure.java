@@ -19,15 +19,17 @@ import org.springframework.core.annotation.Order;
 @ConditionalOnProperty("shape.enable.logexcept")
 public class LogExceptAutoConfigure {
 
+    // 异常aop处理的类
     @Bean
     public LogExceptInterceptor logExceptInterceptor() {
         return new LogExceptInterceptor();
     }
 
+    // 与异常aop的注解做绑定
     @Bean
     public DefaultPointcutAdvisor logExceptAnnotationClassPointCut() {
         DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();
-        AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(LogExceptAop.class, true);
+        AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(LogExceptAop.class, LogExceptAop.class, true);
         advisor.setPointcut(pointcut);
         advisor.setAdvice(logExceptInterceptor());
         return advisor;

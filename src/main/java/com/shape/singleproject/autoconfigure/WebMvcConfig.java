@@ -26,7 +26,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new CorsFilter()).addPathPatterns("/**");
         if (enableLoginFilter) {
-            registry.addInterceptor(new LoginFilter()).addPathPatterns("/**").excludePathPatterns("/login/**","/getAllCache", "/error");
+            registry.addInterceptor(new LoginFilter()).addPathPatterns("/**").excludePathPatterns("/login/**","/except/**","/getAllCache", "/error");
         }
     }
 
