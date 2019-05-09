@@ -10,7 +10,7 @@ import java.util.List;
 */
 public class UserInfo implements Serializable {
 
-    private static final long serialVersionUID = 1538993134020L;
+    private static final long serialVersionUID = 1557403934812L;
 
 
     /**
@@ -34,7 +34,7 @@ public class UserInfo implements Serializable {
 
     /**
     * 是否有效
-    * isNullAble:0,defaultVal:1
+    * isNullAble:0,defaultVal:0
     */
     private Integer yn;
 
@@ -46,31 +46,31 @@ public class UserInfo implements Serializable {
 
     /**
     * 出生日期
-    * isNullAble:0
+    * isNullAble:1
     */
     private java.time.LocalDate birthday;
 
     /**
     * 学历枚举
-    * isNullAble:0
+    * isNullAble:1
     */
     private Integer education;
 
     /**
     * 性别枚举
-    * isNullAble:0
+    * isNullAble:1
     */
     private Integer sex;
 
     /**
     * 籍贯省地址
-    * isNullAble:0
+    * isNullAble:1
     */
     private String province;
 
     /**
     * 籍贯市地址
-    * isNullAble:0
+    * isNullAble:1
     */
     private String city;
 
@@ -100,7 +100,7 @@ public class UserInfo implements Serializable {
 
     /**
     * 工作地区
-    * isNullAble:0
+    * isNullAble:1
     */
     private String workArea;
 
@@ -124,13 +124,13 @@ public class UserInfo implements Serializable {
 
     /**
     * 个人图片
-    * isNullAble:0
+    * isNullAble:1
     */
     private String photos;
 
     /**
     * 部门信息
-    * isNullAble:0
+    * isNullAble:1
     */
     private String department;
 
@@ -148,13 +148,13 @@ public class UserInfo implements Serializable {
 
     /**
     * 咚咚号
-    * isNullAble:0
+    * isNullAble:1
     */
     private String dongdong;
 
     /**
     * 微信号
-    * isNullAble:0
+    * isNullAble:1
     */
     private String wxNumber;
 
@@ -175,6 +175,24 @@ public class UserInfo implements Serializable {
     * isNullAble:1
     */
     private String ext;
+
+    /**
+    * 正在做标签
+    * isNullAble:1
+    */
+    private String doingTags;
+
+    /**
+    * 打算做标签
+    * isNullAble:1
+    */
+    private String planTags;
+
+    /**
+    * 活动标签
+    * isNullAble:1
+    */
+    private String activityTags;
 
 
     public void setId(Long id){this.id = id;}
@@ -284,6 +302,18 @@ public class UserInfo implements Serializable {
     public void setExt(String ext){this.ext = ext;}
 
     public String getExt(){return this.ext;}
+
+    public void setDoingTags(String doingTags){this.doingTags = doingTags;}
+
+    public String getDoingTags(){return this.doingTags;}
+
+    public void setPlanTags(String planTags){this.planTags = planTags;}
+
+    public String getPlanTags(){return this.planTags;}
+
+    public void setActivityTags(String activityTags){this.activityTags = activityTags;}
+
+    public String getActivityTags(){return this.activityTags;}
     @Override
     public String toString() {
         return "UserInfo{" +
@@ -314,6 +344,9 @@ public class UserInfo implements Serializable {
                 "create='" + create + '\'' +
                 "modified='" + modified + '\'' +
                 "ext='" + ext + '\'' +
+                "doingTags='" + doingTags + '\'' +
+                "planTags='" + planTags + '\'' +
+                "activityTags='" + activityTags + '\'' +
             '}';
     }
 
@@ -686,6 +719,42 @@ public class UserInfo implements Serializable {
         private List<String> rightFuzzyExt;
 
         public List<String> getRightFuzzyExt(){return this.rightFuzzyExt;}
+        private List<String> doingTagsList;
+
+        public List<String> getDoingTagsList(){return this.doingTagsList;}
+
+
+        private List<String> fuzzyDoingTags;
+
+        public List<String> getFuzzyDoingTags(){return this.fuzzyDoingTags;}
+
+        private List<String> rightFuzzyDoingTags;
+
+        public List<String> getRightFuzzyDoingTags(){return this.rightFuzzyDoingTags;}
+        private List<String> planTagsList;
+
+        public List<String> getPlanTagsList(){return this.planTagsList;}
+
+
+        private List<String> fuzzyPlanTags;
+
+        public List<String> getFuzzyPlanTags(){return this.fuzzyPlanTags;}
+
+        private List<String> rightFuzzyPlanTags;
+
+        public List<String> getRightFuzzyPlanTags(){return this.rightFuzzyPlanTags;}
+        private List<String> activityTagsList;
+
+        public List<String> getActivityTagsList(){return this.activityTagsList;}
+
+
+        private List<String> fuzzyActivityTags;
+
+        public List<String> getFuzzyActivityTags(){return this.fuzzyActivityTags;}
+
+        private List<String> rightFuzzyActivityTags;
+
+        public List<String> getRightFuzzyActivityTags(){return this.rightFuzzyActivityTags;}
         private QueryBuilder (){
             this.fetchFields = new HashMap<>();
         }
@@ -1860,6 +1929,141 @@ public class UserInfo implements Serializable {
             setFetchFields("excludeFields","ext");
             return this;
         }
+
+        public QueryBuilder fuzzyDoingTags (List<String> fuzzyDoingTags){
+            this.fuzzyDoingTags = fuzzyDoingTags;
+            return this;
+        }
+
+        public QueryBuilder fuzzyDoingTags (String ... fuzzyDoingTags){
+            this.fuzzyDoingTags = solveNullList(fuzzyDoingTags);
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyDoingTags (List<String> rightFuzzyDoingTags){
+            this.rightFuzzyDoingTags = rightFuzzyDoingTags;
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyDoingTags (String ... rightFuzzyDoingTags){
+            this.rightFuzzyDoingTags = solveNullList(rightFuzzyDoingTags);
+            return this;
+        }
+
+        public QueryBuilder doingTags(String doingTags){
+            setDoingTags(doingTags);
+            return this;
+        }
+
+        public QueryBuilder doingTagsList(String ... doingTags){
+            this.doingTagsList = solveNullList(doingTags);
+            return this;
+        }
+
+        public QueryBuilder doingTagsList(List<String> doingTags){
+            this.doingTagsList = doingTags;
+            return this;
+        }
+
+        public QueryBuilder fetchDoingTags(){
+            setFetchFields("fetchFields","doingTags");
+            return this;
+        }
+
+        public QueryBuilder excludeDoingTags(){
+            setFetchFields("excludeFields","doingTags");
+            return this;
+        }
+
+        public QueryBuilder fuzzyPlanTags (List<String> fuzzyPlanTags){
+            this.fuzzyPlanTags = fuzzyPlanTags;
+            return this;
+        }
+
+        public QueryBuilder fuzzyPlanTags (String ... fuzzyPlanTags){
+            this.fuzzyPlanTags = solveNullList(fuzzyPlanTags);
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyPlanTags (List<String> rightFuzzyPlanTags){
+            this.rightFuzzyPlanTags = rightFuzzyPlanTags;
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyPlanTags (String ... rightFuzzyPlanTags){
+            this.rightFuzzyPlanTags = solveNullList(rightFuzzyPlanTags);
+            return this;
+        }
+
+        public QueryBuilder planTags(String planTags){
+            setPlanTags(planTags);
+            return this;
+        }
+
+        public QueryBuilder planTagsList(String ... planTags){
+            this.planTagsList = solveNullList(planTags);
+            return this;
+        }
+
+        public QueryBuilder planTagsList(List<String> planTags){
+            this.planTagsList = planTags;
+            return this;
+        }
+
+        public QueryBuilder fetchPlanTags(){
+            setFetchFields("fetchFields","planTags");
+            return this;
+        }
+
+        public QueryBuilder excludePlanTags(){
+            setFetchFields("excludeFields","planTags");
+            return this;
+        }
+
+        public QueryBuilder fuzzyActivityTags (List<String> fuzzyActivityTags){
+            this.fuzzyActivityTags = fuzzyActivityTags;
+            return this;
+        }
+
+        public QueryBuilder fuzzyActivityTags (String ... fuzzyActivityTags){
+            this.fuzzyActivityTags = solveNullList(fuzzyActivityTags);
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyActivityTags (List<String> rightFuzzyActivityTags){
+            this.rightFuzzyActivityTags = rightFuzzyActivityTags;
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyActivityTags (String ... rightFuzzyActivityTags){
+            this.rightFuzzyActivityTags = solveNullList(rightFuzzyActivityTags);
+            return this;
+        }
+
+        public QueryBuilder activityTags(String activityTags){
+            setActivityTags(activityTags);
+            return this;
+        }
+
+        public QueryBuilder activityTagsList(String ... activityTags){
+            this.activityTagsList = solveNullList(activityTags);
+            return this;
+        }
+
+        public QueryBuilder activityTagsList(List<String> activityTags){
+            this.activityTagsList = activityTags;
+            return this;
+        }
+
+        public QueryBuilder fetchActivityTags(){
+            setFetchFields("fetchFields","activityTags");
+            return this;
+        }
+
+        public QueryBuilder excludeActivityTags(){
+            setFetchFields("excludeFields","activityTags");
+            return this;
+        }
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -2227,6 +2431,42 @@ public class UserInfo implements Serializable {
         private List<String> rightFuzzyExt;
 
         public List<String> getRightFuzzyExt(){return this.rightFuzzyExt;}
+        private List<String> doingTagsList;
+
+        public List<String> getDoingTagsList(){return this.doingTagsList;}
+
+
+        private List<String> fuzzyDoingTags;
+
+        public List<String> getFuzzyDoingTags(){return this.fuzzyDoingTags;}
+
+        private List<String> rightFuzzyDoingTags;
+
+        public List<String> getRightFuzzyDoingTags(){return this.rightFuzzyDoingTags;}
+        private List<String> planTagsList;
+
+        public List<String> getPlanTagsList(){return this.planTagsList;}
+
+
+        private List<String> fuzzyPlanTags;
+
+        public List<String> getFuzzyPlanTags(){return this.fuzzyPlanTags;}
+
+        private List<String> rightFuzzyPlanTags;
+
+        public List<String> getRightFuzzyPlanTags(){return this.rightFuzzyPlanTags;}
+        private List<String> activityTagsList;
+
+        public List<String> getActivityTagsList(){return this.activityTagsList;}
+
+
+        private List<String> fuzzyActivityTags;
+
+        public List<String> getFuzzyActivityTags(){return this.fuzzyActivityTags;}
+
+        private List<String> rightFuzzyActivityTags;
+
+        public List<String> getRightFuzzyActivityTags(){return this.rightFuzzyActivityTags;}
 
         public ConditionBuilder idBetWeen(Long idSt,Long idEd){
             this.idSt = idSt;
@@ -2994,6 +3234,96 @@ public class UserInfo implements Serializable {
             return this;
         }
 
+        public ConditionBuilder fuzzyDoingTags (List<String> fuzzyDoingTags){
+            this.fuzzyDoingTags = fuzzyDoingTags;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyDoingTags (String ... fuzzyDoingTags){
+            this.fuzzyDoingTags = solveNullList(fuzzyDoingTags);
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyDoingTags (List<String> rightFuzzyDoingTags){
+            this.rightFuzzyDoingTags = rightFuzzyDoingTags;
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyDoingTags (String ... rightFuzzyDoingTags){
+            this.rightFuzzyDoingTags = solveNullList(rightFuzzyDoingTags);
+            return this;
+        }
+
+        public ConditionBuilder doingTagsList(String ... doingTags){
+            this.doingTagsList = solveNullList(doingTags);
+            return this;
+        }
+
+        public ConditionBuilder doingTagsList(List<String> doingTags){
+            this.doingTagsList = doingTags;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyPlanTags (List<String> fuzzyPlanTags){
+            this.fuzzyPlanTags = fuzzyPlanTags;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyPlanTags (String ... fuzzyPlanTags){
+            this.fuzzyPlanTags = solveNullList(fuzzyPlanTags);
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyPlanTags (List<String> rightFuzzyPlanTags){
+            this.rightFuzzyPlanTags = rightFuzzyPlanTags;
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyPlanTags (String ... rightFuzzyPlanTags){
+            this.rightFuzzyPlanTags = solveNullList(rightFuzzyPlanTags);
+            return this;
+        }
+
+        public ConditionBuilder planTagsList(String ... planTags){
+            this.planTagsList = solveNullList(planTags);
+            return this;
+        }
+
+        public ConditionBuilder planTagsList(List<String> planTags){
+            this.planTagsList = planTags;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyActivityTags (List<String> fuzzyActivityTags){
+            this.fuzzyActivityTags = fuzzyActivityTags;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyActivityTags (String ... fuzzyActivityTags){
+            this.fuzzyActivityTags = solveNullList(fuzzyActivityTags);
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyActivityTags (List<String> rightFuzzyActivityTags){
+            this.rightFuzzyActivityTags = rightFuzzyActivityTags;
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyActivityTags (String ... rightFuzzyActivityTags){
+            this.rightFuzzyActivityTags = solveNullList(rightFuzzyActivityTags);
+            return this;
+        }
+
+        public ConditionBuilder activityTagsList(String ... activityTags){
+            this.activityTagsList = solveNullList(activityTags);
+            return this;
+        }
+
+        public ConditionBuilder activityTagsList(List<String> activityTags){
+            this.activityTagsList = activityTags;
+            return this;
+        }
+
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -3124,6 +3454,18 @@ public class UserInfo implements Serializable {
         }
         public Builder ext(String ext){
             this.obj.setExt(ext);
+            return this;
+        }
+        public Builder doingTags(String doingTags){
+            this.obj.setDoingTags(doingTags);
+            return this;
+        }
+        public Builder planTags(String planTags){
+            this.obj.setPlanTags(planTags);
+            return this;
+        }
+        public Builder activityTags(String activityTags){
+            this.obj.setActivityTags(activityTags);
             return this;
         }
         public UserInfo build(){return obj;}
