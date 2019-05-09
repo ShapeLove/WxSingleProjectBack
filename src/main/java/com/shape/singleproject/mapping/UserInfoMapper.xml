@@ -3,6 +3,68 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shape.singleproject.mapping.UserInfoMapper">
 
+    <resultMap type="com.shape.singleproject.dto.UserInfo" id="UserInfoMap">
+        <result property="id" column="id"/>
+        <result property="openId" column="open_id"/>
+        <result property="name" column="name"/>
+        <result property="yn" column="yn"/>
+        <result property="constellation" column="constellation"/>
+        <result property="birthday" column="birthday"/>
+        <result property="education" column="education"/>
+        <result property="sex" column="sex"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="hobby" column="hobby"/>
+        <result property="height" column="height"/>
+        <result property="weight" column="weight"/>
+        <result property="selfEvaluation" column="self_evaluation"/>
+        <result property="workArea" column="work_area"/>
+        <result property="wantSay" column="want_say"/>
+        <result property="family" column="family"/>
+        <result property="standFriend" column="stand_friend"/>
+        <result property="photos" column="photos"/>
+        <result property="department" column="department"/>
+        <result property="status" column="status"/>
+        <result property="rejectReason" column="reject_reason"/>
+        <result property="dongdong" column="dongdong"/>
+        <result property="wxNumber" column="wx_number"/>
+        <result property="create" column="create"/>
+        <result property="modified" column="modified"/>
+        <result property="ext" column="ext"/>
+        <result property="doingTags" column="doing_tags"/>
+        <result property="planTags" column="plan_tags"/>
+        <result property="activityTags" column="activity_tags"/>
+    </resultMap>
+
+    <sql id="userResult">
+        <trim suffixOverrides=",">
+            `open_id`,
+            `name`,
+            `constellation`,
+            `birthday`,
+            `education`,
+            `sex`+0 as `sex`,
+            `province`,
+            `city`,
+            `hobby`,
+            `height`,
+            `weight`,
+            `self_evaluation`,
+            `work_area`,
+            `want_say`,
+            `family`,
+            `stand_friend`,
+            `photos`,
+            `department`,
+            `create`,
+            `modified`,
+            `ext`,
+            `doing_tags`,
+            `plan_tags`,
+            `activity_tags`,
+        </trim>
+    </sql>
+
     <update id="updateUserInfoBasicByOpenId">
         UPDATE `user_info`
         SET
@@ -97,4 +159,20 @@
             `open_id` = #{openId} and
         </trim>
     </update>
+
+    <select id="selectUserInfoByCreateAndModified" resultMap="UserInfoMap">
+        select
+        <include refid="userResult"></include>
+        from `user_info`
+        <trim prefix="where" suffixOverrides="and | or">
+          <if test="createGt != null">
+              `create` >= #{createGt} and
+          </if>
+          <if test="createLt != null">
+              `create` &lt;= #{createLt} and
+          </if>
+        </trim>
+        order by `create` desc, `modified` desc
+        limit #{size}
+    </select>
 </mapper>

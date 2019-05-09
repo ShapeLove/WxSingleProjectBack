@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.shape.singleproject.constant.EducationEnum;
 import com.shape.singleproject.constant.SexEnum;
+import com.shape.singleproject.domain.UserInfoScrollQuery;
 import com.shape.singleproject.dto.ExceptInfo;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.interceptor.TimeAop;
@@ -44,6 +45,8 @@ public class TestUserInfoService {
     @Autowired
     private HttpUtil httpUtil;
 
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
     @Test
     public void testInsertUser() throws InterruptedException {
@@ -101,5 +104,13 @@ public class TestUserInfoService {
     @Test
     public void testQuerySecret() {
 //        System.out.println(JSON.toJSONString(userInfoService.queryUserInfoSecretByOpen("kjdigujk2341414")));
+    }
+
+    @Test
+    public void testUserInfoScrollQuery() {
+        UserInfoScrollQuery userInfoScrollQuery = new UserInfoScrollQuery();
+        userInfoScrollQuery.setCreateLt(LocalDateTime.now());
+        List<UserInfo> list = userInfoMapper.selectUserInfoByCreateAndModified(userInfoScrollQuery);
+        System.out.println(JSON.toJSONString(list));
     }
 }
