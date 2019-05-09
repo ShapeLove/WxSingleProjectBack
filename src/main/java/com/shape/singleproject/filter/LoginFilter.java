@@ -13,16 +13,19 @@ import java.io.IOException;
 
 /**
  * 登陆拦截器
+ * 进入Controller之前先走拦截器的preHandle
  */
 public class LoginFilter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+        // 取自定义的seesionId 如果有的话 查找缓存里是否有Openid（每个微信用户唯一的）数据 没有就是没登陆
         String sessionId = request.getHeader("sessionId");
         boolean flag = true;
         if (StringUtils.isEmpty(sessionId)) {
             flag = false;
         }else {
+
             OpenidValue openidValue = CacheUtil.getOpenIdValue(sessionId);
             if (null == openidValue) {
                 flag = false;

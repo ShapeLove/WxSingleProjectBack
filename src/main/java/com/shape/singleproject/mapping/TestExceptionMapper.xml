@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 建立一个接口  让java和xml存在映射关系 -->
+<mapper namespace="com.shape.singleproject.mapping.TestExceptionMapper">
+
+    <!-- 创建java和数据库的实体映射  property内是java类字段 column是数据库记录字段 -->
+    <resultMap id="exceptInfoMap" type="com.shape.singleproject.dto.TestExceptInfo">
+        <result property="id" column="id"/>
+        <result property="invocationName" column="invocation_name"/>
+        <result property="exceptNum" column="except_num"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+        <result property="lastExceptMessage" column="last_except_message"/>
+    </resultMap>
+
+    <select id="queryExceptInfoList" resultMap="exceptInfoMap">
+        select
+        id,invocation_name,except_num,create_time,modified_time,last_except_message
+        from `except_info`
+    </select>
+
+</mapper>

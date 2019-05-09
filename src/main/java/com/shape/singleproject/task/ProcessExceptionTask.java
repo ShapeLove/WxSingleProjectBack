@@ -29,14 +29,15 @@ public class ProcessExceptionTask {
     @Autowired
     private EmailSendService emailSendService;
 
-//    @Scheduled(cron = "0 0/10 * * * ?")
-//    public void processExcept() {
-//        List<ExceptInfo> result = exceptService.queryOverTimeExcept();
-//        log.info("ProcessExceptionTask.processExcept result:{}, time:{}", JSON.toJSONString(result), LocalDateTime.now());
-//        if (!CollectionUtils.isEmpty(result)) {
-//            result.stream().forEach(exceptInfo -> emailSendService.sendEmail(exceptInfo));
-//        }
-//    }
+    // corn表达式 表示每10分钟执行一次
+    @Scheduled(cron = "0 0/10 * * * ?")
+    public void processExcept() {
+        List<ExceptInfo> result = exceptService.queryOverTimeExcept();
+        log.info("ProcessExceptionTask.processExcept result:{}, time:{}", JSON.toJSONString(result), LocalDateTime.now());
+        if (!CollectionUtils.isEmpty(result)) {
+            result.stream().forEach(exceptInfo -> emailSendService.sendEmail(exceptInfo));
+        }
+    }
 
     @Scheduled(fixedRate = 1000)
     public void processTask() {
