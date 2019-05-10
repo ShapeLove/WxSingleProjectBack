@@ -113,4 +113,9 @@ public class TestUserInfoService {
         List<UserInfo> list = userInfoMapper.selectUserInfoByCreateAndModified(userInfoScrollQuery);
         System.out.println(JSON.toJSONString(list));
     }
+    @Test
+    public void testQueryRondom() {
+        List<UserInfo> userInfoList = userInfoMapper.queryUserInfoRandom();
+        System.out.println(JSON.toJSONString(userInfoList));
+    }
 }

@@ -175,4 +175,11 @@
         order by `create` desc, `modified` desc
         limit #{size}
     </select>
+
+    <select id="queryUserInfoRandom" resultMap="UserInfoMap">
+        select id
+        from user_info where id >=
+        ((select MAX(id) from user_info where `status` = 1 and yn = 0) - (select MIN(id) from user_info where `status` = 1 and yn = 0))  * RAND() +
+        (select MIN(id) from user_info where `status` = 1 and yn = 0) limit 1;
+    </select>
 </mapper>
