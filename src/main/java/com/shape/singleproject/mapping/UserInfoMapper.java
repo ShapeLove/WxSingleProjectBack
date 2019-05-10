@@ -1,6 +1,7 @@
 package com.shape.singleproject.mapping;
 
 
+import com.shape.singleproject.domain.UserInfoRandomQuery;
 import com.shape.singleproject.domain.UserInfoScrollQuery;
 import org.apache.ibatis.annotations.Mapper;
 import com.shape.singleproject.dto.UserInfo;
@@ -20,5 +21,5 @@ public interface UserInfoMapper extends UserInfoBaseMapper{
 
     List<UserInfo> selectUserInfoByCreateAndModified(UserInfoScrollQuery userInfoScrollQuery);
 
-    List<UserInfo> queryUserInfoRandom();
+    List<UserInfo> queryUserInfoRandom(UserInfoRandomQuery userInfoRandomQuery);
 }

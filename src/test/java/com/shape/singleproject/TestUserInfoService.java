@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.shape.singleproject.constant.EducationEnum;
 import com.shape.singleproject.constant.SexEnum;
+import com.shape.singleproject.domain.UserInfoRandomQuery;
 import com.shape.singleproject.domain.UserInfoScrollQuery;
 import com.shape.singleproject.dto.ExceptInfo;
 import com.shape.singleproject.dto.UserInfo;
@@ -115,7 +116,9 @@ public class TestUserInfoService {
     }
     @Test
     public void testQueryRondom() {
-        List<UserInfo> userInfoList = userInfoMapper.queryUserInfoRandom();
+        UserInfoRandomQuery userInfoRandomQuery = new UserInfoRandomQuery();
+        userInfoRandomQuery.setDoingTags(1);
+        List<UserInfo> userInfoList = userInfoMapper.queryUserInfoRandom(userInfoRandomQuery);
         System.out.println(JSON.toJSONString(userInfoList));
     }
 }

@@ -65,6 +65,21 @@
         </trim>
     </sql>
 
+    <sql id="randomSelectWhereConditions">
+        <trim prefix="where" suffixOverrides="and | or">
+            `status` = 1 and yn = 0 and
+            <if test="doingTags != null">
+                `doing_tags` = #{doingTags} and
+            </if>
+            <if test="planTags != null">
+                `plan_tags` = #{planTags} and
+            </if>
+            <if test="activityTags != null">
+                `activity_tags` = #{activityTags} and
+            </if>
+        </trim>
+    </sql>
+
     <update id="updateUserInfoBasicByOpenId">
         UPDATE `user_info`
         SET
@@ -179,7 +194,8 @@
     <select id="queryUserInfoRandom" resultMap="UserInfoMap">
         select id
         from user_info where id >=
-        ((select MAX(id) from user_info where `status` = 1 and yn = 0) - (select MIN(id) from user_info where `status` = 1 and yn = 0))  * RAND() +
-        (select MIN(id) from user_info where `status` = 1 and yn = 0) limit 1;
+        (
+        (select MAX(id) from user_info <include refid="randomSelectWhereConditions"></include>) - (select MIN(id) from user_info <include refid="randomSelectWhereConditions"></include>))  * RAND() +
+        (select MIN(id) from user_info <include refid="randomSelectWhereConditions"></include>) limit #{size};
     </select>
 </mapper>
