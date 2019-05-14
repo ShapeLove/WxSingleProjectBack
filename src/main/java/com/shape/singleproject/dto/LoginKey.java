@@ -1,4 +1,7 @@
 package com.shape.singleproject.dto;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,9 +11,11 @@ import java.util.List;
 *
 *  @author author
 */
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginKey implements Serializable {
 
-    private static final long serialVersionUID = 1550312572357L;
+    private static final long serialVersionUID = 1557804725561L;
 
 
     /**
@@ -38,15 +43,12 @@ public class LoginKey implements Serializable {
     */
     private String sessionKey;
 
-    public LoginKey() {
-    }
+    /**
+    * NOW()
+    * isNullAble:1,defaultVal:CURRENT_TIMESTAMP
+    */
+    private java.time.LocalDateTime create;
 
-    public LoginKey(Integer id, String customKey, String openId, String sessionKey) {
-        this.id = id;
-        this.customKey = customKey;
-        this.openId = openId;
-        this.sessionKey = sessionKey;
-    }
 
     public void setId(Integer id){this.id = id;}
 
@@ -63,6 +65,10 @@ public class LoginKey implements Serializable {
     public void setSessionKey(String sessionKey){this.sessionKey = sessionKey;}
 
     public String getSessionKey(){return this.sessionKey;}
+
+    public void setCreate(java.time.LocalDateTime create){this.create = create;}
+
+    public java.time.LocalDateTime getCreate(){return this.create;}
     @Override
     public String toString() {
         return "LoginKey{" +
@@ -70,6 +76,7 @@ public class LoginKey implements Serializable {
                 "customKey='" + customKey + '\'' +
                 "openId='" + openId + '\'' +
                 "sessionKey='" + sessionKey + '\'' +
+                "create='" + create + '\'' +
             '}';
     }
 
@@ -166,6 +173,18 @@ public class LoginKey implements Serializable {
         private List<String> rightFuzzySessionKey;
 
         public List<String> getRightFuzzySessionKey(){return this.rightFuzzySessionKey;}
+        private List<java.time.LocalDateTime> createList;
+
+        public List<java.time.LocalDateTime> getCreateList(){return this.createList;}
+
+        private java.time.LocalDateTime createSt;
+
+        private java.time.LocalDateTime createEd;
+
+        public java.time.LocalDateTime getCreateSt(){return this.createSt;}
+
+        public java.time.LocalDateTime getCreateEd(){return this.createEd;}
+
         private QueryBuilder (){
             this.fetchFields = new HashMap<>();
         }
@@ -345,6 +364,47 @@ public class LoginKey implements Serializable {
             setFetchFields("excludeFields","sessionKey");
             return this;
         }
+
+        public QueryBuilder createBetWeen(java.time.LocalDateTime createSt,java.time.LocalDateTime createEd){
+            this.createSt = createSt;
+            this.createEd = createEd;
+            return this;
+        }
+
+        public QueryBuilder createGreaterEqThan(java.time.LocalDateTime createSt){
+            this.createSt = createSt;
+            return this;
+        }
+        public QueryBuilder createLessEqThan(java.time.LocalDateTime createEd){
+            this.createEd = createEd;
+            return this;
+        }
+
+
+        public QueryBuilder create(java.time.LocalDateTime create){
+            setCreate(create);
+            return this;
+        }
+
+        public QueryBuilder createList(java.time.LocalDateTime ... create){
+            this.createList = solveNullList(create);
+            return this;
+        }
+
+        public QueryBuilder createList(List<java.time.LocalDateTime> create){
+            this.createList = create;
+            return this;
+        }
+
+        public QueryBuilder fetchCreate(){
+            setFetchFields("fetchFields","create");
+            return this;
+        }
+
+        public QueryBuilder excludeCreate(){
+            setFetchFields("excludeFields","create");
+            return this;
+        }
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -436,6 +496,18 @@ public class LoginKey implements Serializable {
         private List<String> rightFuzzySessionKey;
 
         public List<String> getRightFuzzySessionKey(){return this.rightFuzzySessionKey;}
+        private List<java.time.LocalDateTime> createList;
+
+        public List<java.time.LocalDateTime> getCreateList(){return this.createList;}
+
+        private java.time.LocalDateTime createSt;
+
+        private java.time.LocalDateTime createEd;
+
+        public java.time.LocalDateTime getCreateSt(){return this.createSt;}
+
+        public java.time.LocalDateTime getCreateEd(){return this.createEd;}
+
 
         public ConditionBuilder idBetWeen(Integer idSt,Integer idEd){
             this.idSt = idSt;
@@ -553,6 +625,32 @@ public class LoginKey implements Serializable {
             return this;
         }
 
+        public ConditionBuilder createBetWeen(java.time.LocalDateTime createSt,java.time.LocalDateTime createEd){
+            this.createSt = createSt;
+            this.createEd = createEd;
+            return this;
+        }
+
+        public ConditionBuilder createGreaterEqThan(java.time.LocalDateTime createSt){
+            this.createSt = createSt;
+            return this;
+        }
+        public ConditionBuilder createLessEqThan(java.time.LocalDateTime createEd){
+            this.createEd = createEd;
+            return this;
+        }
+
+
+        public ConditionBuilder createList(java.time.LocalDateTime ... create){
+            this.createList = solveNullList(create);
+            return this;
+        }
+
+        public ConditionBuilder createList(List<java.time.LocalDateTime> create){
+            this.createList = create;
+            return this;
+        }
+
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -591,6 +689,10 @@ public class LoginKey implements Serializable {
         }
         public Builder sessionKey(String sessionKey){
             this.obj.setSessionKey(sessionKey);
+            return this;
+        }
+        public Builder create(java.time.LocalDateTime create){
+            this.obj.setCreate(create);
             return this;
         }
         public LoginKey build(){return obj;}

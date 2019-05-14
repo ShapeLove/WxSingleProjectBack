@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shape.singleproject.mapping.AdminUserMapper">
+<mapper namespace="com.shape.singleproject.mapping.TagsMapper">
 
-    <delete id="deleteAdminUser">
-    delete from `admin_user`
-    where `id`=#{id}
+  <delete id="deleteTag">
+    delete from `tags`
+    where `id`=#{tagId}
   </delete>
 </mapper>
