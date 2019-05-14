@@ -13,4 +13,9 @@ public class Result<T> {
         result.setMessage("服务器繁忙，请稍后再试试！");
         return result;
     }
+    public static Result successResult(){
+        Result result = new Result();
+        result.setSuccess(true);
+        return result;
+    }
 }
