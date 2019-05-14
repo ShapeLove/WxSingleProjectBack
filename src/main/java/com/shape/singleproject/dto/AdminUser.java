@@ -61,7 +61,7 @@ public class AdminUser implements Serializable {
                 "name='" + name + '\'' +
                 "level='" + level + '\'' +
                 "create='" + create + '\'' +
-            '}';
+                '}';
     }
 
     public static Builder Build(){return new Builder();}
