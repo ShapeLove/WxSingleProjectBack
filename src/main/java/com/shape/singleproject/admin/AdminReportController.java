@@ -25,8 +25,8 @@ public class AdminReportController {
     }
 
     @PostMapping("/handleReport")
-    public Result handleReport(@RequestBody Integer reportId, @RequestBody Integer status) {
-        reportService.handleReport(reportId, status);
+    public Result handleReport(@RequestBody Report report) {
+        reportService.handleReport(report.getId(), report.getStatus());
         return Result.successResult();
     }
 

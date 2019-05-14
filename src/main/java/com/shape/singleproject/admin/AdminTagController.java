@@ -30,8 +30,8 @@ public class AdminTagController {
     }
 
     @PostMapping("/deleteTag")
-    public Result deleteTag(@RequestBody Integer id, @RequestBody Integer tagType) {
-        tagService.deleteTag(id, tagType);
+    public Result deleteTag(@RequestBody Tags tag) {
+        tagService.deleteTag(tag.getId(), tag.getTagType());
         return Result.successResult();
     }
 

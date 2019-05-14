@@ -3,7 +3,9 @@ package com.shape.singleproject.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.shape.singleproject.domain.OpenidValue;
+import com.shape.singleproject.dto.Report;
 import com.shape.singleproject.dto.UserInfo;
+import com.shape.singleproject.service.ReportService;
 import com.shape.singleproject.service.UserInfoService;
 import com.shape.singleproject.util.WebUtil;
 import com.shape.singleproject.vo.PageResult;
@@ -12,6 +14,7 @@ import com.shape.singleproject.vo.UserInfoQuery;
 import com.shape.singleproject.vo.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private ReportService reportService;
 
 
     @PostMapping("/queryByPage")
@@ -199,6 +205,19 @@ public class UserController {
                     .orElse(null);
         } catch (Exception e) {
             log.error("UserController.getUserSecurity error openId:{}", openId, e);
+            return null;
+        }
+    }
+
+    @PostMapping("/report")
+    public Result report(@RequestBody Report report) {
+        try {
+            String currentOpenId = WebUtil.getCurrentUserOpenId();
+            report.setOpenId(currentOpenId);
+            reportService.addReport(report);
+            return Result.successResult();
+        } catch (Exception e) {
+            log.error("UserController.report error report:{}", JSON.toJSONString(report), e);
             return null;
         }
     }

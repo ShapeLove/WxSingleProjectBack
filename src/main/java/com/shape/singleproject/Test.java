@@ -14,7 +14,7 @@ public class Test {
     }
 
     public static void one() {
-        System.out.println(JSON.toJSONString(new UserInfo(), SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullBooleanAsFalse, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullStringAsEmpty));
+        System.out.println(JSON.toJSONString(new Report(), SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullBooleanAsFalse, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullStringAsEmpty));
     }
 
     public static void result() {
