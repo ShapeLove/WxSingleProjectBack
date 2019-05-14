@@ -7,4 +7,5 @@ public class ReportPageQuery extends BaseQuery {
     private String openId;
     private String reportOpenId;
     private Integer status;
+    private Integer reportType;
 }

@@ -45,6 +45,9 @@ public class ReportService {
         if (null != reportPageQuery.getStatus()) {
             queryBuilder.status(reportPageQuery.getStatus());
         }
+        if (null != reportPageQuery.getReportType()) {
+            queryBuilder.reportType(reportPageQuery.getReportType());
+        }
 
         List<Report> reportList = reportMapper.queryReport(queryBuilder.build());
         PageInfo pageInfo = new PageInfo(reportList);

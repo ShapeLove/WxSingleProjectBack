@@ -9,10 +9,7 @@ import com.shape.singleproject.service.admin.AdminUserService;
 import com.shape.singleproject.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -71,7 +68,7 @@ public class AdminUserController {
         }
     }
 
-    @PostMapping("/attentionList")
+    @GetMapping("/attentionList")
     public PageResult<AttentionInfo> attentionList(@RequestBody AttentionQuery attentionQuery) {
         return attentionService.queryAttentionPageByPage(attentionQuery);
     }

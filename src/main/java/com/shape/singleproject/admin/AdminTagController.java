@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/admin/report")
+@RequestMapping("/admin/tag")
 @Slf4j
 public class AdminTagController {
 

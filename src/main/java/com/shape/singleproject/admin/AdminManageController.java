@@ -19,7 +19,7 @@ public class AdminManageController {
     @Resource
     private AdminRootService adminRootService;
 
-    @PostMapping("/pageList")
+    @GetMapping("/pageList")
     public PageResult<AdminUser> pageList(@RequestBody AdminUserPageQuery adminUserPageQuery) {
         return adminRootService.queryAdminUserByPage(adminUserPageQuery);
     }
