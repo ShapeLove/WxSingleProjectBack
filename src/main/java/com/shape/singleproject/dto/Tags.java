@@ -8,9 +8,9 @@ import java.util.List;
 *
 *  @author author
 */
-public class AdminUser implements Serializable {
+public class Tags implements Serializable {
 
-    private static final long serialVersionUID = 1557800141345L;
+    private static final long serialVersionUID = 1557806351455L;
 
 
     /**
@@ -21,57 +21,46 @@ public class AdminUser implements Serializable {
     private Integer id;
 
     /**
-    * 管理员名字
+    * 
     * isNullAble:0
     */
-    private String name;
+    private String tagName;
 
     /**
-    * 管理员级别
-    * isNullAble:0
-    */
-    private Integer level;
-
-    /**
-    * 创建时间
+    * 
     * isNullAble:0,defaultVal:0000-00-00 00:00:00
     */
     private java.time.LocalDateTime create;
 
     /**
-    * 管理员密码
+    * 
     * isNullAble:0
     */
-    private String passwd;
+    private Integer tagType;
 
 
     public void setId(Integer id){this.id = id;}
 
     public Integer getId(){return this.id;}
 
-    public void setName(String name){this.name = name;}
+    public void setTagName(String tagName){this.tagName = tagName;}
 
-    public String getName(){return this.name;}
-
-    public void setLevel(Integer level){this.level = level;}
-
-    public Integer getLevel(){return this.level;}
+    public String getTagName(){return this.tagName;}
 
     public void setCreate(java.time.LocalDateTime create){this.create = create;}
 
     public java.time.LocalDateTime getCreate(){return this.create;}
 
-    public void setPasswd(String passwd){this.passwd = passwd;}
+    public void setTagType(Integer tagType){this.tagType = tagType;}
 
-    public String getPasswd(){return this.passwd;}
+    public Integer getTagType(){return this.tagType;}
     @Override
     public String toString() {
-        return "AdminUser{" +
+        return "Tags{" +
                 "id='" + id + '\'' +
-                "name='" + name + '\'' +
-                "level='" + level + '\'' +
+                "tagName='" + tagName + '\'' +
                 "create='" + create + '\'' +
-                "passwd='" + passwd + '\'' +
+                "tagType='" + tagType + '\'' +
             '}';
     }
 
@@ -85,16 +74,16 @@ public class AdminUser implements Serializable {
 
     public static class UpdateBuilder {
 
-        private AdminUser set;
+        private Tags set;
 
         private ConditionBuilder where;
 
-        public UpdateBuilder set(AdminUser set){
+        public UpdateBuilder set(Tags set){
             this.set = set;
             return this;
         }
 
-        public AdminUser getSet(){
+        public Tags getSet(){
             return this.set;
         }
 
@@ -112,7 +101,7 @@ public class AdminUser implements Serializable {
         }
     }
 
-    public static class QueryBuilder extends AdminUser{
+    public static class QueryBuilder extends Tags{
         /**
         * 需要返回的列
         */
@@ -132,30 +121,18 @@ public class AdminUser implements Serializable {
 
         public Integer getIdEd(){return this.idEd;}
 
-        private List<String> nameList;
+        private List<String> tagNameList;
 
-        public List<String> getNameList(){return this.nameList;}
+        public List<String> getTagNameList(){return this.tagNameList;}
 
 
-        private List<String> fuzzyName;
+        private List<String> fuzzyTagName;
 
-        public List<String> getFuzzyName(){return this.fuzzyName;}
+        public List<String> getFuzzyTagName(){return this.fuzzyTagName;}
 
-        private List<String> rightFuzzyName;
+        private List<String> rightFuzzyTagName;
 
-        public List<String> getRightFuzzyName(){return this.rightFuzzyName;}
-        private List<Integer> levelList;
-
-        public List<Integer> getLevelList(){return this.levelList;}
-
-        private Integer levelSt;
-
-        private Integer levelEd;
-
-        public Integer getLevelSt(){return this.levelSt;}
-
-        public Integer getLevelEd(){return this.levelEd;}
-
+        public List<String> getRightFuzzyTagName(){return this.rightFuzzyTagName;}
         private List<java.time.LocalDateTime> createList;
 
         public List<java.time.LocalDateTime> getCreateList(){return this.createList;}
@@ -168,18 +145,18 @@ public class AdminUser implements Serializable {
 
         public java.time.LocalDateTime getCreateEd(){return this.createEd;}
 
-        private List<String> passwdList;
+        private List<Integer> tagTypeList;
 
-        public List<String> getPasswdList(){return this.passwdList;}
+        public List<Integer> getTagTypeList(){return this.tagTypeList;}
 
+        private Integer tagTypeSt;
 
-        private List<String> fuzzyPasswd;
+        private Integer tagTypeEd;
 
-        public List<String> getFuzzyPasswd(){return this.fuzzyPasswd;}
+        public Integer getTagTypeSt(){return this.tagTypeSt;}
 
-        private List<String> rightFuzzyPasswd;
+        public Integer getTagTypeEd(){return this.tagTypeEd;}
 
-        public List<String> getRightFuzzyPasswd(){return this.rightFuzzyPasswd;}
         private QueryBuilder (){
             this.fetchFields = new HashMap<>();
         }
@@ -225,89 +202,48 @@ public class AdminUser implements Serializable {
             return this;
         }
 
-        public QueryBuilder fuzzyName (List<String> fuzzyName){
-            this.fuzzyName = fuzzyName;
+        public QueryBuilder fuzzyTagName (List<String> fuzzyTagName){
+            this.fuzzyTagName = fuzzyTagName;
             return this;
         }
 
-        public QueryBuilder fuzzyName (String ... fuzzyName){
-            this.fuzzyName = solveNullList(fuzzyName);
+        public QueryBuilder fuzzyTagName (String ... fuzzyTagName){
+            this.fuzzyTagName = solveNullList(fuzzyTagName);
             return this;
         }
 
-        public QueryBuilder rightFuzzyName (List<String> rightFuzzyName){
-            this.rightFuzzyName = rightFuzzyName;
+        public QueryBuilder rightFuzzyTagName (List<String> rightFuzzyTagName){
+            this.rightFuzzyTagName = rightFuzzyTagName;
             return this;
         }
 
-        public QueryBuilder rightFuzzyName (String ... rightFuzzyName){
-            this.rightFuzzyName = solveNullList(rightFuzzyName);
+        public QueryBuilder rightFuzzyTagName (String ... rightFuzzyTagName){
+            this.rightFuzzyTagName = solveNullList(rightFuzzyTagName);
             return this;
         }
 
-        public QueryBuilder name(String name){
-            setName(name);
+        public QueryBuilder tagName(String tagName){
+            setTagName(tagName);
             return this;
         }
 
-        public QueryBuilder nameList(String ... name){
-            this.nameList = solveNullList(name);
+        public QueryBuilder tagNameList(String ... tagName){
+            this.tagNameList = solveNullList(tagName);
             return this;
         }
 
-        public QueryBuilder nameList(List<String> name){
-            this.nameList = name;
+        public QueryBuilder tagNameList(List<String> tagName){
+            this.tagNameList = tagName;
             return this;
         }
 
-        public QueryBuilder fetchName(){
-            setFetchFields("fetchFields","name");
+        public QueryBuilder fetchTagName(){
+            setFetchFields("fetchFields","tagName");
             return this;
         }
 
-        public QueryBuilder excludeName(){
-            setFetchFields("excludeFields","name");
-            return this;
-        }
-
-        public QueryBuilder levelBetWeen(Integer levelSt,Integer levelEd){
-            this.levelSt = levelSt;
-            this.levelEd = levelEd;
-            return this;
-        }
-
-        public QueryBuilder levelGreaterEqThan(Integer levelSt){
-            this.levelSt = levelSt;
-            return this;
-        }
-        public QueryBuilder levelLessEqThan(Integer levelEd){
-            this.levelEd = levelEd;
-            return this;
-        }
-
-
-        public QueryBuilder level(Integer level){
-            setLevel(level);
-            return this;
-        }
-
-        public QueryBuilder levelList(Integer ... level){
-            this.levelList = solveNullList(level);
-            return this;
-        }
-
-        public QueryBuilder levelList(List<Integer> level){
-            this.levelList = level;
-            return this;
-        }
-
-        public QueryBuilder fetchLevel(){
-            setFetchFields("fetchFields","level");
-            return this;
-        }
-
-        public QueryBuilder excludeLevel(){
-            setFetchFields("excludeFields","level");
+        public QueryBuilder excludeTagName(){
+            setFetchFields("excludeFields","tagName");
             return this;
         }
 
@@ -352,48 +288,44 @@ public class AdminUser implements Serializable {
             return this;
         }
 
-        public QueryBuilder fuzzyPasswd (List<String> fuzzyPasswd){
-            this.fuzzyPasswd = fuzzyPasswd;
+        public QueryBuilder tagTypeBetWeen(Integer tagTypeSt,Integer tagTypeEd){
+            this.tagTypeSt = tagTypeSt;
+            this.tagTypeEd = tagTypeEd;
             return this;
         }
 
-        public QueryBuilder fuzzyPasswd (String ... fuzzyPasswd){
-            this.fuzzyPasswd = solveNullList(fuzzyPasswd);
+        public QueryBuilder tagTypeGreaterEqThan(Integer tagTypeSt){
+            this.tagTypeSt = tagTypeSt;
+            return this;
+        }
+        public QueryBuilder tagTypeLessEqThan(Integer tagTypeEd){
+            this.tagTypeEd = tagTypeEd;
             return this;
         }
 
-        public QueryBuilder rightFuzzyPasswd (List<String> rightFuzzyPasswd){
-            this.rightFuzzyPasswd = rightFuzzyPasswd;
+
+        public QueryBuilder tagType(Integer tagType){
+            setTagType(tagType);
             return this;
         }
 
-        public QueryBuilder rightFuzzyPasswd (String ... rightFuzzyPasswd){
-            this.rightFuzzyPasswd = solveNullList(rightFuzzyPasswd);
+        public QueryBuilder tagTypeList(Integer ... tagType){
+            this.tagTypeList = solveNullList(tagType);
             return this;
         }
 
-        public QueryBuilder passwd(String passwd){
-            setPasswd(passwd);
+        public QueryBuilder tagTypeList(List<Integer> tagType){
+            this.tagTypeList = tagType;
             return this;
         }
 
-        public QueryBuilder passwdList(String ... passwd){
-            this.passwdList = solveNullList(passwd);
+        public QueryBuilder fetchTagType(){
+            setFetchFields("fetchFields","tagType");
             return this;
         }
 
-        public QueryBuilder passwdList(List<String> passwd){
-            this.passwdList = passwd;
-            return this;
-        }
-
-        public QueryBuilder fetchPasswd(){
-            setFetchFields("fetchFields","passwd");
-            return this;
-        }
-
-        public QueryBuilder excludePasswd(){
-            setFetchFields("excludeFields","passwd");
+        public QueryBuilder excludeTagType(){
+            setFetchFields("excludeFields","tagType");
             return this;
         }
         private <T>List<T> solveNullList(T ... objs){
@@ -434,7 +366,7 @@ public class AdminUser implements Serializable {
             this.fetchFields.put(key,fields);
         }
 
-        public AdminUser build(){return this;}
+        public Tags build(){return this;}
     }
 
 
@@ -451,30 +383,18 @@ public class AdminUser implements Serializable {
 
         public Integer getIdEd(){return this.idEd;}
 
-        private List<String> nameList;
+        private List<String> tagNameList;
 
-        public List<String> getNameList(){return this.nameList;}
+        public List<String> getTagNameList(){return this.tagNameList;}
 
 
-        private List<String> fuzzyName;
+        private List<String> fuzzyTagName;
 
-        public List<String> getFuzzyName(){return this.fuzzyName;}
+        public List<String> getFuzzyTagName(){return this.fuzzyTagName;}
 
-        private List<String> rightFuzzyName;
+        private List<String> rightFuzzyTagName;
 
-        public List<String> getRightFuzzyName(){return this.rightFuzzyName;}
-        private List<Integer> levelList;
-
-        public List<Integer> getLevelList(){return this.levelList;}
-
-        private Integer levelSt;
-
-        private Integer levelEd;
-
-        public Integer getLevelSt(){return this.levelSt;}
-
-        public Integer getLevelEd(){return this.levelEd;}
-
+        public List<String> getRightFuzzyTagName(){return this.rightFuzzyTagName;}
         private List<java.time.LocalDateTime> createList;
 
         public List<java.time.LocalDateTime> getCreateList(){return this.createList;}
@@ -487,18 +407,18 @@ public class AdminUser implements Serializable {
 
         public java.time.LocalDateTime getCreateEd(){return this.createEd;}
 
-        private List<String> passwdList;
+        private List<Integer> tagTypeList;
 
-        public List<String> getPasswdList(){return this.passwdList;}
+        public List<Integer> getTagTypeList(){return this.tagTypeList;}
 
+        private Integer tagTypeSt;
 
-        private List<String> fuzzyPasswd;
+        private Integer tagTypeEd;
 
-        public List<String> getFuzzyPasswd(){return this.fuzzyPasswd;}
+        public Integer getTagTypeSt(){return this.tagTypeSt;}
 
-        private List<String> rightFuzzyPasswd;
+        public Integer getTagTypeEd(){return this.tagTypeEd;}
 
-        public List<String> getRightFuzzyPasswd(){return this.rightFuzzyPasswd;}
 
         public ConditionBuilder idBetWeen(Integer idSt,Integer idEd){
             this.idSt = idSt;
@@ -526,59 +446,33 @@ public class AdminUser implements Serializable {
             return this;
         }
 
-        public ConditionBuilder fuzzyName (List<String> fuzzyName){
-            this.fuzzyName = fuzzyName;
+        public ConditionBuilder fuzzyTagName (List<String> fuzzyTagName){
+            this.fuzzyTagName = fuzzyTagName;
             return this;
         }
 
-        public ConditionBuilder fuzzyName (String ... fuzzyName){
-            this.fuzzyName = solveNullList(fuzzyName);
+        public ConditionBuilder fuzzyTagName (String ... fuzzyTagName){
+            this.fuzzyTagName = solveNullList(fuzzyTagName);
             return this;
         }
 
-        public ConditionBuilder rightFuzzyName (List<String> rightFuzzyName){
-            this.rightFuzzyName = rightFuzzyName;
+        public ConditionBuilder rightFuzzyTagName (List<String> rightFuzzyTagName){
+            this.rightFuzzyTagName = rightFuzzyTagName;
             return this;
         }
 
-        public ConditionBuilder rightFuzzyName (String ... rightFuzzyName){
-            this.rightFuzzyName = solveNullList(rightFuzzyName);
+        public ConditionBuilder rightFuzzyTagName (String ... rightFuzzyTagName){
+            this.rightFuzzyTagName = solveNullList(rightFuzzyTagName);
             return this;
         }
 
-        public ConditionBuilder nameList(String ... name){
-            this.nameList = solveNullList(name);
+        public ConditionBuilder tagNameList(String ... tagName){
+            this.tagNameList = solveNullList(tagName);
             return this;
         }
 
-        public ConditionBuilder nameList(List<String> name){
-            this.nameList = name;
-            return this;
-        }
-
-        public ConditionBuilder levelBetWeen(Integer levelSt,Integer levelEd){
-            this.levelSt = levelSt;
-            this.levelEd = levelEd;
-            return this;
-        }
-
-        public ConditionBuilder levelGreaterEqThan(Integer levelSt){
-            this.levelSt = levelSt;
-            return this;
-        }
-        public ConditionBuilder levelLessEqThan(Integer levelEd){
-            this.levelEd = levelEd;
-            return this;
-        }
-
-
-        public ConditionBuilder levelList(Integer ... level){
-            this.levelList = solveNullList(level);
-            return this;
-        }
-
-        public ConditionBuilder levelList(List<Integer> level){
-            this.levelList = level;
+        public ConditionBuilder tagNameList(List<String> tagName){
+            this.tagNameList = tagName;
             return this;
         }
 
@@ -608,33 +502,29 @@ public class AdminUser implements Serializable {
             return this;
         }
 
-        public ConditionBuilder fuzzyPasswd (List<String> fuzzyPasswd){
-            this.fuzzyPasswd = fuzzyPasswd;
+        public ConditionBuilder tagTypeBetWeen(Integer tagTypeSt,Integer tagTypeEd){
+            this.tagTypeSt = tagTypeSt;
+            this.tagTypeEd = tagTypeEd;
             return this;
         }
 
-        public ConditionBuilder fuzzyPasswd (String ... fuzzyPasswd){
-            this.fuzzyPasswd = solveNullList(fuzzyPasswd);
+        public ConditionBuilder tagTypeGreaterEqThan(Integer tagTypeSt){
+            this.tagTypeSt = tagTypeSt;
+            return this;
+        }
+        public ConditionBuilder tagTypeLessEqThan(Integer tagTypeEd){
+            this.tagTypeEd = tagTypeEd;
             return this;
         }
 
-        public ConditionBuilder rightFuzzyPasswd (List<String> rightFuzzyPasswd){
-            this.rightFuzzyPasswd = rightFuzzyPasswd;
+
+        public ConditionBuilder tagTypeList(Integer ... tagType){
+            this.tagTypeList = solveNullList(tagType);
             return this;
         }
 
-        public ConditionBuilder rightFuzzyPasswd (String ... rightFuzzyPasswd){
-            this.rightFuzzyPasswd = solveNullList(rightFuzzyPasswd);
-            return this;
-        }
-
-        public ConditionBuilder passwdList(String ... passwd){
-            this.passwdList = solveNullList(passwd);
-            return this;
-        }
-
-        public ConditionBuilder passwdList(List<String> passwd){
-            this.passwdList = passwd;
+        public ConditionBuilder tagTypeList(List<Integer> tagType){
+            this.tagTypeList = tagType;
             return this;
         }
 
@@ -656,33 +546,29 @@ public class AdminUser implements Serializable {
 
     public static class Builder {
 
-        private AdminUser obj;
+        private Tags obj;
 
         public Builder(){
-            this.obj = new AdminUser();
+            this.obj = new Tags();
         }
 
         public Builder id(Integer id){
             this.obj.setId(id);
             return this;
         }
-        public Builder name(String name){
-            this.obj.setName(name);
-            return this;
-        }
-        public Builder level(Integer level){
-            this.obj.setLevel(level);
+        public Builder tagName(String tagName){
+            this.obj.setTagName(tagName);
             return this;
         }
         public Builder create(java.time.LocalDateTime create){
             this.obj.setCreate(create);
             return this;
         }
-        public Builder passwd(String passwd){
-            this.obj.setPasswd(passwd);
+        public Builder tagType(Integer tagType){
+            this.obj.setTagType(tagType);
             return this;
         }
-        public AdminUser build(){return obj;}
+        public Tags build(){return obj;}
     }
 
 }

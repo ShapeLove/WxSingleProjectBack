@@ -1,17 +1,17 @@
 package com.shape.singleproject.admin;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
+import com.shape.singleproject.dto.AttentionInfo;
 import com.shape.singleproject.dto.UserInfo;
+import com.shape.singleproject.service.AttentionService;
 import com.shape.singleproject.service.admin.AdminUserService;
-import com.shape.singleproject.vo.AdminUserQuery;
-import com.shape.singleproject.vo.PageResult;
-import com.shape.singleproject.vo.Result;
+import com.shape.singleproject.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/user")
@@ -20,6 +20,9 @@ public class AdminUserController {
 
     @Autowired
     private AdminUserService adminUserService;
+
+    @Autowired
+    private AttentionService attentionService;
 
     /**
      * 批量查询用户信息
@@ -63,5 +66,10 @@ public class AdminUserController {
             log.error("AdminController.getOnlineUsers error", e);
             return 0;
         }
+    }
+
+    @GetMapping("/attentionList")
+    public PageResult<AttentionInfo> attentionList(@RequestBody AttentionQuery attentionQuery) {
+        return attentionService.queryAttentionPageByPage(attentionQuery);
     }
 }

@@ -84,7 +84,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
            LoginKey existLoginKey = loginKeyMapper.queryLoginKeyLimit1(LoginKey.QueryBuild().openId(openId));
            if (existLoginKey == null) {
                // 没有的话就插入一条
-               LoginKey newKey = new LoginKey(null,sessionId, openId, sessionKey);
+               LoginKey newKey = new LoginKey(null,sessionId, openId, sessionKey, LocalDateTime.now());
                loginKeyMapper.insertLoginKey(newKey);
            }else {
                existLoginKey.setCustomKey(sessionId);
@@ -157,6 +157,9 @@ public class UserInfoService implements ApplicationEventPublisherAware {
                                         .fetchProvince()
                                         .fetchCity()
                                         .fetchSex()
+                                        .fetchActivityTags()
+                                        .fetchDoingTags()
+                                        .fetchPlanTags()
                                         .yn(0)
                                         .status(UserStatusEnum.SUCCESS.getStatus()).build());
         userInfoList = userInfoList.stream().filter(userInfo -> !userInfo.getOpenId().equals(openId)).collect(Collectors.toList());
@@ -203,6 +206,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
         if (null != attentionInfo && null != selfAttentionInfo) {
             return userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild()
                     .fetchWxNumber()
+                    .fetchDongdong()
                     .openId(openid)
                     .yn(0));
         }else {

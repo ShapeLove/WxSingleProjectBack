@@ -144,6 +144,15 @@
             <if test="ext != null and ext!=''">
                 `ext` = #{ext},
             </if>
+            <if test="doingTags != null">
+                `doing_tags` = #{doingTags},
+            </if>
+            <if test="planTags != null">
+                `plan_tags` = #{planTags},
+            </if>
+            <if test="activityTags != null">
+                `activity_tags` = #{activityTags},
+            </if>
         </trim>
         WHERE
         <trim suffixOverrides="and">
@@ -192,7 +201,7 @@
     </select>
 
     <select id="queryUserInfoRandom" resultMap="UserInfoMap">
-        select id
+        select <include refid="userResult"></include>
         from user_info where id >=
         (
         (select MAX(id) from user_info <include refid="randomSelectWhereConditions"></include>) - (select MIN(id) from user_info <include refid="randomSelectWhereConditions"></include>))  * RAND() +

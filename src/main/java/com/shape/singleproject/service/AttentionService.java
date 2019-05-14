@@ -13,6 +13,7 @@ import com.shape.singleproject.mapping.AttentionInfoMapper;
 import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.vo.AttentionInfoVo;
 import com.shape.singleproject.vo.AttentionQuery;
+import com.shape.singleproject.vo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -96,6 +97,37 @@ public class AttentionService {
                         }).collect(Collectors.toList())
                 )
                 .orElse(Lists.newArrayList());
+    }
+
+    /**
+     * 批量获取关注信息
+     * @param attentionQuery
+     * @return
+     */
+    public PageResult<AttentionInfo> queryAttentionPageByPage(AttentionQuery attentionQuery) {
+
+        PageHelper.startPage(attentionQuery.getPageIndex(), attentionQuery.getPageSize());
+        AttentionInfo.QueryBuilder queryBuilder = AttentionInfo.QueryBuild();
+
+        if (Optional.ofNullable(attentionQuery)
+                .map(AttentionQuery::getAttentionOpenId).isPresent()) {
+            queryBuilder.attentionOpenid(attentionQuery.getAttentionOpenId());
+        }
+
+        if (Optional.ofNullable(attentionQuery)
+                .map(AttentionQuery::getToAttentionOpenId).isPresent()) {
+            queryBuilder.toAttentionOpenid(attentionQuery.getToAttentionOpenId());
+        }
+
+        List<AttentionInfo> attentionInfos = attentionInfoMapper.queryAttentionInfo(queryBuilder.build());
+
+        PageInfo<AttentionInfo> pageInfo = new PageInfo(attentionInfos);
+
+        return PageResult.build()
+                .setDataList(pageInfo.getList())
+                .setTotalPage(pageInfo.getPages())
+                .setTotalCount(pageInfo.getTotal())
+                .setSuccess(true);
     }
 
     /**

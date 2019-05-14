@@ -1,8 +1,13 @@
 package com.shape.singleproject.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.shape.singleproject.dto.AdminUser;
 import com.shape.singleproject.dto.ExceptInfo;
 import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.ExceptInfoMapper;
+import com.shape.singleproject.vo.ExceptPageQuery;
+import com.shape.singleproject.vo.PageResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,5 +69,25 @@ public class ExceptService {
             emailSendService.sendEmailForExcept("ExceptService.queryOverTimeExcept", e.getMessage());
             return null;
         }
+    }
+
+    public PageResult<ExceptInfo> queryExceptInfoPage(ExceptPageQuery exceptPageQuery) {
+        PageHelper.startPage(exceptPageQuery.getPageIndex(), exceptPageQuery.getPageSize());
+        ExceptInfo.QueryBuilder queryBuilder = ExceptInfo.QueryBuild();
+        queryBuilder.fetchAll();
+        if (!StringUtils.isEmpty(exceptPageQuery.getInvocationName())) {
+            queryBuilder.fuzzyInvocationName(exceptPageQuery.getInvocationName());
+        }
+        List<ExceptInfo> exceptInfos = exceptInfoMapper.queryExceptInfo(queryBuilder.build());
+        PageInfo pageInfo = new PageInfo(exceptInfos);
+        return PageResult.build()
+                .setDataList(pageInfo.getList())
+                .setTotalPage(pageInfo.getPages())
+                .setTotalCount(pageInfo.getTotal())
+                .setSuccess(true);
+    }
+
+    public void deleteExceptInfo(Integer id) {
+        exceptInfoMapper.deleteExceptInfo(id);
     }
 }

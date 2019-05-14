@@ -10,7 +10,7 @@ import java.util.List;
 */
 public class UserInfo implements Serializable {
 
-    private static final long serialVersionUID = 1557403934812L;
+    private static final long serialVersionUID = 1557804906538L;
 
 
     /**
@@ -180,19 +180,19 @@ public class UserInfo implements Serializable {
     * 正在做标签
     * isNullAble:1
     */
-    private String doingTags;
+    private Integer doingTags;
 
     /**
     * 打算做标签
     * isNullAble:1
     */
-    private String planTags;
+    private Integer planTags;
 
     /**
     * 活动标签
     * isNullAble:1
     */
-    private String activityTags;
+    private Integer activityTags;
 
 
     public void setId(Long id){this.id = id;}
@@ -303,17 +303,17 @@ public class UserInfo implements Serializable {
 
     public String getExt(){return this.ext;}
 
-    public void setDoingTags(String doingTags){this.doingTags = doingTags;}
+    public void setDoingTags(Integer doingTags){this.doingTags = doingTags;}
 
-    public String getDoingTags(){return this.doingTags;}
+    public Integer getDoingTags(){return this.doingTags;}
 
-    public void setPlanTags(String planTags){this.planTags = planTags;}
+    public void setPlanTags(Integer planTags){this.planTags = planTags;}
 
-    public String getPlanTags(){return this.planTags;}
+    public Integer getPlanTags(){return this.planTags;}
 
-    public void setActivityTags(String activityTags){this.activityTags = activityTags;}
+    public void setActivityTags(Integer activityTags){this.activityTags = activityTags;}
 
-    public String getActivityTags(){return this.activityTags;}
+    public Integer getActivityTags(){return this.activityTags;}
     @Override
     public String toString() {
         return "UserInfo{" +
@@ -719,42 +719,42 @@ public class UserInfo implements Serializable {
         private List<String> rightFuzzyExt;
 
         public List<String> getRightFuzzyExt(){return this.rightFuzzyExt;}
-        private List<String> doingTagsList;
+        private List<Integer> doingTagsList;
 
-        public List<String> getDoingTagsList(){return this.doingTagsList;}
+        public List<Integer> getDoingTagsList(){return this.doingTagsList;}
 
+        private Integer doingTagsSt;
 
-        private List<String> fuzzyDoingTags;
+        private Integer doingTagsEd;
 
-        public List<String> getFuzzyDoingTags(){return this.fuzzyDoingTags;}
+        public Integer getDoingTagsSt(){return this.doingTagsSt;}
 
-        private List<String> rightFuzzyDoingTags;
+        public Integer getDoingTagsEd(){return this.doingTagsEd;}
 
-        public List<String> getRightFuzzyDoingTags(){return this.rightFuzzyDoingTags;}
-        private List<String> planTagsList;
+        private List<Integer> planTagsList;
 
-        public List<String> getPlanTagsList(){return this.planTagsList;}
+        public List<Integer> getPlanTagsList(){return this.planTagsList;}
 
+        private Integer planTagsSt;
 
-        private List<String> fuzzyPlanTags;
+        private Integer planTagsEd;
 
-        public List<String> getFuzzyPlanTags(){return this.fuzzyPlanTags;}
+        public Integer getPlanTagsSt(){return this.planTagsSt;}
 
-        private List<String> rightFuzzyPlanTags;
+        public Integer getPlanTagsEd(){return this.planTagsEd;}
 
-        public List<String> getRightFuzzyPlanTags(){return this.rightFuzzyPlanTags;}
-        private List<String> activityTagsList;
+        private List<Integer> activityTagsList;
 
-        public List<String> getActivityTagsList(){return this.activityTagsList;}
+        public List<Integer> getActivityTagsList(){return this.activityTagsList;}
 
+        private Integer activityTagsSt;
 
-        private List<String> fuzzyActivityTags;
+        private Integer activityTagsEd;
 
-        public List<String> getFuzzyActivityTags(){return this.fuzzyActivityTags;}
+        public Integer getActivityTagsSt(){return this.activityTagsSt;}
 
-        private List<String> rightFuzzyActivityTags;
+        public Integer getActivityTagsEd(){return this.activityTagsEd;}
 
-        public List<String> getRightFuzzyActivityTags(){return this.rightFuzzyActivityTags;}
         private QueryBuilder (){
             this.fetchFields = new HashMap<>();
         }
@@ -1930,37 +1930,33 @@ public class UserInfo implements Serializable {
             return this;
         }
 
-        public QueryBuilder fuzzyDoingTags (List<String> fuzzyDoingTags){
-            this.fuzzyDoingTags = fuzzyDoingTags;
+        public QueryBuilder doingTagsBetWeen(Integer doingTagsSt,Integer doingTagsEd){
+            this.doingTagsSt = doingTagsSt;
+            this.doingTagsEd = doingTagsEd;
             return this;
         }
 
-        public QueryBuilder fuzzyDoingTags (String ... fuzzyDoingTags){
-            this.fuzzyDoingTags = solveNullList(fuzzyDoingTags);
+        public QueryBuilder doingTagsGreaterEqThan(Integer doingTagsSt){
+            this.doingTagsSt = doingTagsSt;
+            return this;
+        }
+        public QueryBuilder doingTagsLessEqThan(Integer doingTagsEd){
+            this.doingTagsEd = doingTagsEd;
             return this;
         }
 
-        public QueryBuilder rightFuzzyDoingTags (List<String> rightFuzzyDoingTags){
-            this.rightFuzzyDoingTags = rightFuzzyDoingTags;
-            return this;
-        }
 
-        public QueryBuilder rightFuzzyDoingTags (String ... rightFuzzyDoingTags){
-            this.rightFuzzyDoingTags = solveNullList(rightFuzzyDoingTags);
-            return this;
-        }
-
-        public QueryBuilder doingTags(String doingTags){
+        public QueryBuilder doingTags(Integer doingTags){
             setDoingTags(doingTags);
             return this;
         }
 
-        public QueryBuilder doingTagsList(String ... doingTags){
+        public QueryBuilder doingTagsList(Integer ... doingTags){
             this.doingTagsList = solveNullList(doingTags);
             return this;
         }
 
-        public QueryBuilder doingTagsList(List<String> doingTags){
+        public QueryBuilder doingTagsList(List<Integer> doingTags){
             this.doingTagsList = doingTags;
             return this;
         }
@@ -1975,37 +1971,33 @@ public class UserInfo implements Serializable {
             return this;
         }
 
-        public QueryBuilder fuzzyPlanTags (List<String> fuzzyPlanTags){
-            this.fuzzyPlanTags = fuzzyPlanTags;
+        public QueryBuilder planTagsBetWeen(Integer planTagsSt,Integer planTagsEd){
+            this.planTagsSt = planTagsSt;
+            this.planTagsEd = planTagsEd;
             return this;
         }
 
-        public QueryBuilder fuzzyPlanTags (String ... fuzzyPlanTags){
-            this.fuzzyPlanTags = solveNullList(fuzzyPlanTags);
+        public QueryBuilder planTagsGreaterEqThan(Integer planTagsSt){
+            this.planTagsSt = planTagsSt;
+            return this;
+        }
+        public QueryBuilder planTagsLessEqThan(Integer planTagsEd){
+            this.planTagsEd = planTagsEd;
             return this;
         }
 
-        public QueryBuilder rightFuzzyPlanTags (List<String> rightFuzzyPlanTags){
-            this.rightFuzzyPlanTags = rightFuzzyPlanTags;
-            return this;
-        }
 
-        public QueryBuilder rightFuzzyPlanTags (String ... rightFuzzyPlanTags){
-            this.rightFuzzyPlanTags = solveNullList(rightFuzzyPlanTags);
-            return this;
-        }
-
-        public QueryBuilder planTags(String planTags){
+        public QueryBuilder planTags(Integer planTags){
             setPlanTags(planTags);
             return this;
         }
 
-        public QueryBuilder planTagsList(String ... planTags){
+        public QueryBuilder planTagsList(Integer ... planTags){
             this.planTagsList = solveNullList(planTags);
             return this;
         }
 
-        public QueryBuilder planTagsList(List<String> planTags){
+        public QueryBuilder planTagsList(List<Integer> planTags){
             this.planTagsList = planTags;
             return this;
         }
@@ -2020,37 +2012,33 @@ public class UserInfo implements Serializable {
             return this;
         }
 
-        public QueryBuilder fuzzyActivityTags (List<String> fuzzyActivityTags){
-            this.fuzzyActivityTags = fuzzyActivityTags;
+        public QueryBuilder activityTagsBetWeen(Integer activityTagsSt,Integer activityTagsEd){
+            this.activityTagsSt = activityTagsSt;
+            this.activityTagsEd = activityTagsEd;
             return this;
         }
 
-        public QueryBuilder fuzzyActivityTags (String ... fuzzyActivityTags){
-            this.fuzzyActivityTags = solveNullList(fuzzyActivityTags);
+        public QueryBuilder activityTagsGreaterEqThan(Integer activityTagsSt){
+            this.activityTagsSt = activityTagsSt;
+            return this;
+        }
+        public QueryBuilder activityTagsLessEqThan(Integer activityTagsEd){
+            this.activityTagsEd = activityTagsEd;
             return this;
         }
 
-        public QueryBuilder rightFuzzyActivityTags (List<String> rightFuzzyActivityTags){
-            this.rightFuzzyActivityTags = rightFuzzyActivityTags;
-            return this;
-        }
 
-        public QueryBuilder rightFuzzyActivityTags (String ... rightFuzzyActivityTags){
-            this.rightFuzzyActivityTags = solveNullList(rightFuzzyActivityTags);
-            return this;
-        }
-
-        public QueryBuilder activityTags(String activityTags){
+        public QueryBuilder activityTags(Integer activityTags){
             setActivityTags(activityTags);
             return this;
         }
 
-        public QueryBuilder activityTagsList(String ... activityTags){
+        public QueryBuilder activityTagsList(Integer ... activityTags){
             this.activityTagsList = solveNullList(activityTags);
             return this;
         }
 
-        public QueryBuilder activityTagsList(List<String> activityTags){
+        public QueryBuilder activityTagsList(List<Integer> activityTags){
             this.activityTagsList = activityTags;
             return this;
         }
@@ -2431,42 +2419,42 @@ public class UserInfo implements Serializable {
         private List<String> rightFuzzyExt;
 
         public List<String> getRightFuzzyExt(){return this.rightFuzzyExt;}
-        private List<String> doingTagsList;
+        private List<Integer> doingTagsList;
 
-        public List<String> getDoingTagsList(){return this.doingTagsList;}
+        public List<Integer> getDoingTagsList(){return this.doingTagsList;}
 
+        private Integer doingTagsSt;
 
-        private List<String> fuzzyDoingTags;
+        private Integer doingTagsEd;
 
-        public List<String> getFuzzyDoingTags(){return this.fuzzyDoingTags;}
+        public Integer getDoingTagsSt(){return this.doingTagsSt;}
 
-        private List<String> rightFuzzyDoingTags;
+        public Integer getDoingTagsEd(){return this.doingTagsEd;}
 
-        public List<String> getRightFuzzyDoingTags(){return this.rightFuzzyDoingTags;}
-        private List<String> planTagsList;
+        private List<Integer> planTagsList;
 
-        public List<String> getPlanTagsList(){return this.planTagsList;}
+        public List<Integer> getPlanTagsList(){return this.planTagsList;}
 
+        private Integer planTagsSt;
 
-        private List<String> fuzzyPlanTags;
+        private Integer planTagsEd;
 
-        public List<String> getFuzzyPlanTags(){return this.fuzzyPlanTags;}
+        public Integer getPlanTagsSt(){return this.planTagsSt;}
 
-        private List<String> rightFuzzyPlanTags;
+        public Integer getPlanTagsEd(){return this.planTagsEd;}
 
-        public List<String> getRightFuzzyPlanTags(){return this.rightFuzzyPlanTags;}
-        private List<String> activityTagsList;
+        private List<Integer> activityTagsList;
 
-        public List<String> getActivityTagsList(){return this.activityTagsList;}
+        public List<Integer> getActivityTagsList(){return this.activityTagsList;}
 
+        private Integer activityTagsSt;
 
-        private List<String> fuzzyActivityTags;
+        private Integer activityTagsEd;
 
-        public List<String> getFuzzyActivityTags(){return this.fuzzyActivityTags;}
+        public Integer getActivityTagsSt(){return this.activityTagsSt;}
 
-        private List<String> rightFuzzyActivityTags;
+        public Integer getActivityTagsEd(){return this.activityTagsEd;}
 
-        public List<String> getRightFuzzyActivityTags(){return this.rightFuzzyActivityTags;}
 
         public ConditionBuilder idBetWeen(Long idSt,Long idEd){
             this.idSt = idSt;
@@ -3234,92 +3222,80 @@ public class UserInfo implements Serializable {
             return this;
         }
 
-        public ConditionBuilder fuzzyDoingTags (List<String> fuzzyDoingTags){
-            this.fuzzyDoingTags = fuzzyDoingTags;
+        public ConditionBuilder doingTagsBetWeen(Integer doingTagsSt,Integer doingTagsEd){
+            this.doingTagsSt = doingTagsSt;
+            this.doingTagsEd = doingTagsEd;
             return this;
         }
 
-        public ConditionBuilder fuzzyDoingTags (String ... fuzzyDoingTags){
-            this.fuzzyDoingTags = solveNullList(fuzzyDoingTags);
+        public ConditionBuilder doingTagsGreaterEqThan(Integer doingTagsSt){
+            this.doingTagsSt = doingTagsSt;
+            return this;
+        }
+        public ConditionBuilder doingTagsLessEqThan(Integer doingTagsEd){
+            this.doingTagsEd = doingTagsEd;
             return this;
         }
 
-        public ConditionBuilder rightFuzzyDoingTags (List<String> rightFuzzyDoingTags){
-            this.rightFuzzyDoingTags = rightFuzzyDoingTags;
-            return this;
-        }
 
-        public ConditionBuilder rightFuzzyDoingTags (String ... rightFuzzyDoingTags){
-            this.rightFuzzyDoingTags = solveNullList(rightFuzzyDoingTags);
-            return this;
-        }
-
-        public ConditionBuilder doingTagsList(String ... doingTags){
+        public ConditionBuilder doingTagsList(Integer ... doingTags){
             this.doingTagsList = solveNullList(doingTags);
             return this;
         }
 
-        public ConditionBuilder doingTagsList(List<String> doingTags){
+        public ConditionBuilder doingTagsList(List<Integer> doingTags){
             this.doingTagsList = doingTags;
             return this;
         }
 
-        public ConditionBuilder fuzzyPlanTags (List<String> fuzzyPlanTags){
-            this.fuzzyPlanTags = fuzzyPlanTags;
+        public ConditionBuilder planTagsBetWeen(Integer planTagsSt,Integer planTagsEd){
+            this.planTagsSt = planTagsSt;
+            this.planTagsEd = planTagsEd;
             return this;
         }
 
-        public ConditionBuilder fuzzyPlanTags (String ... fuzzyPlanTags){
-            this.fuzzyPlanTags = solveNullList(fuzzyPlanTags);
+        public ConditionBuilder planTagsGreaterEqThan(Integer planTagsSt){
+            this.planTagsSt = planTagsSt;
+            return this;
+        }
+        public ConditionBuilder planTagsLessEqThan(Integer planTagsEd){
+            this.planTagsEd = planTagsEd;
             return this;
         }
 
-        public ConditionBuilder rightFuzzyPlanTags (List<String> rightFuzzyPlanTags){
-            this.rightFuzzyPlanTags = rightFuzzyPlanTags;
-            return this;
-        }
 
-        public ConditionBuilder rightFuzzyPlanTags (String ... rightFuzzyPlanTags){
-            this.rightFuzzyPlanTags = solveNullList(rightFuzzyPlanTags);
-            return this;
-        }
-
-        public ConditionBuilder planTagsList(String ... planTags){
+        public ConditionBuilder planTagsList(Integer ... planTags){
             this.planTagsList = solveNullList(planTags);
             return this;
         }
 
-        public ConditionBuilder planTagsList(List<String> planTags){
+        public ConditionBuilder planTagsList(List<Integer> planTags){
             this.planTagsList = planTags;
             return this;
         }
 
-        public ConditionBuilder fuzzyActivityTags (List<String> fuzzyActivityTags){
-            this.fuzzyActivityTags = fuzzyActivityTags;
+        public ConditionBuilder activityTagsBetWeen(Integer activityTagsSt,Integer activityTagsEd){
+            this.activityTagsSt = activityTagsSt;
+            this.activityTagsEd = activityTagsEd;
             return this;
         }
 
-        public ConditionBuilder fuzzyActivityTags (String ... fuzzyActivityTags){
-            this.fuzzyActivityTags = solveNullList(fuzzyActivityTags);
+        public ConditionBuilder activityTagsGreaterEqThan(Integer activityTagsSt){
+            this.activityTagsSt = activityTagsSt;
+            return this;
+        }
+        public ConditionBuilder activityTagsLessEqThan(Integer activityTagsEd){
+            this.activityTagsEd = activityTagsEd;
             return this;
         }
 
-        public ConditionBuilder rightFuzzyActivityTags (List<String> rightFuzzyActivityTags){
-            this.rightFuzzyActivityTags = rightFuzzyActivityTags;
-            return this;
-        }
 
-        public ConditionBuilder rightFuzzyActivityTags (String ... rightFuzzyActivityTags){
-            this.rightFuzzyActivityTags = solveNullList(rightFuzzyActivityTags);
-            return this;
-        }
-
-        public ConditionBuilder activityTagsList(String ... activityTags){
+        public ConditionBuilder activityTagsList(Integer ... activityTags){
             this.activityTagsList = solveNullList(activityTags);
             return this;
         }
 
-        public ConditionBuilder activityTagsList(List<String> activityTags){
+        public ConditionBuilder activityTagsList(List<Integer> activityTags){
             this.activityTagsList = activityTags;
             return this;
         }
@@ -3456,15 +3432,15 @@ public class UserInfo implements Serializable {
             this.obj.setExt(ext);
             return this;
         }
-        public Builder doingTags(String doingTags){
+        public Builder doingTags(Integer doingTags){
             this.obj.setDoingTags(doingTags);
             return this;
         }
-        public Builder planTags(String planTags){
+        public Builder planTags(Integer planTags){
             this.obj.setPlanTags(planTags);
             return this;
         }
-        public Builder activityTags(String activityTags){
+        public Builder activityTags(Integer activityTags){
             this.obj.setActivityTags(activityTags);
             return this;
         }

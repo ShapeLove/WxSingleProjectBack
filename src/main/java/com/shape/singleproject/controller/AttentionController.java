@@ -2,10 +2,12 @@ package com.shape.singleproject.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.shape.singleproject.dto.AttentionInfo;
 import com.shape.singleproject.service.AttentionService;
 import com.shape.singleproject.util.WebUtil;
 import com.shape.singleproject.vo.AttentionInfoVo;
 import com.shape.singleproject.vo.AttentionQuery;
+import com.shape.singleproject.vo.PageResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+//小程序端的關注接口
 @RestController
 @RequestMapping("/attention")
 @Slf4j

@@ -282,13 +282,13 @@
             <if test="ext != null and ext!=''">
                 `ext` = #{ext},
             </if>
-            <if test="doingTags != null and doingTags!=''">
+            <if test="doingTags != null">
                 `doing_tags` = #{doingTags},
             </if>
-            <if test="planTags != null and planTags!=''">
+            <if test="planTags != null">
                 `plan_tags` = #{planTags},
             </if>
-            <if test="activityTags != null and activityTags!=''">
+            <if test="activityTags != null">
                 `activity_tags` = #{activityTags},
             </if>
         </trim>
@@ -380,13 +380,13 @@
         <if test="set.ext != null and set.ext!=''">
             `ext` = #{set.ext},
         </if>
-        <if test="set.doingTags != null and set.doingTags!=''">
+        <if test="set.doingTags != null">
             `doing_tags` = #{set.doingTags},
         </if>
-        <if test="set.planTags != null and set.planTags!=''">
+        <if test="set.planTags != null">
             `plan_tags` = #{set.planTags},
         </if>
-        <if test="set.activityTags != null and set.activityTags!=''">
+        <if test="set.activityTags != null">
             `activity_tags` = #{set.activityTags},
         </if>
         </trim>
@@ -849,19 +849,11 @@
                         #{item}
                     </foreach> and
                 </if>
-            <if test ="where.fuzzyDoingTags!=null and where.fuzzyDoingTags.size()>0">
-                (
-                <foreach collection="where.fuzzyDoingTags"  separator="or" item="item">
-                    `Doing_tags` like concat('%',#{item},'%')
-                </foreach>
-                ) and
+            <if test="where.doingTagsSt !=null">
+                `doing_tags` >= #{where.doingTagsSt} and
             </if>
-            <if test ="where.rightFuzzyDoingTags!=null and where.rightFuzzyDoingTags.size()>0">
-                (
-                <foreach collection="where.rightFuzzyDoingTags"  separator="or" item="item">
-                    `Doing_tags` like concat(#{item},'%')
-                </foreach>
-                ) and
+            <if test="where.doingTagsEd!=null">
+                `doing_tags` &lt;= #{where.doingTagsEd} and
             </if>
                 <if test="where.planTagsList != null">
                     `plan_tags` in
@@ -869,19 +861,11 @@
                         #{item}
                     </foreach> and
                 </if>
-            <if test ="where.fuzzyPlanTags!=null and where.fuzzyPlanTags.size()>0">
-                (
-                <foreach collection="where.fuzzyPlanTags"  separator="or" item="item">
-                    `Plan_tags` like concat('%',#{item},'%')
-                </foreach>
-                ) and
+            <if test="where.planTagsSt !=null">
+                `plan_tags` >= #{where.planTagsSt} and
             </if>
-            <if test ="where.rightFuzzyPlanTags!=null and where.rightFuzzyPlanTags.size()>0">
-                (
-                <foreach collection="where.rightFuzzyPlanTags"  separator="or" item="item">
-                    `Plan_tags` like concat(#{item},'%')
-                </foreach>
-                ) and
+            <if test="where.planTagsEd!=null">
+                `plan_tags` &lt;= #{where.planTagsEd} and
             </if>
                 <if test="where.activityTagsList != null">
                     `activity_tags` in
@@ -889,19 +873,11 @@
                         #{item}
                     </foreach> and
                 </if>
-            <if test ="where.fuzzyActivityTags!=null and where.fuzzyActivityTags.size()>0">
-                (
-                <foreach collection="where.fuzzyActivityTags"  separator="or" item="item">
-                    `Activity_tags` like concat('%',#{item},'%')
-                </foreach>
-                ) and
+            <if test="where.activityTagsSt !=null">
+                `activity_tags` >= #{where.activityTagsSt} and
             </if>
-            <if test ="where.rightFuzzyActivityTags!=null and where.rightFuzzyActivityTags.size()>0">
-                (
-                <foreach collection="where.rightFuzzyActivityTags"  separator="or" item="item">
-                    `Activity_tags` like concat(#{item},'%')
-                </foreach>
-                ) and
+            <if test="where.activityTagsEd!=null">
+                `activity_tags` &lt;= #{where.activityTagsEd} and
             </if>
         </trim>
     </update>
@@ -1027,13 +1003,13 @@
             <if test="ext != null and ext!=''">
                 `ext` = #{ext} and
             </if>
-            <if test="doingTags != null and doingTags!=''">
+            <if test="doingTags != null">
                 `doing_tags` = #{doingTags} and
             </if>
-            <if test="planTags != null and planTags!=''">
+            <if test="planTags != null">
                 `plan_tags` = #{planTags} and
             </if>
-            <if test="activityTags != null and activityTags!=''">
+            <if test="activityTags != null">
                 `activity_tags` = #{activityTags} and
             </if>
             <if test = "(_parameter instanceof com.shape.singleproject.dto.UserInfo$QueryBuilder) == true">
@@ -1495,19 +1471,11 @@
                         #{item}
                     </foreach> and
                 </if>
-                <if test ="fuzzyDoingTags!=null and fuzzyDoingTags.size()>0">
-                    (
-                    <foreach collection="fuzzyDoingTags"  separator="or" item="item">
-                        `Doing_tags` like concat('%',#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="doingTagsSt !=null">
+                    `doing_tags` >= #{doingTagsSt} and
                 </if>
-                <if test ="rightFuzzyDoingTags!=null and rightFuzzyDoingTags.size()>0">
-                    (
-                    <foreach collection="rightFuzzyDoingTags"  separator="or" item="item">
-                        `Doing_tags` like concat(#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="doingTagsEd!=null">
+                    `doing_tags` &lt;= #{doingTagsEd} and
                 </if>
                 <if test="planTagsList != null">
                     `plan_tags` in
@@ -1515,19 +1483,11 @@
                         #{item}
                     </foreach> and
                 </if>
-                <if test ="fuzzyPlanTags!=null and fuzzyPlanTags.size()>0">
-                    (
-                    <foreach collection="fuzzyPlanTags"  separator="or" item="item">
-                        `Plan_tags` like concat('%',#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="planTagsSt !=null">
+                    `plan_tags` >= #{planTagsSt} and
                 </if>
-                <if test ="rightFuzzyPlanTags!=null and rightFuzzyPlanTags.size()>0">
-                    (
-                    <foreach collection="rightFuzzyPlanTags"  separator="or" item="item">
-                        `Plan_tags` like concat(#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="planTagsEd!=null">
+                    `plan_tags` &lt;= #{planTagsEd} and
                 </if>
                 <if test="activityTagsList != null">
                     `activity_tags` in
@@ -1535,19 +1495,11 @@
                         #{item}
                     </foreach> and
                 </if>
-                <if test ="fuzzyActivityTags!=null and fuzzyActivityTags.size()>0">
-                    (
-                    <foreach collection="fuzzyActivityTags"  separator="or" item="item">
-                        `Activity_tags` like concat('%',#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="activityTagsSt !=null">
+                    `activity_tags` >= #{activityTagsSt} and
                 </if>
-                <if test ="rightFuzzyActivityTags!=null and rightFuzzyActivityTags.size()>0">
-                    (
-                    <foreach collection="rightFuzzyActivityTags"  separator="or" item="item">
-                        `Activity_tags` like concat(#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="activityTagsEd!=null">
+                    `activity_tags` &lt;= #{activityTagsEd} and
                 </if>
             </if>
         </trim>
@@ -1639,13 +1591,13 @@
             <if test="ext != null and ext!=''">
                 `ext` = #{ext} and
             </if>
-            <if test="doingTags != null and doingTags!=''">
+            <if test="doingTags != null">
                 `doing_tags` = #{doingTags} and
             </if>
-            <if test="planTags != null and planTags!=''">
+            <if test="planTags != null">
                 `plan_tags` = #{planTags} and
             </if>
-            <if test="activityTags != null and activityTags!=''">
+            <if test="activityTags != null">
                 `activity_tags` = #{activityTags} and
             </if>
             <if test = "(_parameter instanceof com.shape.singleproject.dto.UserInfo$QueryBuilder) == true">
@@ -2107,19 +2059,11 @@
                             #{item}
                         </foreach> and
                     </if>
-                <if test ="fuzzyDoingTags!=null and fuzzyDoingTags.size()>0">
-                    (
-                    <foreach collection="fuzzyDoingTags"  separator="or" item="item">
-                        `Doing_tags` like concat('%',#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="doingTagsSt !=null">
+                    `doing_tags` >= #{doingTagsSt} and
                 </if>
-                <if test ="rightFuzzyDoingTags!=null and rightFuzzyDoingTags.size()>0">
-                    (
-                    <foreach collection="rightFuzzyDoingTags"  separator="or" item="item">
-                        `Doing_tags` like concat(#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="doingTagsEd!=null">
+                    `doing_tags` &lt;= #{doingTagsEd} and
                 </if>
                     <if test="planTagsList != null">
                         `plan_tags` in
@@ -2127,19 +2071,11 @@
                             #{item}
                         </foreach> and
                     </if>
-                <if test ="fuzzyPlanTags!=null and fuzzyPlanTags.size()>0">
-                    (
-                    <foreach collection="fuzzyPlanTags"  separator="or" item="item">
-                        `Plan_tags` like concat('%',#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="planTagsSt !=null">
+                    `plan_tags` >= #{planTagsSt} and
                 </if>
-                <if test ="rightFuzzyPlanTags!=null and rightFuzzyPlanTags.size()>0">
-                    (
-                    <foreach collection="rightFuzzyPlanTags"  separator="or" item="item">
-                        `Plan_tags` like concat(#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="planTagsEd!=null">
+                    `plan_tags` &lt;= #{planTagsEd} and
                 </if>
                     <if test="activityTagsList != null">
                         `activity_tags` in
@@ -2147,19 +2083,11 @@
                             #{item}
                         </foreach> and
                     </if>
-                <if test ="fuzzyActivityTags!=null and fuzzyActivityTags.size()>0">
-                    (
-                    <foreach collection="fuzzyActivityTags"  separator="or" item="item">
-                        `Activity_tags` like concat('%',#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="activityTagsSt !=null">
+                    `activity_tags` >= #{activityTagsSt} and
                 </if>
-                <if test ="rightFuzzyActivityTags!=null and rightFuzzyActivityTags.size()>0">
-                    (
-                    <foreach collection="rightFuzzyActivityTags"  separator="or" item="item">
-                        `Activity_tags` like concat(#{item},'%')
-                    </foreach>
-                    ) and
+                <if test="activityTagsEd!=null">
+                    `activity_tags` &lt;= #{activityTagsEd} and
                 </if>
             </if>
         </trim>
