@@ -19,6 +19,8 @@ public interface UserInfoMapper extends UserInfoBaseMapper{
 
     int updateUserInfoBasicByOpenId(UserInfo userInfo);
 
+    int updateUserInfoStatusByOpenId(UserInfo userInfo);
+
     List<UserInfo> selectUserInfoByCreateAndModified(UserInfoScrollQuery userInfoScrollQuery);
 
     List<UserInfo> queryUserInfoRandom(UserInfoRandomQuery userInfoRandomQuery);

@@ -1,4 +1,4 @@
-package com.shape.singleproject.service;
+package com.shape.singleproject.service.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,7 +24,7 @@ import java.util.Set;
 @Component
 @LogExceptAop
 @TimeAop
-public class AdminService {
+public class AdminUserService {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
@@ -85,8 +85,16 @@ public class AdminService {
         if (null == userInfo.getStatus()) {
             result.setMessage("修改审核状态不能为空");
             return result;
+        }else {
+            // 如果审核状态是驳回 那么原因也不能为空
+            if (userInfo.getStatus().equals(UserStatusEnum.FAIL.getStatus())) {
+                if (StringUtils.isEmpty(userInfo.getRejectReason())) {
+                    result.setMessage("驳回状态拒绝原因不能为空");
+                    return result;
+                }
+            }
         }
-        userInfoMapper.updateUserInfoBasicByOpenId(userInfo);
+        userInfoMapper.updateUserInfoStatusByOpenId(userInfo);
         result.setSuccess(true);
         return result;
     }
