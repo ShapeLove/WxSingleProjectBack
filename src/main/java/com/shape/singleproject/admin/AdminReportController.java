@@ -19,7 +19,7 @@ public class AdminReportController {
     private ReportService reportService;
 
 
-    @GetMapping("/pageList")
+    @PostMapping("/pageList")
     public PageResult<Report> pageList(@RequestBody ReportPageQuery reportPageQuery) {
         return reportService.queryReportsByPage(reportPageQuery);
     }

@@ -17,7 +17,7 @@ public class AdminExceptController {
     @Resource
     public ExceptService exceptService;
 
-    @GetMapping("/pageList")
+    @PostMapping("/pageList")
     public PageResult<ExceptInfo> pageList(@RequestBody ExceptPageQuery exceptPageQuery) {
         return exceptService.queryExceptInfoPage(exceptPageQuery);
     }

@@ -18,7 +18,7 @@ public class AdminTagController {
     @Resource
     private TagService tagService;
 
-    @GetMapping("/pageList")
+    @PostMapping("/pageList")
     public PageResult<Tags> pageList(@RequestBody TagPageQuery tagPageQuery) {
         return tagService.queryTagsByPage(tagPageQuery);
     }
