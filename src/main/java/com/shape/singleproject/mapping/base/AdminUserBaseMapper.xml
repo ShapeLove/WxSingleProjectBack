@@ -4,7 +4,7 @@
 <mapper namespace="com.shape.singleproject.mapping.base.AdminUserBaseMapper">
 
 
-    <insert id="insertAdminUser" >
+    <insert id="insertAdminUser"  useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `admin_user`
         (
         <trim suffixOverrides=",">

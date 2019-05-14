@@ -1,5 +1,6 @@
 package com.shape.singleproject.autoconfigure;
 
+import com.shape.singleproject.filter.AdminLoginFilter;
 import com.shape.singleproject.filter.CorsFilter;
 import com.shape.singleproject.filter.LoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         if (enableLoginFilter) {
             registry.addInterceptor(new LoginFilter()).addPathPatterns("/**").excludePathPatterns("/login/**","/except/**","/admin/**","/getAllCache", "/error");
         }
+        registry.addInterceptor(new AdminLoginFilter()).addPathPatterns("/admin/**").excludePathPatterns("/admin/login/**");
     }
 
     @Bean

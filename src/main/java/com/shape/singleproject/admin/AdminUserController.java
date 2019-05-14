@@ -29,7 +29,7 @@ public class AdminUserController {
      * @param adminUserQuery
      * @return
      */
-    @RequestMapping("/list")
+    @PostMapping("/list")
     public PageResult<UserInfo> list(@RequestBody AdminUserQuery adminUserQuery) {
         try {
             return adminUserService.queryUserInfoByPage(adminUserQuery);
@@ -68,7 +68,7 @@ public class AdminUserController {
         }
     }
 
-    @GetMapping("/attentionList")
+    @PostMapping("/attentionList")
     public PageResult<AttentionInfo> attentionList(@RequestBody AttentionQuery attentionQuery) {
         return attentionService.queryAttentionPageByPage(attentionQuery);
     }

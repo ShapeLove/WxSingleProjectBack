@@ -18,7 +18,7 @@ public class AdminTagController {
     @Resource
     private TagService tagService;
 
-    @GetMapping("/pageList")
+    @PostMapping("/pageList")
     public PageResult<Tags> pageList(@RequestBody TagPageQuery tagPageQuery) {
         return tagService.queryTagsByPage(tagPageQuery);
     }
@@ -30,8 +30,8 @@ public class AdminTagController {
     }
 
     @PostMapping("/deleteTag")
-    public Result deleteTag(@RequestBody Integer id, @RequestBody Integer tagType) {
-        tagService.deleteTag(id, tagType);
+    public Result deleteTag(@RequestBody Tags tag) {
+        tagService.deleteTag(tag.getId(), tag.getTagType());
         return Result.successResult();
     }
 

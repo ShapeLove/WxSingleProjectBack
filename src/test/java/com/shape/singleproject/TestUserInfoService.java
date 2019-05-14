@@ -2,8 +2,10 @@ package com.shape.singleproject;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.shape.singleproject.constant.ConstellationEnum;
 import com.shape.singleproject.constant.EducationEnum;
 import com.shape.singleproject.constant.SexEnum;
+import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.domain.UserInfoRandomQuery;
 import com.shape.singleproject.domain.UserInfoScrollQuery;
 import com.shape.singleproject.dto.ExceptInfo;
@@ -14,6 +16,7 @@ import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.service.ExceptService;
 import com.shape.singleproject.service.UserInfoService;
 import com.shape.singleproject.util.HttpUtil;
+import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
@@ -51,27 +54,57 @@ public class TestUserInfoService {
 
     @Test
     public void testInsertUser() throws InterruptedException {
-        List<String> strings = Lists.newArrayList("124123512sdafafs","vcxzxvadsf4352345", "74375658b3d23ce24223bccbb6837a2a");
+//        List<String> strings = Lists.newArrayList("124123512sdafafs","vcxzxvadsf4352345", "74375658b3d23ce24223bccbb6837a2a");
+//        UserInfo userInfo = UserInfo.Build()
+//                .name("灬举个栗子13")
+//                .openId("geryerywer12312346")
+//                .birthday(LocalDate.of(1997, 1, 20))
+//                .education(EducationEnum.BENKE.getCode())
+//                .sex(SexEnum.GIRL.getCode())
+//                .province("黑龙江省")
+//                .city("大庆市")
+//                .workArea("北京市")
+//                .department("商家研发部-商家运营部")
+//                .photos(JSON.toJSONString(strings))
+//                .wxNumber("houxinchao")
+//                .dongdong("houxinchao")
+//                .build();
+//        try {
+////            userInfoService.insertUser(userInfo);
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        new CountDownLatch(1).await();
+        for (int i=0; i< 20; i++) {
+            insertUser("aaf" + i);
+        }
+    }
+
+    private void insertUser(String code) throws InterruptedException {
+
+        List<String> strings = Lists.newArrayList("82cd1673ca9b1c9f7d448dabe617ddf4");
+        OpenidValue openidValue = new OpenidValue();
+        openidValue.setOpenId("dfgsdfhfhrwytrt" + code);
         UserInfo userInfo = UserInfo.Build()
-                .name("灬举个栗子13")
-                .openId("geryerywer12312346")
+                .name("报告大王")
+                .openId("gfdgtrytr")
                 .birthday(LocalDate.of(1997, 1, 20))
                 .education(EducationEnum.BENKE.getCode())
                 .sex(SexEnum.GIRL.getCode())
                 .province("黑龙江省")
-                .city("大庆市")
+                .city("哈尔滨市")
                 .workArea("北京市")
                 .department("商家研发部-商家运营部")
                 .photos(JSON.toJSONString(strings))
-                .wxNumber("houxinchao")
-                .dongdong("houxinchao")
+                .wxNumber("dawangnihao")
+                .dongdong("dawangnihao")
+                .constellation(ConstellationEnum.JINNIU.getCode())
+                .height(170)
+                .weight(55)
                 .build();
-        try {
-//            userInfoService.insertUser(userInfo);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        new CountDownLatch(1).await();
+        Result result =  userInfoService.insertUser(userInfo,openidValue);
+        System.out.println(JSON.toJSONString(result));
+        assert result.isSuccess();
     }
 
     @Test
