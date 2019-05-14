@@ -66,8 +66,9 @@ public class AdminRootService {
         adminUserMapper.updateAdminUser(adminUser);
     }
 
-    public void addAdminUser(AdminUser adminUser) {
-        adminUserMapper.insertAdminUser(adminUser);
+    public AdminUser addAdminUser(AdminUser adminUser) {
+        adminUser.setId(adminUserMapper.insertAdminUser(adminUser));
+        return adminUser;
     }
 
     public void deleteAdminUser(Integer id) {

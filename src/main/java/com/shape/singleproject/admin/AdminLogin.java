@@ -6,16 +6,13 @@ import com.shape.singleproject.service.AdminRootService;
 import com.shape.singleproject.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/login")
 @Slf4j
 public class AdminLogin {
 
@@ -36,14 +33,18 @@ public class AdminLogin {
         AdminUser temp = adminRootService.queryAdminUserByNameAndPasswd(adminUser.getName(), adminUser.getPasswd());
 
         if (null == temp) {
-            temp = AdminUser.Build().name(adminUser.getName())
+            temp = adminRootService.addAdminUser(AdminUser.Build().name(adminUser.getName())
                     .passwd(adminUser.getPasswd())
                     .level(AdminLevelEnum.MANAGER.getLevel())
-                    .build();
-            adminRootService.addAdminUser(temp);
+                    .build());
         }
 
         request.getSession().setAttribute("adminUser", temp);
         return Result.successResult();
+    }
+
+    @GetMapping("/info")
+    public AdminUser info(HttpServletRequest request) {
+        return (AdminUser)request.getSession().getAttribute("adminUser");
     }
 }
