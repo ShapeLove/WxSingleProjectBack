@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -38,6 +39,7 @@ public class TagService {
      * @param tags
      */
     public Tags addTag(Tags tags) {
+        tags.setCreate(LocalDateTime.now());
         tagsMapper.insertTags(tags);
         return tags;
     }
@@ -95,7 +97,7 @@ public class TagService {
         if (tagType.equals(TagTypeEnum.ACTIVITY.getTagCode())) {
             // 带有该标签的用户标签设为null
             userInfoMapper.update(UserInfo.UpdateBuild()
-                    .set(UserInfo.Build().activityTags(null).build())
+                    .set(UserInfo.Build().activityTags(0).build())
                     .where(UserInfo.ConditionBuild().activityTagsList(id).build())
             );
         }
@@ -103,7 +105,7 @@ public class TagService {
         if (tagType.equals(TagTypeEnum.DOING.getTagCode())) {
             // 带有该标签的用户标签设为null
             userInfoMapper.update(UserInfo.UpdateBuild()
-                    .set(UserInfo.Build().doingTags(null).build())
+                    .set(UserInfo.Build().doingTags(0).build())
                     .where(UserInfo.ConditionBuild().doingTagsList(id).build())
             );
         }
@@ -111,7 +113,7 @@ public class TagService {
         if (tagType.equals(TagTypeEnum.PLAN.getTagCode())) {
             // 带有该标签的用户标签设为null
             userInfoMapper.update(UserInfo.UpdateBuild()
-                    .set(UserInfo.Build().planTags(null).build())
+                    .set(UserInfo.Build().planTags(0).build())
                     .where(UserInfo.ConditionBuild().planTagsList(id).build())
             );
         }
