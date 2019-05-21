@@ -9,11 +9,13 @@ import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.domain.UserInfoRandomQuery;
 import com.shape.singleproject.domain.UserInfoScrollQuery;
 import com.shape.singleproject.dto.ExceptInfo;
+import com.shape.singleproject.dto.Report;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.ExceptInfoMapper;
 import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.service.ExceptService;
+import com.shape.singleproject.service.ReportService;
 import com.shape.singleproject.service.UserInfoService;
 import com.shape.singleproject.util.HttpUtil;
 import com.shape.singleproject.vo.Result;
@@ -51,6 +53,9 @@ public class TestUserInfoService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private ReportService reportService;
 
     @Test
     public void testInsertUser() throws InterruptedException {
@@ -153,5 +158,15 @@ public class TestUserInfoService {
         userInfoRandomQuery.setDoingTags(1);
         List<UserInfo> userInfoList = userInfoMapper.queryUserInfoRandom(userInfoRandomQuery);
         System.out.println(JSON.toJSONString(userInfoList));
+    }
+
+    @Test
+    public void testReportService() {
+        Report report = Report.Build()
+                .openId("ofn5o5Dpp3qA7OD18BQpyPzhGzpM")
+                .reportOpenId("tryfdtgyhftuftuatr")
+                .reportType(0)
+                .build();
+        reportService.addReport(report);
     }
 }

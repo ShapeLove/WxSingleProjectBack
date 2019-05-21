@@ -4,7 +4,10 @@ package com.shape.singleproject.constant;
  * 举报类型
  */
 public enum ReportType {
-    ;
+    SEX(1, "照片涉黄"),
+    HARASSMENT(2, "恶意骚扰"),
+    STEALING(3, "盗用图片"),
+    OTHER(4, "其他");
     /**
      * 举报类型Code
      */
