@@ -76,7 +76,7 @@ public class ReportService {
      */
     public void handleReport(Integer reportId, Integer status) {
         reportMapper.update(Report.UpdateBuild()
-                .set(Report.Build().status(status).build())
+                .set(Report.Build().status(status).modified(LocalDateTime.now()).build())
                 .where(Report.ConditionBuild().idList(reportId))
                 .build()
         );
