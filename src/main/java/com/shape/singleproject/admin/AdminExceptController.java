@@ -23,8 +23,8 @@ public class AdminExceptController {
     }
 
     @PostMapping("/deleteExcept")
-    public Result deleteExcept(@RequestBody Integer id) {
-        exceptService.deleteExceptInfo(id);
+    public Result deleteExcept(@RequestBody ExceptInfo exceptInfo) {
+        exceptService.deleteExceptInfo(exceptInfo.getId());
         return Result.successResult();
     }
 }

@@ -37,8 +37,8 @@ public class AdminReportController {
     }
 
     @PostMapping("/deleteReport")
-    public Result deleteReport(@RequestBody Integer reportId) {
-        reportService.deleteReport(reportId);
+    public Result deleteReport(@RequestBody Report report) {
+        reportService.deleteReport(report.getId());
         return Result.successResult();
     }
 }
