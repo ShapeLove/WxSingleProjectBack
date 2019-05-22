@@ -29,7 +29,7 @@ public class LogExceptAutoConfigure {
     @Bean
     public DefaultPointcutAdvisor logExceptAnnotationClassPointCut() {
         DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();
-        AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(LogExceptAop.class, LogExceptAop.class, true);
+        AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(LogExceptAop.class, true);
         advisor.setPointcut(pointcut);
         advisor.setAdvice(logExceptInterceptor());
         return advisor;

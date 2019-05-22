@@ -1,6 +1,8 @@
 package com.shape.singleproject.constant;
 
-public enum  ReportStatusEnum {
+import java.util.Arrays;
+
+public enum ReportStatusEnum {
     WAIT(0, "待审核"),
     SUCCESS(1, "审核通过"),
     FAIL(2, "驳回");
@@ -18,5 +20,14 @@ public enum  ReportStatusEnum {
 
     public String getDesc() {
         return desc;
+    }
+
+
+    public static String getDescByStatus(Integer status) {
+        return Arrays.stream(ReportStatusEnum.values())
+                .filter(en -> en.getStatus().equals(status))
+                .findFirst()
+                .map(ReportStatusEnum::getDesc)
+                .orElse(null);
     }
 }

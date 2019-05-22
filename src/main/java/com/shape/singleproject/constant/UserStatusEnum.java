@@ -1,5 +1,7 @@
 package com.shape.singleproject.constant;
 
+import java.util.Arrays;
+
 /**
  * 用户审核状态枚举
  */
@@ -31,5 +33,13 @@ public enum UserStatusEnum {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public static String getDescByStatus(int status) {
+        return Arrays.stream(UserStatusEnum.values())
+                .filter(en -> en.getStatus() == status)
+                .findFirst()
+                .map(UserStatusEnum::getDescription)
+                .orElse(null);
     }
 }
