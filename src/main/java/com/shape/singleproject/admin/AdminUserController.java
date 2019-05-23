@@ -55,6 +55,21 @@ public class AdminUserController {
     }
 
     /**
+     * 更改用户是否有效
+     * @param userInfo
+     * @return
+     */
+    @PostMapping("/updateUserEffect")
+    public Result updateUserEffect(@RequestBody UserInfo userInfo) {
+        try {
+            return adminUserService.updateUserInfoEffect(userInfo);
+        } catch (Exception e) {
+            log.error("AdminController.updateUserEffect error UserInfo:{}", JSON.toJSONString(userInfo), e);
+            return Result.failResultWithDefaultMessage();
+        }
+    }
+
+    /**
      * 获取当前登录用户数
      * @return
      */

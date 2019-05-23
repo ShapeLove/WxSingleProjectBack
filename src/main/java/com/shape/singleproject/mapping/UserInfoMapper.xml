@@ -170,7 +170,7 @@
             <if test="ext != null and ext!=''">
                 `ext` = #{ext},
             </if>
-            <if test="reject_reason != null and reject_reason!=''">
+            <if test="rejectReason!= null and rejectReason!=''">
                 `reject_reason` = #{rejectReason},
             </if>
             <if test="yn != null">

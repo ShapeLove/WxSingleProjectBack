@@ -100,6 +100,26 @@ public class AdminUserService {
     }
 
     /**
+     * 更新用户是否有效
+     * @param userInfo
+     * @return
+     */
+    public Result updateUserInfoEffect(UserInfo userInfo) {
+        Result result = new Result();
+        if (StringUtils.isEmpty(userInfo.getOpenId())) {
+            result.setMessage("用户openid不能为空");
+            return result;
+        }
+        if (null == userInfo.getYn()) {
+            result.setMessage("有效标识不能为空");
+            return result;
+        }
+        userInfoMapper.updateUserInfoStatusByOpenId(userInfo);
+        result.setSuccess(true);
+        return result;
+    }
+
+    /**
      * 获取当前登录用户数
      * @return
      */
