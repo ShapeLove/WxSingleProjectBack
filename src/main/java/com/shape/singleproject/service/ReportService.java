@@ -64,7 +64,6 @@ public class ReportService {
      * @param report
      */
     public void addReport(Report report) {
-        report.setCreate(LocalDateTime.now());
         report.setModified(LocalDateTime.now());
         reportMapper.insertReport(report);
     }

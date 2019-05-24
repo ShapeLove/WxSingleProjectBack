@@ -39,7 +39,6 @@ public class TagService {
      * @param tags
      */
     public Tags addTag(Tags tags) {
-        tags.setCreate(LocalDateTime.now());
         tagsMapper.insertTags(tags);
         return tags;
     }
