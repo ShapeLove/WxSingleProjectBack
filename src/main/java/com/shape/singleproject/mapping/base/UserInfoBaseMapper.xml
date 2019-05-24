@@ -2094,6 +2094,595 @@
         limit 1
     </select>
 
+    <select id="queryUserInfoDesc" resultMap="UserInfoMap">
+        select
+        <include refid="baseResult"></include>
+        from  `user_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="openId != null and openId!=''">
+                `open_id` = #{openId} and
+            </if>
+            <if test="name != null and name!=''">
+                `name` = #{name} and
+            </if>
+            <if test="yn != null">
+                `yn` = #{yn} and
+            </if>
+            <if test="constellation != null">
+                `constellation` = #{constellation} and
+            </if>
+            <if test="birthday != null">
+                `birthday` = #{birthday} and
+            </if>
+            <if test="education != null">
+                `education` = #{education} and
+            </if>
+            <if test="sex != null">
+                `sex` = #{sex} and
+            </if>
+            <if test="province != null and province!=''">
+                `province` = #{province} and
+            </if>
+            <if test="city != null and city!=''">
+                `city` = #{city} and
+            </if>
+            <if test="hobby != null and hobby!=''">
+                `hobby` = #{hobby} and
+            </if>
+            <if test="height != null">
+                `height` = #{height} and
+            </if>
+            <if test="weight != null">
+                `weight` = #{weight} and
+            </if>
+            <if test="selfEvaluation != null and selfEvaluation!=''">
+                `self_evaluation` = #{selfEvaluation} and
+            </if>
+            <if test="workArea != null and workArea!=''">
+                `work_area` = #{workArea} and
+            </if>
+            <if test="wantSay != null and wantSay!=''">
+                `want_say` = #{wantSay} and
+            </if>
+            <if test="family != null and family!=''">
+                `family` = #{family} and
+            </if>
+            <if test="standFriend != null and standFriend!=''">
+                `stand_friend` = #{standFriend} and
+            </if>
+            <if test="photos != null and photos!=''">
+                `photos` = #{photos} and
+            </if>
+            <if test="department != null and department!=''">
+                `department` = #{department} and
+            </if>
+            <if test="status != null">
+                `status` = #{status} and
+            </if>
+            <if test="rejectReason != null and rejectReason!=''">
+                `reject_reason` = #{rejectReason} and
+            </if>
+            <if test="dongdong != null and dongdong!=''">
+                `dongdong` = #{dongdong} and
+            </if>
+            <if test="wxNumber != null and wxNumber!=''">
+                `wx_number` = #{wxNumber} and
+            </if>
+            <if test="create != null">
+                `create` = #{create} and
+            </if>
+            <if test="modified != null">
+                `modified` = #{modified} and
+            </if>
+            <if test="ext != null and ext!=''">
+                `ext` = #{ext} and
+            </if>
+            <if test="doingTags != null">
+                `doing_tags` = #{doingTags} and
+            </if>
+            <if test="planTags != null">
+                `plan_tags` = #{planTags} and
+            </if>
+            <if test="activityTags != null">
+                `activity_tags` = #{activityTags} and
+            </if>
+            <if test = "(_parameter instanceof com.shape.singleproject.dto.UserInfo$QueryBuilder) == true">
+                <if test="idList != null">
+                    `id` in
+                    <foreach collection="idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                <if test="openIdList != null">
+                    `open_id` in
+                    <foreach collection="openIdList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyOpenId!=null and fuzzyOpenId.size()>0">
+                    (
+                    <foreach collection="fuzzyOpenId"  separator="or" item="item">
+                        `Open_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyOpenId!=null and rightFuzzyOpenId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyOpenId"  separator="or" item="item">
+                        `Open_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="nameList != null">
+                    `name` in
+                    <foreach collection="nameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyName!=null and fuzzyName.size()>0">
+                    (
+                    <foreach collection="fuzzyName"  separator="or" item="item">
+                        `Name` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyName!=null and rightFuzzyName.size()>0">
+                    (
+                    <foreach collection="rightFuzzyName"  separator="or" item="item">
+                        `Name` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="ynList != null">
+                    `yn` in
+                    <foreach collection="ynList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="ynSt !=null">
+                    `yn` >= #{ynSt} and
+                </if>
+                <if test="ynEd!=null">
+                    `yn` &lt;= #{ynEd} and
+                </if>
+                <if test="constellationList != null">
+                    `constellation` in
+                    <foreach collection="constellationList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="constellationSt !=null">
+                    `constellation` >= #{constellationSt} and
+                </if>
+                <if test="constellationEd!=null">
+                    `constellation` &lt;= #{constellationEd} and
+                </if>
+                <if test="birthdayList != null">
+                    `birthday` in
+                    <foreach collection="birthdayList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="birthdaySt !=null">
+                    `birthday` >= #{birthdaySt} and
+                </if>
+                <if test="birthdayEd!=null">
+                    `birthday` &lt;= #{birthdayEd} and
+                </if>
+                <if test="educationList != null">
+                    `education` in
+                    <foreach collection="educationList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="educationSt !=null">
+                    `education` >= #{educationSt} and
+                </if>
+                <if test="educationEd!=null">
+                    `education` &lt;= #{educationEd} and
+                </if>
+                <if test="sexList != null">
+                    `sex` in
+                    <foreach collection="sexList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="sexSt !=null">
+                    `sex` >= #{sexSt} and
+                </if>
+                <if test="sexEd!=null">
+                    `sex` &lt;= #{sexEd} and
+                </if>
+                <if test="provinceList != null">
+                    `province` in
+                    <foreach collection="provinceList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyProvince!=null and fuzzyProvince.size()>0">
+                    (
+                    <foreach collection="fuzzyProvince"  separator="or" item="item">
+                        `Province` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyProvince!=null and rightFuzzyProvince.size()>0">
+                    (
+                    <foreach collection="rightFuzzyProvince"  separator="or" item="item">
+                        `Province` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="cityList != null">
+                    `city` in
+                    <foreach collection="cityList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyCity!=null and fuzzyCity.size()>0">
+                    (
+                    <foreach collection="fuzzyCity"  separator="or" item="item">
+                        `City` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyCity!=null and rightFuzzyCity.size()>0">
+                    (
+                    <foreach collection="rightFuzzyCity"  separator="or" item="item">
+                        `City` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="hobbyList != null">
+                    `hobby` in
+                    <foreach collection="hobbyList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyHobby!=null and fuzzyHobby.size()>0">
+                    (
+                    <foreach collection="fuzzyHobby"  separator="or" item="item">
+                        `Hobby` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyHobby!=null and rightFuzzyHobby.size()>0">
+                    (
+                    <foreach collection="rightFuzzyHobby"  separator="or" item="item">
+                        `Hobby` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="heightList != null">
+                    `height` in
+                    <foreach collection="heightList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="heightSt !=null">
+                    `height` >= #{heightSt} and
+                </if>
+                <if test="heightEd!=null">
+                    `height` &lt;= #{heightEd} and
+                </if>
+                <if test="weightList != null">
+                    `weight` in
+                    <foreach collection="weightList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="weightSt !=null">
+                    `weight` >= #{weightSt} and
+                </if>
+                <if test="weightEd!=null">
+                    `weight` &lt;= #{weightEd} and
+                </if>
+                <if test="selfEvaluationList != null">
+                    `self_evaluation` in
+                    <foreach collection="selfEvaluationList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzySelfEvaluation!=null and fuzzySelfEvaluation.size()>0">
+                    (
+                    <foreach collection="fuzzySelfEvaluation"  separator="or" item="item">
+                        `Self_evaluation` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzySelfEvaluation!=null and rightFuzzySelfEvaluation.size()>0">
+                    (
+                    <foreach collection="rightFuzzySelfEvaluation"  separator="or" item="item">
+                        `Self_evaluation` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="workAreaList != null">
+                    `work_area` in
+                    <foreach collection="workAreaList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyWorkArea!=null and fuzzyWorkArea.size()>0">
+                    (
+                    <foreach collection="fuzzyWorkArea"  separator="or" item="item">
+                        `Work_area` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyWorkArea!=null and rightFuzzyWorkArea.size()>0">
+                    (
+                    <foreach collection="rightFuzzyWorkArea"  separator="or" item="item">
+                        `Work_area` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="wantSayList != null">
+                    `want_say` in
+                    <foreach collection="wantSayList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyWantSay!=null and fuzzyWantSay.size()>0">
+                    (
+                    <foreach collection="fuzzyWantSay"  separator="or" item="item">
+                        `Want_say` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyWantSay!=null and rightFuzzyWantSay.size()>0">
+                    (
+                    <foreach collection="rightFuzzyWantSay"  separator="or" item="item">
+                        `Want_say` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="familyList != null">
+                    `family` in
+                    <foreach collection="familyList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyFamily!=null and fuzzyFamily.size()>0">
+                    (
+                    <foreach collection="fuzzyFamily"  separator="or" item="item">
+                        `Family` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyFamily!=null and rightFuzzyFamily.size()>0">
+                    (
+                    <foreach collection="rightFuzzyFamily"  separator="or" item="item">
+                        `Family` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="standFriendList != null">
+                    `stand_friend` in
+                    <foreach collection="standFriendList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyStandFriend!=null and fuzzyStandFriend.size()>0">
+                    (
+                    <foreach collection="fuzzyStandFriend"  separator="or" item="item">
+                        `Stand_friend` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyStandFriend!=null and rightFuzzyStandFriend.size()>0">
+                    (
+                    <foreach collection="rightFuzzyStandFriend"  separator="or" item="item">
+                        `Stand_friend` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="photosList != null">
+                    `photos` in
+                    <foreach collection="photosList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyPhotos!=null and fuzzyPhotos.size()>0">
+                    (
+                    <foreach collection="fuzzyPhotos"  separator="or" item="item">
+                        `Photos` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyPhotos!=null and rightFuzzyPhotos.size()>0">
+                    (
+                    <foreach collection="rightFuzzyPhotos"  separator="or" item="item">
+                        `Photos` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="departmentList != null">
+                    `department` in
+                    <foreach collection="departmentList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyDepartment!=null and fuzzyDepartment.size()>0">
+                    (
+                    <foreach collection="fuzzyDepartment"  separator="or" item="item">
+                        `Department` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyDepartment!=null and rightFuzzyDepartment.size()>0">
+                    (
+                    <foreach collection="rightFuzzyDepartment"  separator="or" item="item">
+                        `Department` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="statusList != null">
+                    `status` in
+                    <foreach collection="statusList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="statusSt !=null">
+                    `status` >= #{statusSt} and
+                </if>
+                <if test="statusEd!=null">
+                    `status` &lt;= #{statusEd} and
+                </if>
+                <if test="rejectReasonList != null">
+                    `reject_reason` in
+                    <foreach collection="rejectReasonList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyRejectReason!=null and fuzzyRejectReason.size()>0">
+                    (
+                    <foreach collection="fuzzyRejectReason"  separator="or" item="item">
+                        `Reject_reason` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyRejectReason!=null and rightFuzzyRejectReason.size()>0">
+                    (
+                    <foreach collection="rightFuzzyRejectReason"  separator="or" item="item">
+                        `Reject_reason` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="dongdongList != null">
+                    `dongdong` in
+                    <foreach collection="dongdongList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyDongdong!=null and fuzzyDongdong.size()>0">
+                    (
+                    <foreach collection="fuzzyDongdong"  separator="or" item="item">
+                        `Dongdong` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyDongdong!=null and rightFuzzyDongdong.size()>0">
+                    (
+                    <foreach collection="rightFuzzyDongdong"  separator="or" item="item">
+                        `Dongdong` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="wxNumberList != null">
+                    `wx_number` in
+                    <foreach collection="wxNumberList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyWxNumber!=null and fuzzyWxNumber.size()>0">
+                    (
+                    <foreach collection="fuzzyWxNumber"  separator="or" item="item">
+                        `Wx_number` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyWxNumber!=null and rightFuzzyWxNumber.size()>0">
+                    (
+                    <foreach collection="rightFuzzyWxNumber"  separator="or" item="item">
+                        `Wx_number` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="createList != null">
+                    `create` in
+                    <foreach collection="createList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="createSt !=null">
+                    `create` >= #{createSt} and
+                </if>
+                <if test="createEd!=null">
+                    `create` &lt;= #{createEd} and
+                </if>
+                <if test="modifiedList != null">
+                    `modified` in
+                    <foreach collection="modifiedList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="modifiedSt !=null">
+                    `modified` >= #{modifiedSt} and
+                </if>
+                <if test="modifiedEd!=null">
+                    `modified` &lt;= #{modifiedEd} and
+                </if>
+                <if test="extList != null">
+                    `ext` in
+                    <foreach collection="extList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyExt!=null and fuzzyExt.size()>0">
+                    (
+                    <foreach collection="fuzzyExt"  separator="or" item="item">
+                        `Ext` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyExt!=null and rightFuzzyExt.size()>0">
+                    (
+                    <foreach collection="rightFuzzyExt"  separator="or" item="item">
+                        `Ext` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="doingTagsList != null">
+                    `doing_tags` in
+                    <foreach collection="doingTagsList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="doingTagsSt !=null">
+                    `doing_tags` >= #{doingTagsSt} and
+                </if>
+                <if test="doingTagsEd!=null">
+                    `doing_tags` &lt;= #{doingTagsEd} and
+                </if>
+                <if test="planTagsList != null">
+                    `plan_tags` in
+                    <foreach collection="planTagsList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="planTagsSt !=null">
+                    `plan_tags` >= #{planTagsSt} and
+                </if>
+                <if test="planTagsEd!=null">
+                    `plan_tags` &lt;= #{planTagsEd} and
+                </if>
+                <if test="activityTagsList != null">
+                    `activity_tags` in
+                    <foreach collection="activityTagsList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="activityTagsSt !=null">
+                    `activity_tags` >= #{activityTagsSt} and
+                </if>
+                <if test="activityTagsEd!=null">
+                    `activity_tags` &lt;= #{activityTagsEd} and
+                </if>
+            </if>
+        </trim>
+        order by `create` desc
+    </select>
+
     <sql id="allResult">
         <trim suffixOverrides=",">
         `id`,

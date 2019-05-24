@@ -18,4 +18,6 @@ public interface UserInfoBaseMapper {
 
     UserInfo queryUserInfoLimit1(UserInfo object);
 
+    List<UserInfo> queryUserInfoDesc(UserInfo object);
+
 }

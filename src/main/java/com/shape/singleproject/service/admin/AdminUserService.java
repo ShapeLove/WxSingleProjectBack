@@ -61,8 +61,7 @@ public class AdminUserService {
         if (!StringUtils.isEmpty(adminUserQuery.getWxNumber())) {
             queryBuilder.wxNumber(adminUserQuery.getWxNumber());
         }
-
-        List<UserInfo> userInfoList = userInfoMapper.queryUserInfo(queryBuilder.build());
+        List<UserInfo> userInfoList = userInfoMapper.queryUserInfoDesc(queryBuilder.build());
         PageInfo pageInfo = new PageInfo(userInfoList);
         return PageResult.build()
                 .setDataList(pageInfo.getList())
