@@ -24,4 +24,6 @@ public interface UserInfoMapper extends UserInfoBaseMapper{
     List<UserInfo> selectUserInfoByCreateAndModified(UserInfoScrollQuery userInfoScrollQuery);
 
     List<UserInfo> queryUserInfoRandom(UserInfoRandomQuery userInfoRandomQuery);
+
+    List<Long> queryAllId();
 }

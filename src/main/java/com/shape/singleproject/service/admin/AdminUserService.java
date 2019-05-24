@@ -61,8 +61,7 @@ public class AdminUserService {
         if (!StringUtils.isEmpty(adminUserQuery.getWxNumber())) {
             queryBuilder.wxNumber(adminUserQuery.getWxNumber());
         }
-
-        List<UserInfo> userInfoList = userInfoMapper.queryUserInfo(queryBuilder.build());
+        List<UserInfo> userInfoList = userInfoMapper.queryUserInfoDesc(queryBuilder.build());
         PageInfo pageInfo = new PageInfo(userInfoList);
         return PageResult.build()
                 .setDataList(pageInfo.getList())
@@ -93,6 +92,26 @@ public class AdminUserService {
                     return result;
                 }
             }
+        }
+        userInfoMapper.updateUserInfoStatusByOpenId(userInfo);
+        result.setSuccess(true);
+        return result;
+    }
+
+    /**
+     * 更新用户是否有效
+     * @param userInfo
+     * @return
+     */
+    public Result updateUserInfoEffect(UserInfo userInfo) {
+        Result result = new Result();
+        if (StringUtils.isEmpty(userInfo.getOpenId())) {
+            result.setMessage("用户openid不能为空");
+            return result;
+        }
+        if (null == userInfo.getYn()) {
+            result.setMessage("有效标识不能为空");
+            return result;
         }
         userInfoMapper.updateUserInfoStatusByOpenId(userInfo);
         result.setSuccess(true);

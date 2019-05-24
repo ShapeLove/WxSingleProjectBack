@@ -170,7 +170,7 @@
             <if test="ext != null and ext!=''">
                 `ext` = #{ext},
             </if>
-            <if test="reject_reason != null and reject_reason!=''">
+            <if test="rejectReason!= null and rejectReason!=''">
                 `reject_reason` = #{rejectReason},
             </if>
             <if test="yn != null">
@@ -206,5 +206,9 @@
         (
         (select MAX(id) from user_info <include refid="randomSelectWhereConditions"></include>) - (select MIN(id) from user_info <include refid="randomSelectWhereConditions"></include>))  * RAND() +
         (select MIN(id) from user_info <include refid="randomSelectWhereConditions"></include>) limit #{size};
+    </select>
+
+    <select id="queryAllId" resultType="Long">
+        select id from user_info
     </select>
 </mapper>

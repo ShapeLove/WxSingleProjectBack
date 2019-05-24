@@ -40,6 +40,21 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
+    <appender name="TIME-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/export/log/time-server.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>/export/log/time-server-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each file should be at most 100MB, keep 30 days worth of history, but at most 20GB -->
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %-5level [%thread] %logger{50} [%file:%line] %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
 
     <appender name="EMAIL-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/export/log/email-server.log</file>
@@ -59,8 +74,12 @@
 
     <!--<appender name="instrumentedAppender" class="com.codahale.metrics.logback.InstrumentedAppender" />-->
 
-    <logger name="com.shape.singleproject.service.ExceptService" level="ERROR" additivity="false">
+    <logger name="com.shape.singleproject.interceptor.LogExceptInterceptor" level="DEBUG" additivity="false">
         <appender-ref ref="EXCEPT-FILE"/>
+    </logger>
+
+    <logger name="com.shape.singleproject.interceptor.TimeInterceptor" level="WARN" additivity="false">
+        <appender-ref ref="TIME-FILE"/>
     </logger>
 
     <logger name="com.shape.singleproject.service.EmailSendService" level="ERROR" additivity="false">

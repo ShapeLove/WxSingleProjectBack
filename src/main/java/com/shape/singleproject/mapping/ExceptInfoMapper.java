@@ -16,5 +16,5 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface ExceptInfoMapper extends ExceptInfoBaseMapper{
 
-    int deleteExceptInfo(Integer id);
+    int deleteExceptInfo(Long id);
 }

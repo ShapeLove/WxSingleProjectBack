@@ -1,5 +1,7 @@
 package com.shape.singleproject.constant;
 
+import java.util.Arrays;
+
 /**
  * 性别枚举
  */
@@ -29,5 +31,13 @@ public enum SexEnum {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public static String getDescriptionByCode(int code) {
+        return Arrays.stream(SexEnum.values())
+                .filter(en -> en.getCode() == code)
+                .findFirst()
+                .map(SexEnum::getDescription)
+                .orElse(null);
     }
 }

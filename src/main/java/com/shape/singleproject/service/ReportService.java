@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -63,6 +64,8 @@ public class ReportService {
      * @param report
      */
     public void addReport(Report report) {
+        report.setCreate(LocalDateTime.now());
+        report.setModified(LocalDateTime.now());
         reportMapper.insertReport(report);
     }
 
@@ -73,7 +76,7 @@ public class ReportService {
      */
     public void handleReport(Integer reportId, Integer status) {
         reportMapper.update(Report.UpdateBuild()
-                .set(Report.Build().status(status).build())
+                .set(Report.Build().status(status).modified(LocalDateTime.now()).build())
                 .where(Report.ConditionBuild().idList(reportId))
                 .build()
         );

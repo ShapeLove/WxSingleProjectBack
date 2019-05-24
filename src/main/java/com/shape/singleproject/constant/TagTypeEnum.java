@@ -1,5 +1,7 @@
 package com.shape.singleproject.constant;
 
+import java.util.Arrays;
+
 /**
  * 标签类型
  */
@@ -30,5 +32,13 @@ public enum TagTypeEnum {
 
     public void setTagDesc(String tagDesc) {
         this.tagDesc = tagDesc;
+    }
+
+    public String getDescByCode(Integer code) {
+        return Arrays.stream(TagTypeEnum.values())
+                .filter(en -> en.getTagCode().equals(code))
+                .findFirst()
+                .map(TagTypeEnum::getTagDesc)
+                .orElse(null);
     }
 }

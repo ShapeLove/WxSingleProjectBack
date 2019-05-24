@@ -42,8 +42,8 @@ public class AdminManageController {
     }
 
     @PostMapping("/deleteManager")
-    public Result addManager(@RequestBody Integer id) {
-        adminRootService.deleteAdminUser(id);
+    public Result deleteManager(@RequestBody AdminUser adminUser) {
+        adminRootService.deleteAdminUser(adminUser.getId());
         return Result.successResult();
     }
 }

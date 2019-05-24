@@ -17,7 +17,7 @@ public class TimeAopAutoConfigure {
     @Bean
     public DefaultPointcutAdvisor timeAopAnnotationClassPointCut() {
         DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();
-        AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(TimeAop.class, TimeAop.class, true);
+        AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(TimeAop.class, true);
         TimeInterceptor interceptor = new TimeInterceptor();
         advisor.setPointcut(pointcut);
         advisor.setAdvice(interceptor);

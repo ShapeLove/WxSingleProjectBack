@@ -32,6 +32,9 @@ public class UserInfoVo {
     private Boolean attention;
     private Boolean allAttention;
     private Integer dongTags;
+    private String dongTagsDesc;
     private Integer activityTags;
+    private String activityTagsDesc;
     private Integer planTags;
+    private String planTagsDesc;
 }

@@ -87,7 +87,7 @@ public class ExceptService {
                 .setSuccess(true);
     }
 
-    public void deleteExceptInfo(Integer id) {
+    public void deleteExceptInfo(Long id) {
         exceptInfoMapper.deleteExceptInfo(id);
     }
 }
