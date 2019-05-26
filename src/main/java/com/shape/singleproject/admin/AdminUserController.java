@@ -39,6 +39,16 @@ public class AdminUserController {
         }
     }
 
+    @PostMapping("/queryUserInfo")
+    public UserInfo queryUserInfo(@RequestBody UserInfo userInfo) {
+        try {
+            return adminUserService.queryUserInfoByOpenId(userInfo.getOpenId());
+        } catch (Exception e) {
+            log.error("AdminController.queryUserInfo error UserInfo:{}", JSON.toJSONString(userInfo), e);
+            return null;
+        }
+    }
+
     /**
      * 更改用户审核状态
      * @param userInfo

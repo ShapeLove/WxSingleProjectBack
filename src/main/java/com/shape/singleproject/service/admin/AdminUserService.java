@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -70,6 +71,14 @@ public class AdminUserService {
                 .setSuccess(true);
     }
 
+    public UserInfo queryUserInfoByOpenId(String openId) {
+        if (StringUtils.isEmpty(openId)) {
+            return null;
+        }
+
+        return userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild().openId(openId));
+    }
+
     /**
      * 更新用户状态
      * @param userInfo
@@ -93,6 +102,7 @@ public class AdminUserService {
                 }
             }
         }
+        userInfo.setModified(LocalDateTime.now());
         userInfoMapper.updateUserInfoStatusByOpenId(userInfo);
         result.setSuccess(true);
         return result;
@@ -113,6 +123,7 @@ public class AdminUserService {
             result.setMessage("有效标识不能为空");
             return result;
         }
+        userInfo.setModified(LocalDateTime.now());
         userInfoMapper.updateUserInfoStatusByOpenId(userInfo);
         result.setSuccess(true);
         return result;
