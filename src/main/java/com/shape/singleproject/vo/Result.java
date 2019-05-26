@@ -18,4 +18,17 @@ public class Result<T> {
         result.setSuccess(true);
         return result;
     }
+
+    public static <T> Result<T> successResultWithData(T data){
+        Result<T> result = new Result<>();
+        result.setSuccess(true);
+        result.setData(data);
+        return result;
+    }
+
+    public static Result failtResult(String message){
+        Result result = new Result();
+        result.setMessage(message);
+        return result;
+    }
 }

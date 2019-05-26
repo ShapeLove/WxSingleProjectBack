@@ -2,6 +2,7 @@ package com.shape.singleproject.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.shape.singleproject.constant.TagTypeEnum;
 import com.shape.singleproject.dto.Tags;
 import com.shape.singleproject.dto.UserInfo;
@@ -9,16 +10,19 @@ import com.shape.singleproject.interceptor.LogExceptAop;
 import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.TagsMapper;
 import com.shape.singleproject.mapping.UserInfoMapper;
+import com.shape.singleproject.util.RandomUtil;
 import com.shape.singleproject.vo.BaseQuery;
 import com.shape.singleproject.vo.PageResult;
 import com.shape.singleproject.vo.TagPageQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 标签服务
@@ -85,6 +89,24 @@ public class TagService {
     }
 
     /**
+     * 随机抽取指定类型和数量的标签
+     * @param size
+     * @param tagType
+     * @return
+     */
+    public List<Tags> randomQueryTags(int size, Integer tagType) {
+        if (size == 0) {
+            return Lists.newArrayList();
+        }
+        List<Integer> ids = tagsMapper.allIds(tagType);
+        Set<Integer> randomIds = RandomUtil.getUniqueIdSetByList(ids, size);
+        if (CollectionUtils.isEmpty(randomIds)) {
+            return Lists.newArrayList();
+        }
+        return tagsMapper.queryTags(Tags.QueryBuild().idList(Lists.newArrayList(randomIds)).build());
+    }
+
+    /**
      * 删除标签
      * @param id
      */
@@ -116,6 +138,5 @@ public class TagService {
                     .where(UserInfo.ConditionBuild().planTagsList(id).build())
             );
         }
-
     }
 }

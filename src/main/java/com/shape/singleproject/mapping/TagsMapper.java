@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import com.shape.singleproject.mapping.base.TagsBaseMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
 *  @author author
 */
@@ -13,4 +15,6 @@ import org.springframework.stereotype.Repository;
 public interface TagsMapper extends TagsBaseMapper{
 
     int deleteTag(Integer tagId);
+
+    List<Integer> allIds(Integer tagType);
 }

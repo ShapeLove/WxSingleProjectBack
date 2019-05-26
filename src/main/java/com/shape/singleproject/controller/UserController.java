@@ -6,6 +6,7 @@ import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.dto.Report;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.service.ReportService;
+import com.shape.singleproject.service.TagService;
 import com.shape.singleproject.service.UserInfoService;
 import com.shape.singleproject.util.WebUtil;
 import com.shape.singleproject.vo.PageResult;
@@ -14,7 +15,6 @@ import com.shape.singleproject.vo.UserInfoQuery;
 import com.shape.singleproject.vo.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +31,9 @@ public class UserController {
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private TagService tagService;
 
 
     @PostMapping("/queryByPage")
@@ -218,6 +221,20 @@ public class UserController {
             return Result.successResult();
         } catch (Exception e) {
             log.error("UserController.report error report:{}", JSON.toJSONString(report), e);
+            return null;
+        }
+    }
+
+    @GetMapping("/randomQueryTags")
+    public Result randomQueryTags(@RequestParam Integer tagType, @RequestParam Integer size) {
+        try {
+            String currentOpenId = WebUtil.getCurrentUserOpenId();
+            if (StringUtils.isEmpty(currentOpenId)) {
+                return Result.failtResult("用户未登录");
+            }
+            return Result.successResultWithData(tagService.randomQueryTags(size, tagType));
+        } catch (Exception e) {
+            log.error("UserController.randomQueryTags error tagType:{}, size:{}", tagType, size, e);
             return null;
         }
     }
