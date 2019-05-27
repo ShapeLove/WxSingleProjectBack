@@ -21,12 +21,7 @@ public class EmailSendService {
 
     public void sendEmailForExcept(String methodName, String exceptMessage) {
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("786627736@qq.com");
-            message.setTo("1328445041@qq.com");
-            message.setSubject("异常处理服务异常 异常方法:" + methodName);
-            message.setText("异常信息: " + exceptMessage);
-            mailSender.send(message);
+            mailSender.send(buildSimpleMailMessageExcept(methodName, exceptMessage, "1328445041@qq.com"), buildSimpleMailMessageExcept(methodName, exceptMessage, "3104288823@qq.com"));
         }catch (Exception e) {
             log.error("EmailSendService.sendEmailForExcept 邮箱服务异常 methodName:{}, exceptMessage:{}", methodName, exceptMessage, e);
         }
@@ -34,14 +29,27 @@ public class EmailSendService {
 
     public void sendEmail(ExceptInfo exceptInfo) {
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("786627736@qq.com");
-            message.setTo("1328445041@qq.com");
-            message.setSubject("异常方法:" + exceptInfo.getInvocationName());
-            message.setText("异常信息: " + JSON.toJSONString(exceptInfo));
-            mailSender.send(message);
+            mailSender.send(buildSimpleMailMessage(exceptInfo, "1328445041@qq.com"), buildSimpleMailMessage(exceptInfo, "3104288823@qq.com"));
         }catch (Exception e) {
             log.error("EmailSendService.sendEmail 邮箱服务异常 exceptInfo:{}", JSON.toJSONString(exceptInfo), e);
         }
+    }
+
+    private SimpleMailMessage buildSimpleMailMessage(ExceptInfo exceptInfo, String sendTo) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("786627736@qq.com");
+        message.setTo(sendTo);
+        message.setSubject("异常方法:" + exceptInfo.getInvocationName());
+        message.setText("异常信息: " + JSON.toJSONString(exceptInfo));
+        return message;
+    }
+
+    private SimpleMailMessage buildSimpleMailMessageExcept(String methodName, String exceptMessage, String sendTo) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("786627736@qq.com");
+        message.setTo(sendTo);
+        message.setSubject("异常方法:" + methodName);
+        message.setText("异常信息: " + exceptMessage);
+        return message;
     }
 }

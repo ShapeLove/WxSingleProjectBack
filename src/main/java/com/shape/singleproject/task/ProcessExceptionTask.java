@@ -38,9 +38,4 @@ public class ProcessExceptionTask {
             result.stream().forEach(exceptInfo -> emailSendService.sendEmail(exceptInfo));
         }
     }
-
-    @Scheduled(fixedRate = 1000)
-    public void processTask() {
-        System.out.println("haha" + LocalDateTime.now());
-    }
 }

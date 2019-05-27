@@ -6,7 +6,6 @@ import java.util.Arrays;
  * 用户审核状态枚举
  */
 public enum UserStatusEnum {
-    GUEST(-1, "游客"),
     WAIT(0, "待审核"),
     SUCCESS(1, "审核通过"),
     FAIL(2, "驳回");
