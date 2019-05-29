@@ -8,6 +8,7 @@ import com.shape.singleproject.vo.AdminUserPageQuery;
 import com.shape.singleproject.vo.PageResult;
 import com.shape.singleproject.vo.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,7 +38,13 @@ public class AdminManageController {
 
     @PostMapping("/addManager")
     public Result addManager(@RequestBody AdminUser adminUser) {
-        adminRootService.addAdminUser(adminUser);
+        try {
+            adminRootService.addAdminUser(adminUser);
+        } catch (DuplicateKeyException e) {
+            return Result.failtResult("该用户: " + adminUser.getName() +"信息已存在");
+        }catch (Exception e) {
+            return Result.failResultWithDefaultMessage();
+        }
         return Result.successResult();
     }
 

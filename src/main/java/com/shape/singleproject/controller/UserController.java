@@ -15,6 +15,7 @@ import com.shape.singleproject.vo.UserInfoQuery;
 import com.shape.singleproject.vo.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -219,7 +220,10 @@ public class UserController {
             report.setOpenId(currentOpenId);
             reportService.addReport(report);
             return Result.successResult();
-        } catch (Exception e) {
+        } catch (DuplicateKeyException e) {
+            log.error("UserController.report error report:{}", JSON.toJSONString(report), e);
+            return Result.failtResult("该举报信息已存在");
+        }catch (Exception e) {
             log.error("UserController.report error report:{}", JSON.toJSONString(report), e);
             return null;
         }

@@ -35,7 +35,6 @@ public class EnvironmentPropertyProcessor implements EnvironmentPostProcessor {
         }
         PropertySource<LinkedHashMap<String, String>> defaultProfile = (PropertySource<LinkedHashMap<String, String>>) mutablePropertySources.get(defaultName);
         getPropertyAndSetFromPropertySource(emailPasswdKey, defaultProfile, "lctvuirjtrstbbie");
-        System.out.println("ha");
     }
 
     private void getPropertyAndSetFromPropertySource(String key, PropertySource<LinkedHashMap<String,String>> propertySource, String value) {
