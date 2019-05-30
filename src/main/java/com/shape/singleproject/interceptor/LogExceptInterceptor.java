@@ -65,7 +65,7 @@ public class LogExceptInterceptor implements MethodInterceptor,ApplicationEventP
             return new Object[]{};
         }
         return Stream.of(params)
-                .filter(obj -> !obj.getClass().equals(RequestFacade.class) && !obj.getClass().equals(ResponseFacade.class))
+                .filter(obj -> obj!=null && !obj.getClass().equals(RequestFacade.class) && !obj.getClass().equals(ResponseFacade.class))
                 .toArray(Object[]::new);
     }
 }

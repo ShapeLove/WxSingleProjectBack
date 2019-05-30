@@ -8,12 +8,14 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 @Component
 @Slf4j
 @Async
 public class CustomEventListener {
 
-    @Autowired
+    @Resource
     private ExceptService exceptService;
 
     @EventListener

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,7 @@ import java.util.Set;
 @LogExceptAop
 @TimeAop
 public class AdminUserService {
-    @Autowired
+    @Resource
     private UserInfoMapper userInfoMapper;
 
     /**

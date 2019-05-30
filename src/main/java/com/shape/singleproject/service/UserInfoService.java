@@ -35,6 +35,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import sun.rmi.runtime.Log;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,16 +50,16 @@ public class UserInfoService implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher applicationEventPublisher;
 
-    @Autowired
+    @Resource
     private HttpUtil httpUtil;
 
-    @Autowired
+    @Resource
     private UserInfoMapper userInfoMapper;
 
-    @Autowired
+    @Resource
     private AttentionInfoMapper attentionInfoMapper;
 
-    @Autowired
+    @Resource
     private LoginKeyMapper loginKeyMapper;
 
     public JSONObject uploadImg(MultipartFile file) throws IOException {

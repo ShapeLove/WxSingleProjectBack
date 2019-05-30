@@ -1,8 +1,9 @@
 package com.shape.singleproject.mapping;
 
 
-import com.shape.singleproject.domain.UserInfoRandomQuery;
-import com.shape.singleproject.domain.UserInfoScrollQuery;
+import com.shape.singleproject.domain.*;
+import com.shape.singleproject.dto.CityCountDo;
+import com.shape.singleproject.dto.DateCountDo;
 import org.apache.ibatis.annotations.Mapper;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.mapping.base.UserInfoBaseMapper;
@@ -26,4 +27,10 @@ public interface UserInfoMapper extends UserInfoBaseMapper{
     List<UserInfo> queryUserInfoRandom(UserInfoRandomQuery userInfoRandomQuery);
 
     List<Long> queryAllId();
+
+    List<CityCountDo> analysisCityUserCount();
+
+    List<DateCountDo> analysisUserCountByDate(DateCountQuery dateCountQuery);
+
+    Long queryAllUserCount();
 }

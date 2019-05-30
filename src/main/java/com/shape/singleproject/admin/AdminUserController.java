@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
@@ -18,10 +19,10 @@ import java.util.List;
 @Slf4j
 public class AdminUserController {
 
-    @Autowired
+    @Resource
     private AdminUserService adminUserService;
 
-    @Autowired
+    @Resource
     private AttentionService attentionService;
 
     /**

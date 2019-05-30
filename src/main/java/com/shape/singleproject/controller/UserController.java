@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 @RestController
@@ -27,13 +28,13 @@ import java.util.Optional;
 @Slf4j
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserInfoService userInfoService;
 
-    @Autowired
+    @Resource
     private ReportService reportService;
 
-    @Autowired
+    @Resource
     private TagService tagService;
 
 

@@ -10,13 +10,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 @Service
 @Slf4j
 @Async
 @TimeAop
 public class EmailSendService {
 
-    @Autowired
+    @Resource
     private JavaMailSender mailSender;
 
     public void sendEmailForExcept(String methodName, String exceptMessage) {
