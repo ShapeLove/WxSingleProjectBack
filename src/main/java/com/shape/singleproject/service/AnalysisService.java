@@ -45,18 +45,20 @@ public class AnalysisService {
         if (targetDate == null) {
             targetDate = LocalDateTime.now();
         }
+        if (size == null) {
+            size = 7;
+        }else {
+            if (size == 0) {
+                return new DateCountResult();
+            }
+        }
+
         // 1.生成连续的时间序列 按照天
         List<String> dateTimeKey = DateUtil.generateDateDaySequence(targetDate, size);
         DateCountQuery dateCountQuery = new DateCountQuery();
         dateCountQuery.setTargetDate(DateUtil.getDateString(targetDate));
-        if (size != null) {
-            if (size == 0) {
-                return new DateCountResult();
-            }
-            dateCountQuery.setSize(size);
-        }else {
-            return new DateCountResult();
-        }
+        dateCountQuery.setSize(size);
+
         // 2.查询数据库中以当前天为准有size天的数据 可能不连续 但肯定时间范围要比时间序列更小
         List<DateCountDo> dateCountDos = userInfoMapper.analysisUserCountByDate(dateCountQuery);
         // 3. 查询全部数据
@@ -78,19 +80,19 @@ public class AnalysisService {
         if (targetDate == null) {
             targetDate = LocalDateTime.now();
         }
-        if (size == null || size == 0) {
-            return new DateCountResult();
+        if (size == null) {
+            size = 7;
+        }else {
+            if (size == 0) {
+                return new DateCountResult();
+            }
         }
         // 1.生成连续的时间序列 按照天
         List<String> dateTimeKey = DateUtil.generateDateDaySequence(targetDate, size);
         DateCountQuery dateCountQuery = new DateCountQuery();
         dateCountQuery.setTargetDate(DateUtil.getDateString(targetDate));
-        if (size != null) {
-            if (size == 0) {
-                return new DateCountResult();
-            }
-            dateCountQuery.setSize(size);
-        }
+        dateCountQuery.setSize(size);
+
         // 2.查询数据库中以当前天为准有size天的数据 可能不连续 但肯定时间范围要比时间序列更小
         List<DateCountDo> dateCountDos = adminUserMapper.analysisAdminUserCountByDate(dateCountQuery);
         // 3. 查询全部数据

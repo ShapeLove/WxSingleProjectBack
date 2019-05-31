@@ -40,7 +40,7 @@ public class AdminAnalysisController {
      * @return
      */
     @GetMapping("/userCountByDate")
-    public DateCountResult userCountByDate(@RequestParam("targetDate")LocalDateTime targetDate, @RequestParam("size") Integer size) {
+    public DateCountResult userCountByDate(@RequestParam(value ="targetDate", required = false) LocalDateTime targetDate, @RequestParam(value = "size", required = false) Integer size) {
         return analysisService.analysisUserCount(targetDate, size);
     }
 
@@ -51,7 +51,7 @@ public class AdminAnalysisController {
      * @return
      */
     @GetMapping("/adminUserCountByDate")
-    public DateCountResult adminUserCountByDate(@RequestParam("targetDate")LocalDateTime targetDate, @RequestParam("size") Integer size) {
+    public DateCountResult adminUserCountByDate(@RequestParam(value ="targetDate", required = false) LocalDateTime targetDate, @RequestParam(value = "size", required = false) Integer size) {
         return analysisService.analysisAdminUserCount(targetDate, size);
     }
 }

@@ -16,5 +16,5 @@ import java.util.List;
 public class DateCountResult {
     private long totalCount;
     private List<String> dateKeyList = Lists.newArrayList();
-    private List<Integer> dateList = Lists.newArrayList();
+    private List<Integer> dataList = Lists.newArrayList();
 }

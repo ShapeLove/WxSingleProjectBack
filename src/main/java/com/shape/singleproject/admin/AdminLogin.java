@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @LogExceptAop
 @TimeAop
 public class AdminLogin {
+    private final static String userInfoKey = "adminUser";
 
     @Resource
     private AdminRootService adminRootService;
@@ -46,12 +47,23 @@ public class AdminLogin {
                     .build());
         }
 
-        request.getSession().setAttribute("adminUser", temp);
+        request.getSession().setAttribute(userInfoKey, temp);
         return Result.successResult();
     }
 
     @GetMapping("/info")
     public AdminUser info(HttpServletRequest request) {
-        return (AdminUser)request.getSession().getAttribute("adminUser");
+        return (AdminUser)request.getSession().getAttribute(userInfoKey);
+    }
+
+    @GetMapping("/loginOut")
+    public boolean loginOut(HttpServletRequest request) {
+        try {
+            request.getSession().removeAttribute(userInfoKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
