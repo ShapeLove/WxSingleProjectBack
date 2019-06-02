@@ -23,14 +23,14 @@ public class EnvironmentPropertyProcessor implements EnvironmentPostProcessor {
         MutablePropertySources mutablePropertySources = environment.getPropertySources();
         PropertySource<LinkedHashMap<String, String>> devProfile = (PropertySource<LinkedHashMap<String, String>>) mutablePropertySources.get(devName);
         if (devProfile != null) {
-            getPropertyAndSetFromPropertySource(passWdKey, devProfile, "123456");
-            getPropertyAndSetFromPropertySource(passWdDataKey, devProfile, "123456");
+            getPropertyAndSetFromPropertySource(passWdKey, devProfile, "shapehou");
+            getPropertyAndSetFromPropertySource(passWdDataKey, devProfile, "shapehou");
             getPropertyAndSetFromPropertySource(imageServerUrlKey, devProfile, "http://zimg.shpcoder.cn");
         }
         PropertySource<LinkedHashMap<String, String>> prodProfile = (PropertySource<LinkedHashMap<String, String>>) mutablePropertySources.get(prodName);
         if (prodProfile != null) {
-            getPropertyAndSetFromPropertySource(passWdKey, prodProfile, "123456");
-            getPropertyAndSetFromPropertySource(passWdDataKey, prodProfile, "123456");
+            getPropertyAndSetFromPropertySource(passWdKey, prodProfile, "shapehou");
+            getPropertyAndSetFromPropertySource(passWdDataKey, prodProfile, "shapehou");
             getPropertyAndSetFromPropertySource(imageServerUrlKey, prodProfile, "http://zimg.shpcoder.cn");
         }
         PropertySource<LinkedHashMap<String, String>> defaultProfile = (PropertySource<LinkedHashMap<String, String>>) mutablePropertySources.get(defaultName);
