@@ -235,6 +235,6 @@
 
     <!--查询所有user的数量-->
     <select id="queryAllUserCount" resultType="Long">
-        select count(id) from user_info
+        select count(id) from user_info where `yn` = 0 and `status` = 1 and open_id != #{openId}
     </select>
 </mapper>

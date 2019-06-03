@@ -26,7 +26,7 @@ public interface UserInfoMapper extends UserInfoBaseMapper{
 
     List<UserInfo> queryUserInfoRandom(UserInfoRandomQuery userInfoRandomQuery);
 
-    List<Long> queryAllId();
+    List<Long> queryAllId(String openId);
 
     List<CityCountDo> analysisCityUserCount();
 

@@ -2,6 +2,7 @@ package com.shape.singleproject.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.dto.Report;
 import com.shape.singleproject.dto.UserInfo;
@@ -14,13 +15,13 @@ import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
 import com.shape.singleproject.vo.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -154,13 +155,23 @@ public class UserController {
                 result.setMessage("沒有登录信息，请重新进入小程序进行登录！");
                 return result;
             }
-
             return userInfoService.getOtherUserInfo(openId, openidValue.getOpenId());
         } catch (Exception e) {
             log.error("UserController.getOtherUserInfo error userInfo:{}", openId, e);
             result.setMessage("服务器繁忙，请稍后重试！");
         }
         return result;
+    }
+
+    @GetMapping("/randomQueryUserInfos")
+    public List<UserInfo> randomQueryUserInfos(@RequestParam(value = "size", required = false) Integer size) {
+        String openId = WebUtil.getCurrentUserOpenId();
+        try {
+            return userInfoService.randomQueryUserInfo(size, openId);
+        }catch (Exception e) {
+            log.error("UserController.randomQueryUserInfos error size:{}, openId:{}", size, openId, e);
+            return Lists.newArrayList();
+        }
     }
 
     /**
@@ -214,6 +225,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 举报
+     * @param report
+     * @return
+     */
     @PostMapping("/report")
     public Result report(@RequestBody Report report) {
         try {
@@ -230,6 +246,12 @@ public class UserController {
         }
     }
 
+    /**
+     * 随机获取指定数量的标签
+     * @param tagType
+     * @param size
+     * @return
+     */
     @GetMapping("/randomQueryTags")
     public Result randomQueryTags(@RequestParam Integer tagType, @RequestParam Integer size) {
         try {

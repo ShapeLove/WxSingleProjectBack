@@ -202,4 +202,11 @@ public class TestUserInfoService {
         stopWatch.stop();
         log.error("randomlist:{} time:{}, targetList:{}, listSize:{}", JSON.toJSONString(userInfoList), stopWatch.getTotalTimeSeconds(), targetId, RamUsageEstimator.humanSizeOf(ids));
     }
+
+    @Test
+    public void testRandomQuery3() {
+        List<UserInfo> userInfoList = userInfoService.randomQueryUserInfo(5, "kjdigujk2341414");
+        System.out.println(JSON.toJSONString(userInfoList));
+        assert userInfoList.size() == 5;
+    }
 }

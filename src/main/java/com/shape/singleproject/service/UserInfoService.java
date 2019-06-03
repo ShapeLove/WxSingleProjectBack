@@ -1,17 +1,17 @@
 package com.shape.singleproject.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.shape.singleproject.constant.AppConst;
+import com.google.common.collect.Lists;
 import com.shape.singleproject.constant.ConstellationEnum;
 import com.shape.singleproject.constant.EducationEnum;
 import com.shape.singleproject.constant.UserStatusEnum;
 import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.dto.AttentionInfo;
 import com.shape.singleproject.dto.LoginKey;
+import com.shape.singleproject.dto.Tags;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.interceptor.LogExceptAop;
 import com.shape.singleproject.interceptor.TimeAop;
@@ -22,24 +22,25 @@ import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.util.CacheUtil;
 import com.shape.singleproject.util.HttpUtil;
 import com.shape.singleproject.util.Md5Util;
+import com.shape.singleproject.util.RandomUtil;
 import com.shape.singleproject.vo.PageResult;
 import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
 import com.shape.singleproject.vo.UserInfoVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -404,6 +405,38 @@ public class UserInfoService implements ApplicationEventPublisherAware {
         .toAttentionOpenid(targetOpenId)
         .build());
         return true;
+    }
+
+    /**
+     * 随机查询指定数量的用户信息
+     * @param size 指定数量
+     * @param openId 登录用户
+     * @return
+     */
+    public List<UserInfo> randomQueryUserInfo(Integer size, String openId) {
+        if (size == null || size == 0) {
+            return Lists.newArrayList();
+        }
+        List<Long> ids = userInfoMapper.queryAllId(openId);
+        Set<Long> randomIds = RandomUtil.getUniqueIdSetByListWithLong(ids, size);
+        if (CollectionUtils.isEmpty(randomIds)) {
+            return Lists.newArrayList();
+        }
+        return userInfoMapper.queryUserInfo(UserInfo.QueryBuild()
+                .fetchOpenId()
+                .fetchBirthday()
+                .fetchConstellation()
+                .fetchDepartment()
+                .fetchName()
+                .fetchEducation()
+                .fetchPhotos()
+                .fetchProvince()
+                .fetchCity()
+                .fetchSex()
+                .fetchActivityTags()
+                .fetchDoingTags()
+                .fetchPlanTags()
+                .idList(Lists.newArrayList(randomIds)));
     }
 
 
