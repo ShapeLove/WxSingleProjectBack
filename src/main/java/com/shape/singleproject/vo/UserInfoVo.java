@@ -31,8 +31,8 @@ public class UserInfoVo {
     private String wxNumber;
     private Boolean attention;
     private Boolean allAttention;
-    private Integer dongTags;
-    private String dongTagsDesc;
+    private Integer doingTags;
+    private String doingTagsDesc;
     private Integer activityTags;
     private String activityTagsDesc;
     private Integer planTags;

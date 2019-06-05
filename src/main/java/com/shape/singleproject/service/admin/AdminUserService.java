@@ -6,11 +6,13 @@ import com.shape.singleproject.constant.UserStatusEnum;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.interceptor.LogExceptAop;
 import com.shape.singleproject.interceptor.TimeAop;
+import com.shape.singleproject.mapper.CustomUserInfoMapper;
 import com.shape.singleproject.mapping.UserInfoMapper;
 import com.shape.singleproject.util.CacheUtil;
 import com.shape.singleproject.vo.AdminUserQuery;
 import com.shape.singleproject.vo.PageResult;
 import com.shape.singleproject.vo.Result;
+import com.shape.singleproject.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -72,12 +74,12 @@ public class AdminUserService {
                 .setSuccess(true);
     }
 
-    public UserInfo queryUserInfoByOpenId(String openId) {
+    public UserInfoVo queryUserInfoByOpenId(String openId) {
         if (StringUtils.isEmpty(openId)) {
             return null;
         }
 
-        return userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild().openId(openId));
+        return CustomUserInfoMapper.INSTANCE.info2VoWithTag(userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild().openId(openId)));
     }
 
     /**

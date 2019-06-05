@@ -318,31 +318,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
             return result;
         }
 
-        AttentionInfo attentionInfo = attentionInfoMapper.queryAttentionInfoLimit1(
-                AttentionInfo.QueryBuild()
-                .toAttentionOpenid(openId)
-                .attentionOpenid(currentOpenId)
-                .build()
-        );
-
-        UserInfoVo userInfoVo = CustomUserInfoMapper.INSTANCE.info2Vo(userInfo);
-
-        if (null != attentionInfo) {
-            userInfoVo.setAttention(true);
-            AttentionInfo selfAttentionInfo = attentionInfoMapper.queryAttentionInfoLimit1(
-                    AttentionInfo.QueryBuild()
-                            .toAttentionOpenid(currentOpenId)
-                            .attentionOpenid(openId)
-                            .build());
-            if (null != selfAttentionInfo) {
-                userInfoVo.setAllAttention(true);
-            }
-        }
-
-        userInfoVo.setPhotoList(JSONArray.parseArray(userInfo.getPhotos(), String.class));
-        userInfoVo.setConstellationStr(ConstellationEnum.getValueByCode(userInfo.getConstellation()).getDescription());
-        userInfoVo.setEducationStr(EducationEnum.getValueByCode(userInfo.getEducation()).getDescription());
-
+        UserInfoVo userInfoVo = CustomUserInfoMapper.INSTANCE.info2VoWithAttentionAndTag(userInfo, currentOpenId);
         result.setSuccess(true);
         result.setData(userInfoVo);
         return result;

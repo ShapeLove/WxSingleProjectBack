@@ -41,4 +41,13 @@ public enum EducationEnum {
         }
         return null;
     }
+
+    public static String getDescByCode(Integer code) {
+        for (EducationEnum educationEnum : EducationEnum.values()) {
+            if (code.equals(educationEnum.code)) {
+                return educationEnum.getDescription();
+            }
+        }
+        return null;
+    }
 }

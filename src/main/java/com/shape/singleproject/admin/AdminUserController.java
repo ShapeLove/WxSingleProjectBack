@@ -41,7 +41,7 @@ public class AdminUserController {
     }
 
     @PostMapping("/queryUserInfo")
-    public UserInfo queryUserInfo(@RequestBody UserInfo userInfo) {
+    public UserInfoVo queryUserInfo(@RequestBody UserInfo userInfo) {
         try {
             return adminUserService.queryUserInfoByOpenId(userInfo.getOpenId());
         } catch (Exception e) {
