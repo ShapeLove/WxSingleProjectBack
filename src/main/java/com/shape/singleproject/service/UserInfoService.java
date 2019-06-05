@@ -390,7 +390,7 @@ public class UserInfoService implements ApplicationEventPublisherAware {
      * @return
      */
     public List<UserInfo> randomQueryUserInfo(Integer size, String openId) {
-        if (size == null || size == 0) {
+        if (size == null || size == 0 || StringUtils.isEmpty(openId)) {
             return Lists.newArrayList();
         }
         List<Long> ids = userInfoMapper.queryAllId(openId);

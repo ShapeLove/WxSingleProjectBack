@@ -265,4 +265,17 @@ public class UserController {
             return null;
         }
     }
+
+    /**
+     * 随机查询指定数量的用户信息
+     * @param size
+     * @return
+     */
+    @GetMapping("/randomQueryUserInfo")
+    public List<UserInfo> randomQueryUserInfo(@RequestParam Integer size) {
+        if (null == size) {
+            return Lists.newArrayList();
+        }
+        return userInfoService.randomQueryUserInfo(size, WebUtil.getCurrentUserOpenId());
+    }
 }
