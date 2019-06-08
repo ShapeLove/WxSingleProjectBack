@@ -36,6 +36,17 @@
         <result property="activityTags" column="activity_tags"/>
     </resultMap>
 
+    <resultMap id="cityCountVo" type="com.shape.singleproject.dto.CityCountDo">
+        <result property="name" column="city"/>
+        <result property="value" column="total_count"/>
+    </resultMap>
+
+    <resultMap id="dateCountVo" type="com.shape.singleproject.dto.DateCountDo">
+        <result property="dateString" column="date_time"/>
+        <result property="value" column="total_count"/>
+    </resultMap>
+
+
     <sql id="userResult">
         <trim suffixOverrides=",">
             `open_id`,
@@ -208,7 +219,22 @@
         (select MIN(id) from user_info <include refid="randomSelectWhereConditions"></include>) limit #{size};
     </select>
 
+    <!--查询所有user的id-->
     <select id="queryAllId" resultType="Long">
         select id from user_info
+    </select>
+
+    <!--按照城市分析用户数量-->
+    <select id="analysisCityUserCount" resultMap="cityCountVo">
+        select `city`, count(id) as `total_count` from `user_info` group by `city`
+    </select>
+
+    <select id="analysisUserCountByDate" resultMap="dateCountVo">
+        SELECT count(id) as `total_count`,DATE_FORMAT(`create`,"%Y-%m-%d") as `date_time`  from user_info where `create` &lt;= #{targetDate, jdbcType=VARCHAR } GROUP BY `date_time` order by `create` desc limit #{size}
+    </select>
+
+    <!--查询所有user的数量-->
+    <select id="queryAllUserCount" resultType="Long">
+        select count(id) from user_info where `yn` = 0 and `status` = 1 and open_id != #{openId}
     </select>
 </mapper>

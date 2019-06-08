@@ -21,6 +21,7 @@ import com.shape.singleproject.service.UserInfoService;
 import com.shape.singleproject.util.HttpUtil;
 import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
+import com.shape.singleproject.vo.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.apache.lucene.util.RamUsageEstimator;
@@ -201,5 +202,19 @@ public class TestUserInfoService {
         List<UserInfo> userInfoList = userInfoMapper.queryUserInfo(UserInfo.QueryBuild().idList(Lists.newArrayList(targetId)));
         stopWatch.stop();
         log.error("randomlist:{} time:{}, targetList:{}, listSize:{}", JSON.toJSONString(userInfoList), stopWatch.getTotalTimeSeconds(), targetId, RamUsageEstimator.humanSizeOf(ids));
+    }
+
+    @Test
+    public void testRandomQuery3() {
+        List<UserInfo> userInfoList = userInfoService.randomQueryUserInfo(5, "kjdigujk2341414");
+        System.out.println(JSON.toJSONString(userInfoList));
+        assert userInfoList.size() == 5;
+    }
+
+    @Test
+    public void testQueryOtherUser() {
+        Result<UserInfoVo> userInfo = userInfoService.getOtherUserInfo("ofn5o5Dpp3qA7OD18BQpyPzhGzpM", "ofn5o5G3Yc8EfLjXJ9HcQ37_DI6M");
+        System.out.println(JSON.toJSONString(userInfo));
+        assert userInfo.isSuccess();
     }
 }

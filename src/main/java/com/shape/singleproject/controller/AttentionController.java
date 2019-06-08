@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 //小程序端的關注接口
@@ -24,7 +25,7 @@ import java.util.List;
 @Slf4j
 public class AttentionController {
 
-    @Autowired
+    @Resource
     private AttentionService attentionService;
 
     @PostMapping("/list")

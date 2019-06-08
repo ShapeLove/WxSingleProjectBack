@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class ExceptService {
     @Value("${except.overcount}")
     private Integer exceptOverCount;
 
-    @Autowired
+    @Resource
     private ExceptInfoMapper exceptInfoMapper;
 
-    @Autowired
+    @Resource
     private EmailSendService emailSendService;
 
     public void processExcept(String methodName, String exceptMessage) {

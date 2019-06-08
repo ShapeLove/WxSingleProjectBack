@@ -9,6 +9,7 @@ import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.ReportMapper;
 import com.shape.singleproject.vo.PageResult;
 import com.shape.singleproject.vo.ReportPageQuery;
+import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.TagPageQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -63,9 +64,16 @@ public class ReportService {
      * 增加举报
      * @param report
      */
-    public void addReport(Report report) {
+    public Result addReport(Report report) {
+        if (StringUtils.isEmpty(report.getReportOpenId())) {
+            return Result.failtResult("举报人openId不能为空");
+        }
+        if (report.getReportType() == null) {
+            return Result.failtResult("举报类型不能为空");
+        }
         report.setModified(LocalDateTime.now());
         reportMapper.insertReport(report);
+        return Result.successResult();
     }
 
     /**

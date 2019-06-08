@@ -51,4 +51,13 @@ public enum ConstellationEnum {
         return null;
     }
 
+    public static String getDescByCode(Integer code) {
+        for (ConstellationEnum constellationEnum : ConstellationEnum.values()) {
+            if (code.equals(constellationEnum.code)) {
+                return constellationEnum.getDescription();
+            }
+        }
+        return null;
+    }
+
 }

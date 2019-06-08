@@ -30,12 +30,6 @@ public class AdminReportController {
         return Result.successResult();
     }
 
-    @PostMapping("/addReport")
-    public Result addReport(@RequestBody Report report) {
-        reportService.addReport(report);
-        return Result.successResult();
-    }
-
     @PostMapping("/deleteReport")
     public Result deleteReport(@RequestBody Report report) {
         reportService.deleteReport(report.getId());

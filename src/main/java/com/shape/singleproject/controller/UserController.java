@@ -2,10 +2,12 @@ package com.shape.singleproject.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.dto.Report;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.service.ReportService;
+import com.shape.singleproject.service.TagService;
 import com.shape.singleproject.service.UserInfoService;
 import com.shape.singleproject.util.WebUtil;
 import com.shape.singleproject.vo.PageResult;
@@ -13,12 +15,13 @@ import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
 import com.shape.singleproject.vo.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,11 +29,14 @@ import java.util.Optional;
 @Slf4j
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserInfoService userInfoService;
 
-    @Autowired
+    @Resource
     private ReportService reportService;
+
+    @Resource
+    private TagService tagService;
 
 
     @PostMapping("/queryByPage")
@@ -149,13 +155,23 @@ public class UserController {
                 result.setMessage("沒有登录信息，请重新进入小程序进行登录！");
                 return result;
             }
-
             return userInfoService.getOtherUserInfo(openId, openidValue.getOpenId());
         } catch (Exception e) {
             log.error("UserController.getOtherUserInfo error userInfo:{}", openId, e);
             result.setMessage("服务器繁忙，请稍后重试！");
         }
         return result;
+    }
+
+    @GetMapping("/randomQueryUserInfos")
+    public List<UserInfo> randomQueryUserInfos(@RequestParam(value = "size", required = false) Integer size) {
+        String openId = WebUtil.getCurrentUserOpenId();
+        try {
+            return userInfoService.randomQueryUserInfo(size, openId);
+        }catch (Exception e) {
+            log.error("UserController.randomQueryUserInfos error size:{}, openId:{}", size, openId, e);
+            return Lists.newArrayList();
+        }
     }
 
     /**
@@ -209,6 +225,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 举报
+     * @param report
+     * @return
+     */
     @PostMapping("/report")
     public Result report(@RequestBody Report report) {
         try {
@@ -216,9 +237,45 @@ public class UserController {
             report.setOpenId(currentOpenId);
             reportService.addReport(report);
             return Result.successResult();
-        } catch (Exception e) {
+        } catch (DuplicateKeyException e) {
+            log.error("UserController.report error report:{}", JSON.toJSONString(report), e);
+            return Result.failtResult("该举报信息已存在");
+        }catch (Exception e) {
             log.error("UserController.report error report:{}", JSON.toJSONString(report), e);
             return null;
         }
+    }
+
+    /**
+     * 随机获取指定数量的标签
+     * @param tagType
+     * @param size
+     * @return
+     */
+    @GetMapping("/randomQueryTags")
+    public Result randomQueryTags(@RequestParam Integer tagType, @RequestParam Integer size) {
+        try {
+            String currentOpenId = WebUtil.getCurrentUserOpenId();
+            if (StringUtils.isEmpty(currentOpenId)) {
+                return Result.failtResult("用户未登录");
+            }
+            return Result.successResultWithData(tagService.randomQueryTags(size, tagType));
+        } catch (Exception e) {
+            log.error("UserController.randomQueryTags error tagType:{}, size:{}", tagType, size, e);
+            return null;
+        }
+    }
+
+    /**
+     * 随机查询指定数量的用户信息
+     * @param size
+     * @return
+     */
+    @GetMapping("/randomQueryUserInfo")
+    public List<UserInfo> randomQueryUserInfo(@RequestParam Integer size) {
+        if (null == size) {
+            return Lists.newArrayList();
+        }
+        return userInfoService.randomQueryUserInfo(size, WebUtil.getCurrentUserOpenId());
     }
 }

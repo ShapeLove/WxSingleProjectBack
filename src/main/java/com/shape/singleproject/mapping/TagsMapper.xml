@@ -7,4 +7,13 @@
     delete from `tags`
     where `id`=#{tagId}
   </delete>
+
+  <select id="allIds" resultType="Integer">
+    select id from `tags`
+    <trim prefix="where" suffixOverrides="and | or">
+      <if test="tagType != null">
+        `tag_type` = #{tagType} and
+      </if>
+    </trim>
+  </select>
 </mapper>

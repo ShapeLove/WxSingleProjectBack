@@ -2,6 +2,8 @@ package com.shape.singleproject.admin;
 
 import com.shape.singleproject.constant.AdminLevelEnum;
 import com.shape.singleproject.dto.AdminUser;
+import com.shape.singleproject.interceptor.LogExceptAop;
+import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.service.AdminRootService;
 import com.shape.singleproject.vo.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/admin/login")
 @Slf4j
+@LogExceptAop
+@TimeAop
 public class AdminLogin {
+    private final static String userInfoKey = "adminUser";
 
     @Resource
     private AdminRootService adminRootService;
@@ -30,21 +35,35 @@ public class AdminLogin {
             result.setMessage("密码为空！");
             return result;
         }
-        AdminUser temp = adminRootService.queryAdminUserByNameAndPasswd(adminUser.getName(), adminUser.getPasswd());
-
-        if (null == temp) {
+        AdminUser temp = adminRootService.queryAdminUserByName(adminUser.getName());
+        if (temp != null) {
+            if (!temp.getPasswd().equals(adminUser.getPasswd())) {
+                return Result.failtResult("用户名密码错误！");
+            }
+        }else {
             temp = adminRootService.addAdminUser(AdminUser.Build().name(adminUser.getName())
                     .passwd(adminUser.getPasswd())
                     .level(AdminLevelEnum.MANAGER.getLevel())
                     .build());
         }
 
-        request.getSession().setAttribute("adminUser", temp);
+        request.getSession().setAttribute(userInfoKey, temp);
         return Result.successResult();
     }
 
     @GetMapping("/info")
     public AdminUser info(HttpServletRequest request) {
-        return (AdminUser)request.getSession().getAttribute("adminUser");
+        return (AdminUser)request.getSession().getAttribute(userInfoKey);
+    }
+
+    @GetMapping("/loginOut")
+    public boolean loginOut(HttpServletRequest request) {
+        try {
+            request.getSession().removeAttribute(userInfoKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -23,10 +24,10 @@ import java.util.stream.Stream;
 @Slf4j
 public class ProcessExceptionTask {
 
-    @Autowired
+    @Resource
     private ExceptService exceptService;
 
-    @Autowired
+    @Resource
     private EmailSendService emailSendService;
 
     // corn表达式 表示每10分钟执行一次
@@ -37,10 +38,5 @@ public class ProcessExceptionTask {
         if (!CollectionUtils.isEmpty(result)) {
             result.stream().forEach(exceptInfo -> emailSendService.sendEmail(exceptInfo));
         }
-    }
-
-    @Scheduled(fixedRate = 1000)
-    public void processTask() {
-        System.out.println("haha" + LocalDateTime.now());
     }
 }

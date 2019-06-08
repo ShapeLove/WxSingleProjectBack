@@ -20,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,10 +31,10 @@ import java.util.stream.Collectors;
 @TimeAop
 public class AttentionService {
 
-    @Autowired
+    @Resource
     private AttentionInfoMapper attentionInfoMapper;
 
-    @Autowired
+    @Resource
     private UserInfoMapper userInfoMapper;
 
 

@@ -6,12 +6,18 @@ import com.shape.singleproject.service.ExceptService;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.catalina.connector.RequestFacade;
+import org.apache.catalina.connector.ResponseFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 public class LogExceptInterceptor implements MethodInterceptor,ApplicationEventPublisherAware {
@@ -24,9 +30,10 @@ public class LogExceptInterceptor implements MethodInterceptor,ApplicationEventP
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         if (log.isDebugEnabled()) {
+
             log.debug("LogExcept Info classAndmethod:{}#{}, param:{}", methodInvocation.getThis().getClass().getCanonicalName(),
                     methodInvocation.getMethod().getName(),
-                    JSON.toJSONString(methodInvocation.getArguments()));
+                    JSON.toJSONString(filterParams(methodInvocation.getArguments())));
         }
         Object result;
         try {
@@ -34,7 +41,7 @@ public class LogExceptInterceptor implements MethodInterceptor,ApplicationEventP
         } catch (Throwable throwable) {
             String methodName =  methodInvocation.getThis().getClass().getCanonicalName() + "#" + methodInvocation.getMethod().getName();
             log.error("LogExcept Info except classAndmethod:{}, param:{}", methodName,
-                    JSON.toJSONString(methodInvocation.getArguments()), throwable);
+                    JSON.toJSONString(filterParams(methodInvocation.getArguments())), throwable);
             applicationEventPublisher.publishEvent(new ExceptEvent(methodName, throwable.getMessage()));
             throw throwable;
         }
@@ -51,5 +58,14 @@ public class LogExceptInterceptor implements MethodInterceptor,ApplicationEventP
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
+    }
+
+    private Object[] filterParams(Object[] params) {
+        if (params == null || params.length == 0) {
+            return new Object[]{};
+        }
+        return Stream.of(params)
+                .filter(obj -> obj!=null && !obj.getClass().equals(RequestFacade.class) && !obj.getClass().equals(ResponseFacade.class))
+                .toArray(Object[]::new);
     }
 }

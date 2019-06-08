@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 public class LoginController {
 
-    @Autowired
+    @Resource
     private UserInfoService userInfoService;
 
 

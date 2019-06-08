@@ -3,8 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shape.singleproject.mapping.AdminUserMapper">
 
+    <resultMap id="dateCountVo" type="com.shape.singleproject.dto.DateCountDo">
+        <result property="dateString" column="date_time"/>
+        <result property="value" column="total_count"/>
+    </resultMap>
+
     <delete id="deleteAdminUser">
     delete from `admin_user`
     where `id`=#{id}
   </delete>
+
+    <select id="analysisAdminUserCountByDate" resultMap="dateCountVo">
+        SELECT count(id) as `total_count`,DATE_FORMAT(`create`,"%Y-%m-%d") as `date_time`  from admin_user where `create` &lt;= #{targetDate, jdbcType=VARCHAR } GROUP BY `date_time` order by `create` desc limit #{size}
+    </select>
+
+    <!--查询所有user的数量-->
+    <select id="queryAllAdminUserCount" resultType="Long">
+        select count(id) from admin_user
+    </select>
 </mapper>

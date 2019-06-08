@@ -9,6 +9,7 @@ import com.shape.singleproject.interceptor.TimeAop;
 import com.shape.singleproject.mapping.AdminUserMapper;
 import com.shape.singleproject.vo.AdminUserPageQuery;
 import com.shape.singleproject.vo.PageResult;
+import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.TagPageQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -56,6 +57,15 @@ public class AdminRootService {
      */
     public AdminUser queryAdminUserByNameAndPasswd(String name, String passwd) {
         return adminUserMapper.queryAdminUserLimit1(AdminUser.Build().name(name).passwd(passwd).build());
+    }
+
+    /**
+     * 查询单个
+     * @param name
+     * @return
+     */
+    public AdminUser queryAdminUserByName(String name) {
+        return adminUserMapper.queryAdminUserLimit1(AdminUser.Build().name(name).build());
     }
 
     /**

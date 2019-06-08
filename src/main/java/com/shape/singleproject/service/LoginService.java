@@ -7,6 +7,8 @@ import com.shape.singleproject.mapping.LoginKeyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 /**
  * 登陆相关服务
  */
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Component;
 @TimeAop
 public class LoginService {
 
-    @Autowired
+    @Resource
     private LoginKeyMapper loginKeyMapper;
 
     /**

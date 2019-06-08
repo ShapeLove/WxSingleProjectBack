@@ -1,0 +1,2 @@
+# environmentPostProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=com.shape.singleproject.autoconfigure.EnvironmentPropertyProcessor
