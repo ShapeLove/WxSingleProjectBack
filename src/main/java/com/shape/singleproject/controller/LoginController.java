@@ -21,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 public class LoginController {
 
-    @Resource
+    @Resource //从spring容器里把注入的服务拿出来
     private UserInfoService userInfoService;
 
 
