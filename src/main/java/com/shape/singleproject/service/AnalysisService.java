@@ -44,9 +44,11 @@ public class AnalysisService {
      * @return
      */
     public DateCountResult analysisUserCount(LocalDateTime targetDate, Integer size) {
+        // 如果为空就为当前时间
         if (targetDate == null) {
             targetDate = LocalDateTime.now();
         }
+        // 如果不传计算几天
         if (size == null) {
             size = 7;
         }else {

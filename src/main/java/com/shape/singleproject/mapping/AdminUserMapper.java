@@ -13,8 +13,10 @@ import org.springframework.stereotype.Repository;
 /**
 *  @author author
 */
+// 1.spring
 @Repository
 @Mapper
+
 public interface AdminUserMapper extends AdminUserBaseMapper{
 
     int deleteAdminUser(Integer adminUserId);

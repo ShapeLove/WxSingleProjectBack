@@ -47,6 +47,7 @@ public class AdminAnalysisController {
      * @return
      */
     @GetMapping("/userCountByDate")
+    // userCountByDate
     public DateCountResult userCountByDate(@RequestParam(value ="targetDate", required = false) LocalDateTime targetDate, @RequestParam(value = "size", required = false) Integer size) {
         return analysisService.analysisUserCount(targetDate, size);
     }
