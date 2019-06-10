@@ -20,7 +20,9 @@ import java.util.stream.Collectors;
  * 数据分析服务
  */
 @Service
+// 打印日志
 @LogExceptAop
+// 统计方法调用时间
 @TimeAop
 public class AnalysisService {
     @Resource

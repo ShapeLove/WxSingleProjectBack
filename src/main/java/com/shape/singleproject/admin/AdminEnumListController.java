@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 
 /**
  * 提供前端所有枚举类型数据
+ * 暂时没用
  */
 @RestController
 @RequestMapping("/admin/enum")

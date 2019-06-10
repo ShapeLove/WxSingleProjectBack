@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+/**
+ * 后台管理-标签管理
+ */
 @RestController
 @RequestMapping("/admin/tag")
 @Slf4j
@@ -19,6 +22,11 @@ public class AdminTagController {
     @Resource
     private TagService tagService;
 
+    /**
+     *
+     * @param tagPageQuery
+     * @return
+     */
     @PostMapping("/pageList")
     public PageResult<Tags> pageList(@RequestBody TagPageQuery tagPageQuery) {
         return tagService.queryTagsByPage(tagPageQuery);
