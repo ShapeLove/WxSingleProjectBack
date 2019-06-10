@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.shape.singleproject.dto.ExceptInfo;
 import com.shape.singleproject.interceptor.TimeAop;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -14,6 +13,7 @@ import javax.annotation.Resource;
 
 @Service
 @Slf4j
+// 开启异步
 @Async
 @TimeAop
 public class EmailSendService {
