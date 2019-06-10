@@ -77,8 +77,11 @@ public class TagService {
      * @return
      */
     public Tags queryOneTagByNameAndId(Integer id,String tagName) {
+        if (id == null || StringUtils.isEmpty(tagName)) {
+            return null;
+        }
         Tags.QueryBuilder queryBuilder = Tags.QueryBuild();
-        if (null == id) {
+        if (null != id) {
             queryBuilder.id(id);
         }
 
@@ -89,12 +92,28 @@ public class TagService {
     }
 
     /**
+     * 根据标签id查询单个标签
+     * @param id
+     * @return
+     */
+    public Tags queryOneTagById(Integer id) {
+        if (id == null) {
+            return null;
+        }
+        Tags.QueryBuilder queryBuilder = Tags.QueryBuild();
+        if (null != id) {
+            queryBuilder.id(id);
+        }
+        return tagsMapper.queryTagsLimit1(queryBuilder.build());
+    }
+
+    /**
      * 随机抽取指定类型和数量的标签
      * @param size
      * @param tagType
      * @return
      */
-    public List<Tags> randomQueryTags(int size, Integer tagType) {
+    public List<Tags> randomQueryTags(int size, int tagType) {
         if (size == 0) {
             return Lists.newArrayList();
         }

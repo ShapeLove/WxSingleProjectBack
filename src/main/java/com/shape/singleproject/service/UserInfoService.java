@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.shape.singleproject.constant.ConstellationEnum;
 import com.shape.singleproject.constant.EducationEnum;
+import com.shape.singleproject.constant.TagTypeEnum;
 import com.shape.singleproject.constant.UserStatusEnum;
 import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.dto.AttentionInfo;
@@ -413,6 +414,34 @@ public class UserInfoService implements ApplicationEventPublisherAware {
                 .fetchDoingTags()
                 .fetchPlanTags()
                 .idList(Lists.newArrayList(randomIds)));
+    }
+
+    /**
+     * 更新用户标签（现有标签）
+     * @param tags 标签
+     * @param openId 用户标识
+     */
+    public Result updateUserInfoTag(Tags tags, String openId) {
+        UserInfo userInfo = queryUserInfoByOpenid(openId);
+        if (null == userInfo) {
+            return Result.failtResult("用户不存在或者已失效，非法操作");
+        }
+        if (TagTypeEnum.DOING.getTagCode().equals(tags.getTagType())) {
+            userInfoMapper.update(UserInfo.UpdateBuild().set(UserInfo.Build().doingTags(tags.getId()).build())
+            .where(UserInfo.ConditionBuild().openIdList(openId)));
+            return Result.successResult();
+        }
+        if (TagTypeEnum.PLAN.getTagCode().equals(tags.getTagType())) {
+            userInfoMapper.update(UserInfo.UpdateBuild().set(UserInfo.Build().planTags(tags.getId()).build())
+                    .where(UserInfo.ConditionBuild().openIdList(openId)));
+            return Result.successResult();
+        }
+        if (TagTypeEnum.ACTIVITY.getTagCode().equals(tags.getTagType())) {
+            userInfoMapper.update(UserInfo.UpdateBuild().set(UserInfo.Build().activityTags(tags.getId()).build())
+                    .where(UserInfo.ConditionBuild().openIdList(openId)));
+            return Result.successResult();
+        }
+        return Result.failResultWithDefaultMessage();
     }
 
 

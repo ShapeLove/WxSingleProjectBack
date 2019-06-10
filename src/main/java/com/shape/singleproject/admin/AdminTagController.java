@@ -6,6 +6,7 @@ import com.shape.singleproject.vo.PageResult;
 import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.TagPageQuery;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,12 @@ public class AdminTagController {
     @PostMapping("/addTag")
     public Result addTag(@RequestBody Tags tags) {
         try {
+            if (tags.getTagType() == null || StringUtils.isBlank(tags.getTagName())) {
+                return Result.failtResult("标签类型或标签名字为空");
+            }
+            if (tags.getTagName().length() > 10) {
+                return Result.failtResult("标签名字不能大于10个字符");
+            }
             tagService.addTag(tags);
         } catch (DuplicateKeyException e) {
             return Result.failtResult("该标签已存在");

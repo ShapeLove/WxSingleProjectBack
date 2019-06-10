@@ -8,11 +8,11 @@
     where `id`=#{tagId}
   </delete>
 
-  <select id="allIds" resultType="Integer">
+  <select id="allIds" resultType="Integer" parameterType="int">
     select id from `tags`
     <trim prefix="where" suffixOverrides="and | or">
-      <if test="tagType != null">
-        `tag_type` = #{tagType} and
+      <if test="_parameter!=0">
+        `tag_type` = #{_parameter} and
       </if>
     </trim>
   </select>
