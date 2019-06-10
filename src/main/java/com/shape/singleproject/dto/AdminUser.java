@@ -10,7 +10,7 @@ import java.util.List;
 */
 public class AdminUser implements Serializable {
 
-    private static final long serialVersionUID = 1557800141345L;
+    private static final long serialVersionUID = 1560159847758L;
 
 
     /**
@@ -34,7 +34,7 @@ public class AdminUser implements Serializable {
 
     /**
     * 创建时间
-    * isNullAble:0,defaultVal:0000-00-00 00:00:00
+    * isNullAble:0,defaultVal:CURRENT_TIMESTAMP
     */
     private java.time.LocalDateTime create;
 

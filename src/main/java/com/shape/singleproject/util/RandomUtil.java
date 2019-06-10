@@ -18,6 +18,9 @@ public class RandomUtil {
      */
     public static Set<Integer> getUniqueIdSetByList(List<Integer> ids, int size) {
         Set<Integer> uniqueIds = Sets.newHashSet();
+        if (ids.size() < size) {
+            size = ids.size();
+        }
         if (CollectionUtils.isEmpty(ids) || size == 0) {
             return uniqueIds;
         }

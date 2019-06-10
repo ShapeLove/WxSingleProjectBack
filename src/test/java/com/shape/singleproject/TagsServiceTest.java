@@ -26,7 +26,7 @@ public class TagsServiceTest {
     public void testRandomQueryTags() {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        List<Tags> tags = tagService.randomQueryTags(2, null);
+        List<Tags> tags = tagService.randomQueryTags(2, 1);
         stopWatch.stop();
         log.error("tasg: {}, call:{}", JSON.toJSONString(tags), stopWatch.getTotalTimeSeconds());
     }

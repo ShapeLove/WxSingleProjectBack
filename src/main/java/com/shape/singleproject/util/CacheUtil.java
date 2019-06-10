@@ -32,6 +32,7 @@ public class CacheUtil {
     public final static String CACHE_FALSE_FLAG = "no";
 
     static {
+        // 存sessionKey的
         openIdCustomSessionCache = CacheBuilder.newBuilder()
                 .maximumSize(1000)
                 .build(CacheLoader.from((key) -> {

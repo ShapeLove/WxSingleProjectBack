@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.shape.singleproject.domain.OpenidValue;
 import com.shape.singleproject.dto.Report;
+import com.shape.singleproject.dto.Tags;
 import com.shape.singleproject.dto.UserInfo;
 import com.shape.singleproject.service.ReportService;
 import com.shape.singleproject.service.TagService;
@@ -15,8 +16,8 @@ import com.shape.singleproject.vo.Result;
 import com.shape.singleproject.vo.UserInfoQuery;
 import com.shape.singleproject.vo.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -235,8 +236,7 @@ public class UserController {
         try {
             String currentOpenId = WebUtil.getCurrentUserOpenId();
             report.setOpenId(currentOpenId);
-            reportService.addReport(report);
-            return Result.successResult();
+            return reportService.addReport(report);
         } catch (DuplicateKeyException e) {
             log.error("UserController.report error report:{}", JSON.toJSONString(report), e);
             return Result.failtResult("该举报信息已存在");
@@ -253,7 +253,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/randomQueryTags")
-    public Result randomQueryTags(@RequestParam Integer tagType, @RequestParam Integer size) {
+    public Result randomQueryTags(@RequestParam int tagType, @RequestParam int size) {
         try {
             String currentOpenId = WebUtil.getCurrentUserOpenId();
             if (StringUtils.isEmpty(currentOpenId)) {
@@ -262,7 +262,7 @@ public class UserController {
             return Result.successResultWithData(tagService.randomQueryTags(size, tagType));
         } catch (Exception e) {
             log.error("UserController.randomQueryTags error tagType:{}, size:{}", tagType, size, e);
-            return null;
+            return Result.failResultWithDefaultMessage();
         }
     }
 
@@ -277,5 +277,66 @@ public class UserController {
             return Lists.newArrayList();
         }
         return userInfoService.randomQueryUserInfo(size, WebUtil.getCurrentUserOpenId());
+    }
+
+    /**
+     * 添加/覆盖用户标签
+     * @param tags
+     * @return
+     */
+    @PostMapping("/addUserTag")
+    public Result addUserTag(@RequestBody Tags tags) {
+        try {
+            String openId = WebUtil.getCurrentUserOpenId();
+            if (StringUtils.isEmpty(openId)) {
+                return Result.failtResult("没有登录信息,非法操作");
+            }
+            return userInfoService.updateUserInfoTag(tags, openId);
+        } catch (Exception e) {
+            log.error("UserController.addUserTag error tags:{}", JSON.toJSONString(tags), e);
+            return Result.failResultWithDefaultMessage();
+        }
+    }
+
+    /**
+     * 添加用户自定义标签
+     * @param tags
+     * @return
+     */
+    @PostMapping("/addCustomTag")
+    public Result addCustomTag(@RequestBody Tags tags) {
+        try {
+            String openId = WebUtil.getCurrentUserOpenId();
+            if (StringUtils.isEmpty(openId)) {
+                return Result.failtResult("没有登录信息,非法操作");
+            }
+            if (tags.getTagType() == null || StringUtils.isBlank(tags.getTagName())) {
+                return Result.failtResult("标签类型或标签名字为空");
+            }
+            if (tags.getTagName().length() > 10) {
+                return Result.failtResult("标签名字不能大于10个字符");
+            }
+            Tags targetTags = tagService.addTag(tags);
+            return userInfoService.updateUserInfoTag(targetTags, openId);
+        } catch (DuplicateKeyException e) {
+            return Result.failtResult("该标签已存在");
+        }
+        catch (Exception e) {
+            log.error("UserController.addCustomTag error tags:{}", JSON.toJSONString(tags), e);
+            return Result.failResultWithDefaultMessage();
+        }
+    }
+
+    /**
+     * 查询单个标签值
+     * @param tagId
+     * @return
+     */
+    @GetMapping("/queryTag")
+    public Tags deleteTag(@RequestParam Integer tagId) {
+        if (tagId == 0) {
+            return null;
+        }
+        return tagService.queryOneTagById(tagId);
     }
 }

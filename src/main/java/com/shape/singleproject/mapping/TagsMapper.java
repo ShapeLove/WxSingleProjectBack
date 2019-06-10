@@ -16,5 +16,5 @@ public interface TagsMapper extends TagsBaseMapper{
 
     int deleteTag(Integer tagId);
 
-    List<Integer> allIds(Integer tagType);
+    List<Integer> allIds(int tagType);
 }

@@ -6,9 +6,9 @@ import java.util.Arrays;
  * 标签类型
  */
 public enum TagTypeEnum {
-    DOING(0, "正在.."),
-    PLAN(1, "打算.."),
-    ACTIVITY(2, "活动是..");
+    DOING(1, "正在.."),
+    PLAN(2, "打算.."),
+    ACTIVITY(3, "活动是..");
 
     private Integer tagCode;
     private String tagDesc;
