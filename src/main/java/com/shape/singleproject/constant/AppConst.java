@@ -5,6 +5,7 @@ package com.shape.singleproject.constant;
  */
 public class AppConst {
 
+    // 不允许实例化
     private AppConst() {
         throw new IllegalStateException("Utility class");
     }

@@ -51,13 +51,14 @@ public class GlobalConfigure  {
 
         /**
          * 配置异步处理线程池
+         * 也就是说所有带有@Async注解的类 需要异步处理的话 都是该线程池来处理
          * @return
          */
         @Bean
         public AsyncTaskExecutor taskExecutor() {
             ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
             executor.setThreadNamePrefix("Anno-Executor");
-            executor.setMaxPoolSize(10); //zuiduo同时处理十条任务
+            executor.setMaxPoolSize(10); //最多同时处理十条任务
             // 异步处理为最低优先级
             executor.setThreadPriority(Thread.MIN_PRIORITY);
 

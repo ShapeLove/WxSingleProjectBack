@@ -14,7 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DateCountResult {
+    // 总数
     private long totalCount;
+    // 时间序列
     private List<String> dateKeyList = Lists.newArrayList();
+    // 与时间序列对应的数量
     private List<Integer> dataList = Lists.newArrayList();
 }

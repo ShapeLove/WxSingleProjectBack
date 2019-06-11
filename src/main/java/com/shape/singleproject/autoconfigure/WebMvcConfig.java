@@ -20,18 +20,31 @@ import javax.servlet.MultipartConfigElement;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    /**
+     * 可以通过配置项 shape.enable.loginfilter 控制是否开启小程序端登录拦截
+     */
     @Value("${shape.enable.loginfilter:true}")
     private boolean enableLoginFilter;
 
+    /**
+     * 添加过滤器
+     * @param registry
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 1.全局都加入cors跨域处理
         registry.addInterceptor(new CorsFilter()).addPathPatterns("/**");
         if (enableLoginFilter) {
+            // 2.小程序登录拦截 除了 /login/**","/except/**","/admin/**","/getAllCache", "/error 这些url以外都会被拦截
             registry.addInterceptor(new LoginFilter()).addPathPatterns("/**").excludePathPatterns("/login/**","/except/**","/admin/**","/getAllCache", "/error");
         }
         registry.addInterceptor(new AdminLoginFilter()).addPathPatterns("/admin/**").excludePathPatterns("/admin/login/**");
     }
 
+    /**
+     * 控制文件上传大小
+     * @return
+     */
     @Bean
     public MultipartConfigElement multipartConfigElement(){
         MultipartConfigFactory factory = new MultipartConfigFactory();
