@@ -129,7 +129,7 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>4.0.0</version>
+            <version>7.1.0</version>
         </dependency>
         <!--字符串判空等工具类集合-->
         <dependency>
